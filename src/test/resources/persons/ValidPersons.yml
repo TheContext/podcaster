@@ -1,0 +1,10 @@
+- id: ArtemZinnatullin # can be referenced later as @ArtemZinnatulin@
+  name: Artem Zinnatullin
+  twitter: artem_zin
+  github: artem-zinnatullin
+  website: https://artemzin.com
+- id: HannesDorfmann # can be referenced later as @HannesDorfmann@
+  name: Hannes Dorfmann
+  twitter: sockeqwe
+  github: sockeqwe
+  website: http://hannesdorfmann.com
