@@ -32,17 +32,16 @@ A file containing people. They can be linked from within show notes file with `@
 File must look as follows:
 
 ```yml
-id: ArtemZinnatullin # can be referenced later as @ArtemZinnatulin@
-name: Artem Zinnatulin
-twitter: artem_zin
-github: artem-zinnatullin
-website: https://artemzin.com
----
-id: HannesDorfmann # can be referenced later as @HannesDorfmann@
-name: Hannes Dorfmann
-twitter: sockeqwe
-github: sockeqwe
-website: http://hannesdorfmann.com
+- id: ArtemZinnatullin # can be referenced later as @ArtemZinnatulin@
+  name: Artem Zinnatulin
+  twitter: artem_zin
+  github: artem-zinnatullin
+  website: https://artemzin.com
+- id: HannesDorfmann # can be referenced later as @HannesDorfmann@
+  name: Hannes Dorfmann
+  twitter: sockeqwe
+  github: sockeqwe
+  website: http://hannesdorfmann.com
 ```
 
 #### Episodes directory

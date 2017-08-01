@@ -9,6 +9,7 @@ import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
 import kotlin.test.assertEquals
+import kotlin.test.fail
 
 class PersonReaderTest : Spek({
 
@@ -43,6 +44,18 @@ class PersonReaderTest : Spek({
             val expected = mapOf("ArtemZinnatullin" to ArtemZinnatullin, "HannesDorfmann" to HannesDorfmann)
             val persons = readPersons(objectMapper, loadResourceFile("persons/ValidPersons.yml")).blockingGet()
             assertEquals(expected, persons)
+        }
+    }
+
+
+    describe("A person list with duplicate ids") {
+        it("should fail") {
+            try {
+                readPersons(objectMapper, loadResourceFile("persons/DuplicatePersons.yml")).blockingGet()
+                fail("Exception expected")
+            } catch(e : Exception){
+                // TODO string comparison of error message
+            }
         }
     }
 
