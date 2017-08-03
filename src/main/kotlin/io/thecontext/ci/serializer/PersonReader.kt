@@ -2,42 +2,41 @@ package io.thecontext.ci.serializer
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.exc.MismatchedInputException
 import io.reactivex.Single
-import io.thecontext.ci.model.Person
-import io.thecontext.ci.model.Persons
+import io.thecontext.ci.model.*
 import java.io.File
 import java.io.InputStream
 
 /**
  * Reads the persons.yml file
  */
-fun readPersons(objectMapper: ObjectMapper, personsInputStream : InputStream): Single<Persons> = Single.create {
+fun readPersons(objectMapper: ObjectMapper, personsInputStream: InputStream): Single<Result<Persons>> = Single.fromCallable {
+   // TODO check if person twitter is unique, website is unique, etc.
 
-    val personListRef = object : TypeReference<List<Person>>() {};
-    val parsedPersons: List<Person> = objectMapper.readValue(personsInputStream, personListRef)
+    try {
+        val personListRef = object : TypeReference<List<Person>>() {};
+        val parsedPersons: List<Person> = objectMapper.readValue(personsInputStream, personListRef)
 
-    val (duplicatePersons, validPersons) = parsedPersons.groupBy { it.id }
-            .toList()
-            .partition { (_, persons) -> persons.size > 1 }
-
-    if (!it.isDisposed) {
+        val (duplicatePersons, validPersons) = parsedPersons.groupBy { it.id }
+                .toList()
+                .partition { (_, persons) -> persons.size > 1 }
 
         if (duplicatePersons.isNotEmpty()) {
-            val detailsMessage = duplicatePersons.foldIndexed(StringBuilder()) { i, builder, dulicates ->
-                val (id, persons) = dulicates
-                if (i > 1)
-                    builder.append("\n")
-
-                builder.append("id: ").append(id).append(" -> ").append(persons)
+            val detailsMessage = duplicatePersons.fold(StringBuilder()) { builder, (id, persons) ->
+                builder.append("\n").append("\tid: ").append(id).append(" -> ").append(persons)
             }.toString()
 
-            it.onError(Exception("Person id must be unique. The following persons have the same id:\n$detailsMessage"))
-        }
+            ErrorResult<Persons>("Person id must be unique. The following persons have the same id:$detailsMessage")
+        } else {
 
-        val persons: Persons = validPersons.fold(HashMap<String, Person>()) { map, (id, personListWithOneEntry) ->
-            map[id] = personListWithOneEntry[0]
-            map
+            val persons: Persons = validPersons.fold(HashMap<String, Person>()) { map, (id, personListWithOneEntry) ->
+                map[id] = personListWithOneEntry[0]
+                map
+            }
+            ValidResult(persons)
         }
-        it.onSuccess(persons)
+    } catch (t: MismatchedInputException) {
+        ErrorResult<Persons>(listOf(ErrorMessage("File error", t)))
     }
 }

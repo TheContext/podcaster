@@ -1,17 +1,16 @@
-id: ArtemZinnatullin
-name: Artem Zinnatullin
-twitter: artem_zin
-github: artem-zinnatullin
-website: https://artemzin.com
----
-id: HannesDorfmann
-name: Hannes Dorfmann
-twitter: sockeqwe
-github: sockeqwe
-website: http://hannesdorfmann.com
----
-id: ArtemZinnatullin
-name: Artem Zinnatullin
-twitter: artem_zin
-github: artem-zinnatullin
-website: https://artemzin.com
+- id: ArtemZinnatullin
+  name: Artem Zinnatullin
+  twitter: artem_zin
+  github: artem-zinnatullin
+  website: https://artemzin.com
+- id: HannesDorfmann
+  name: Hannes Dorfmann
+  twitter: sockeqwe
+  github: sockeqwe
+  website: http://hannesdorfmann.com
+
+- id: ArtemZinnatullin
+  name: Another Person
+  twitter: anotherPerson
+  github: anotherPerson
+  website: https://google.com

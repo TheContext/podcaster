@@ -8,7 +8,10 @@ import java.time.LocalDateTime
 data class Episode(
         val title: String,
         val showNotes: String,
-        val releaseDate: LocalDateTime
+        val releaseDate: LocalDateTime,
+        val additionalLinks: List<Link>,
+        val guests: List<String>,
+        val hosts : List<String>
 )
 
 

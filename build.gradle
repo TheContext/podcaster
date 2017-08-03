@@ -66,4 +66,5 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     testCompile "org.jetbrains.spek:spek-api:$spekVersion"
     testRuntime "org.jetbrains.spek:spek-junit-platform-engine:$spekVersion"
+    testCompile "org.junit.platform:junit-platform-launcher:1.0.0-M4" // https://github.com/JetBrains/spek/issues/195
 }
