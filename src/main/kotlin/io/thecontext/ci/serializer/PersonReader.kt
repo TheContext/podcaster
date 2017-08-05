@@ -5,14 +5,13 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.exc.MismatchedInputException
 import io.reactivex.Single
 import io.thecontext.ci.model.*
-import java.io.File
 import java.io.InputStream
 
 /**
  * Reads the persons.yml file
  */
 fun readPersons(objectMapper: ObjectMapper, personsInputStream: InputStream): Single<Result<Persons>> = Single.fromCallable {
-   // TODO check if person twitter is unique, website is unique, etc.
+    // TODO check if person twitter is unique, website is unique, etc.
 
     try {
         val personListRef = object : TypeReference<List<Person>>() {};

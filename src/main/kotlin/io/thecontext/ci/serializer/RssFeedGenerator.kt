@@ -4,12 +4,8 @@ import io.thecontext.ci.model.Episode
 import io.thecontext.ci.model.ItunesConfig
 import io.thecontext.ci.model.Person
 import okio.BufferedSink
-import okio.Okio
 import org.commonmark.parser.Parser
 import org.commonmark.renderer.html.HtmlRenderer
-import java.io.File
-import java.nio.file.Files
-import java.nio.file.Paths
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -38,7 +34,7 @@ fun writeRssFeed(unsafeSink: BufferedSink, now: LocalDateTime, itunes: ItunesCon
             sink.writeUtf8("\t<atom:author>\n")
                     .writeUtf8("\t\t<atom:name>${host.name}</atom:name>\n")
 
-            host.website?.apply { sink.writeUtf8("\t\t<atom:uri>${host.website}</atom:uri>\n") }
+            host.websiteLink?.apply { sink.writeUtf8("\t\t<atom:uri>${host.websiteLink.url}</atom:uri>\n") }
 //            host.email?.apply { sink.writeUtf8("\t\t<atom:email>${host.email}</atom:email>\n") }
 
             sink.writeUtf8("\t</atom:author>\n")

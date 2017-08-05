@@ -83,8 +83,7 @@ abstract class LinkVisitor : Visitor {
  */
 fun readAndProcessEpisode(objectMapper: ObjectMapper, inputStream: InputStream, persons: Persons, linkValidator: LinkValidator, markdownParser: Parser): Single<Result<ProcessedEpisode>> =
         Single.fromCallable {
-            val episode = objectMapper.readValue(inputStream, Episode::class.java)
-            episode
+            objectMapper.readValue(inputStream, Episode::class.java)
         }.map { episode ->
             val linksFromShowNodes = ArrayList<Link>()
 

@@ -11,7 +11,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 
 interface LinkValidator {
-    fun validate(link : Link): Single<Result<Boolean>>
+    fun validate(link: Link): Single<Result<Boolean>>
 }
 
 
@@ -19,22 +19,18 @@ class OkHttpLinkValidator(
         private val okHttp: OkHttpClient
 ) : LinkValidator {
 
-    override fun validate(link : Link): Single<Result<Boolean>> = Single.create {
+    override fun validate(link: Link): Single<Result<Boolean>> = Single.fromCallable {
         val urlStr = link.url
         val url = HttpUrl.parse(urlStr)
         if (url == null) {
-            if (!it.isDisposed) {
-                it.onError(IllegalArgumentException("Invalid URL: $urlStr"))
-            }
+            throw IllegalArgumentException("Invalid URL: $urlStr")
         } else {
             val request = Request.Builder().url(url).head().build()
             val response = okHttp.newCall(request).execute()
-            if (!it.isDisposed) {
-                if (response.isSuccessful) {
-                    it.onSuccess(ValidResult(true))
-                } else {
-                    it.onSuccess(ErrorResult("The URL '$urlStr has returned ${response.code()}"))
-                }
+            if (response.isSuccessful) {
+                ValidResult(true)
+            } else {
+                ErrorResult<Boolean>("The URL '$urlStr has returned ${response.code()}")
             }
         }
     }

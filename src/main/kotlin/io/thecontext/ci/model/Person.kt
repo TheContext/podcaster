@@ -16,31 +16,23 @@ typealias Persons = Map<String, Person>
 data class Person(
         val id: String,
         val name: String,
-        val twitter: String? = null,
-        val website: String? = null,
-        val github: String? = null
-)
+        private val twitter: String? = null,
+        private val website: String? = null,
+        private val github: String? = null
+) {
 
 
-val Person.githubLink
-    get() = if (this.github != null) Link(title = "github", url = GITHUB_URL + github) else null
+    val githubLink = if (this.github != null) Link(title = "github", url = GITHUB_URL + github) else null
 
-val Person.twitterLink
-    get() = if (twitter != null) Link(title = "@$twitter", url = TWITTER_URL + twitter) else null
+    val twitterLink = if (twitter != null) Link(title = "@$twitter", url = TWITTER_URL + twitter) else null
 
-val Person.websiteLink
-    get() = if (website != null) Link(title = "website", url = website) else null
+    val websiteLink = if (website != null) Link(title = "website", url = website) else null
 
+    /**
+     * Get a list of all links for a given person
+     */
+    val allLinks: List<Link> = arrayOf(twitterLink, websiteLink, githubLink).filterNotNull()
 
-/**
- * Get a list of all links for a given person
- */
-fun Person.allLinks(): List<Link> {
-    val links = ArrayList<Link>()
-    twitterLink?.let { links.add(it) }
-    websiteLink?.let { links.add(it) }
-    githubLink?.let { links.add(it) }
-    return links
 }
 
 
@@ -75,11 +67,5 @@ fun Persons.personsFromAnnotatedString(annotatedPersons: List<String>): Result<L
 
 // I really wish kotlin would support union types
 private sealed class PersonOrErrorMessage
-
 private data class PersonHolder(val person: Person) : PersonOrErrorMessage()
 private data class ErrorMessageHolder(val errorMessage: ErrorMessage) : PersonOrErrorMessage()
-
-
-
-
-
