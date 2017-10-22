@@ -23,7 +23,7 @@ class OkHttpLinkValidator(
         val urlStr = link.url
         val url = HttpUrl.parse(urlStr)
         if (url == null) {
-            throw IllegalArgumentException("Invalid URL: $urlStr")
+            ErrorResult<Boolean>("Invalid URL: $urlStr")
         } else {
             val request = Request.Builder().url(url).head().build()
             val response = okHttp.newCall(request).execute()
