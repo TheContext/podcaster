@@ -1,0 +1,42 @@
+ext.versions = [
+        java      : "1.8",
+
+        kotlin    : "1.2.31",
+        rxjava    : "2.1.12",
+        jackson   : "2.9.4",
+        commonmark: "0.11.0",
+        okhttp    : "3.10.0",
+
+        assertj   : "3.9.1",
+        spectrum  : "1.2.0",
+]
+
+def plugins = [
+        kotlin  : "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}",
+        versions: "com.github.ben-manes:gradle-versions-plugin:0.17.0"
+]
+
+def kotlin = [
+        stdlib : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}",
+        reflect: "org.jetbrains.kotlin:kotlin-reflect:${versions.kotlin}"
+]
+
+def jackson = [
+        yaml: "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:${versions.jackson}",
+        databind  : "com.fasterxml.jackson.core:jackson-databind:${versions.jackson}",
+        kotlin    : "com.fasterxml.jackson.module:jackson-module-kotlin:${versions.jackson}"
+]
+
+ext.deps = [
+        plugins   : plugins,
+
+        kotlin    : kotlin,
+        jackson   : jackson,
+
+        rxjava    : "io.reactivex.rxjava2:rxjava:${versions.rxjava}",
+        okhttp    : "com.squareup.okhttp3:okhttp:${versions.okhttp}",
+        commonmark: "com.atlassian.commonmark:commonmark:${versions.commonmark}",
+
+        assertj   : "org.assertj:assertj-core:3.9.0",
+        spectrum  : "com.greghaskins:spectrum:1.2.0"
+]

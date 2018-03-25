@@ -2,46 +2,45 @@ group "io.thecontext"
 version "0.1.0-SNAPSHOT"
 
 buildscript {
-    ext.kotlinVersion = "1.2.30"
+    apply from: rootProject.file("versions.gradle")
 
     repositories {
-        mavenCentral()
+        jcenter()
     }
 
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath deps.plugins.kotlin
+        classpath deps.plugins.versions
     }
 }
 
 repositories {
-    mavenCentral()
+    jcenter()
 }
 
 apply plugin: "kotlin"
+apply plugin: "com.github.ben-manes.versions"
 
 compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = versions.java
 }
 
 compileTestKotlin {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = versions.java
 }
 
 dependencies {
-    def jacksonVersion = "2.9.4"
+    compile deps.kotlin.stdlib
+    compile deps.kotlin.reflect
 
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
-    compile "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
+    compile deps.rxjava
+    compile deps.okhttp
+    compile deps.commonmark
 
-    compile "com.atlassian.commonmark:commonmark:0.11.0"
-    compile "com.squareup.okhttp3:okhttp:3.10.0"
-    compile "io.reactivex.rxjava2:rxjava:2.1.10"
+    compile deps.jackson.databind
+    compile deps.jackson.yaml
+    compile deps.jackson.kotlin
 
-    compile "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$jacksonVersion"
-    compile "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
-    compile "com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion"
-
-    testCompile "org.assertj:assertj-core:3.9.0"
-    testCompile "com.greghaskins:spectrum:1.2.0"
-    testCompile "junit:junit:4.12"
+    testCompile deps.assertj
+    testCompile deps.spectrum
 }
