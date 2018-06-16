@@ -30,10 +30,10 @@ class Runner {
     private val episodeValidator by lazy { EpisodeValidator(urlValidator) }
 
     private val markdownRenderer by lazy { MarkdownRenderer.Impl() }
+    private val mustacheRenderer by lazy { MustacheRenderer.Impl() }
     private val textWriter by lazy { TextWriter.Impl() }
-    private val episodeMarkdownFormatter by lazy { EpisodeMarkdownFormatter.Impl(ioScheduler) }
-    private val episodeXmlFormatter by lazy { EpisodeXmlFormatter.Impl(episodeMarkdownFormatter, markdownRenderer, ioScheduler) }
-    private val podcastXmlFormatter by lazy { PodcastXmlFormatter.Impl(episodeXmlFormatter, ioScheduler) }
+    private val episodeMarkdownFormatter by lazy { EpisodeMarkdownFormatter.Impl(mustacheRenderer, ioScheduler) }
+    private val podcastXmlFormatter by lazy { PodcastXmlFormatter.Impl(episodeMarkdownFormatter, markdownRenderer, mustacheRenderer, ioScheduler) }
     private val outputWriter by lazy { OutputWriter.Impl(podcastXmlFormatter, episodeMarkdownFormatter, textWriter, ioScheduler) }
 
     fun run(inputDirectory: File, outputDirectory: File) {

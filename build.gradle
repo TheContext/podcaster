@@ -36,6 +36,7 @@ dependencies {
     compile deps.rxjava
     compile deps.okhttp
     compile deps.commonmark
+    compile deps.mustache
 
     compile deps.jackson.databind
     compile deps.jackson.yaml
