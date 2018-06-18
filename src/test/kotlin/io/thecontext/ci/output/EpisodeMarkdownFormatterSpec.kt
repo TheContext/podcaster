@@ -13,7 +13,10 @@ import org.junit.runner.RunWith
 @RunWith(Spectrum::class)
 class EpisodeMarkdownFormatterSpec {
     init {
-        val formatter = EpisodeMarkdownFormatter.Impl(Schedulers.trampoline())
+        val formatter = EpisodeMarkdownFormatter.Impl(
+                mustacheRenderer = MustacheRenderer.Impl(),
+                ioScheduler = Schedulers.trampoline()
+        )
 
         val podcast = testPodcast
         val person = testPerson
@@ -31,19 +34,21 @@ class EpisodeMarkdownFormatterSpec {
 
                     ${episode.notes.descriptionMarkdown}
 
-                    #### Guests
+                    ## Guests
 
                     * ${person.name}: [Twitter](https://twitter.com/${person.twitter}), [GitHub](https://github.com/${person.github}), [website](${person.site})
 
-                    #### Hosts
+                    ## Hosts
 
                     * ${person.name}: [Twitter](https://twitter.com/${person.twitter}), [GitHub](https://github.com/${person.github}), [website](${person.site})
 
-                    #### Links
+                    ## Links
 
                     * [${episodeLink.title}](${episodeLink.url})
+
                     """
 
+                // Note: Mustache inserts EOL in the end. It is simulated here using an empty line.
                 formatter.format(podcast, episode)
                         .test()
                         .assertResult(expected.trimIndent())

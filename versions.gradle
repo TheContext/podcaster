@@ -6,6 +6,7 @@ ext.versions = [
         jackson   : "2.9.4",
         commonmark: "0.11.0",
         okhttp    : "3.10.0",
+        mustache  : "0.9.5",
 
         assertj   : "3.9.1",
         spectrum  : "1.2.0",
@@ -36,6 +37,7 @@ ext.deps = [
         rxjava    : "io.reactivex.rxjava2:rxjava:${versions.rxjava}",
         okhttp    : "com.squareup.okhttp3:okhttp:${versions.okhttp}",
         commonmark: "com.atlassian.commonmark:commonmark:${versions.commonmark}",
+        mustache  : "com.github.spullara.mustache.java:compiler:${versions.mustache}",
 
         assertj   : "org.assertj:assertj-core:3.9.0",
         spectrum  : "com.greghaskins:spectrum:1.2.0"

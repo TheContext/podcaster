@@ -1,0 +1,24 @@
+number: 11
+title: "Episode 11: Migration to RxJava 2 with Artur Dryomov from Juno"
+date: "2017-05-15"
+duration: "00:52:46"
+peopleIds:
+  hosts:
+    - hannes.dorfmann
+  guests:
+    - artur.dryomov
+url: "https://github.com/artem-zinnatullin/TheContext-Podcast/blob/master/show_notes/Episode_11.md"
+discussionUrl: "https://podcast.online/episode/discussio://github.com/artem-zinnatullin/TheContext-Podcast/issues/71"
+file:
+  url: "https://artemzin.com/static/thecontext/episodes/The.Context.episode.11.mp3"
+  length: 50658006
+notes:
+  links:
+    - title: RxKotlin
+      url: "https://github.com/ReactiveX/RxKotlin"
+    - title: "RxJava 2 interop"
+      url: "https://github.com/akarnokd/RxJava2Interop"
+    - title: "What's different in RxJava 2.0"
+      url: "https://github.com/ReactiveX/RxJava/wiki/What%27s-different-in-2.0"
+    - title: "RxJava 2: Which type to use"
+      url: "https://github.com/ReactiveX/RxJava/wiki/What%27s-different-in-2.0#which-type-to-use"

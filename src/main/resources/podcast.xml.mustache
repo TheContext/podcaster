@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+  <channel>
+    <title>{{title}}</title>
+    <language>{{language}}</language>
+    <link>{{url}}</link>
+    <atom:link rel="self" type="application/rss+xml" href="{{feed_url}}"/>
+    <itunes:subtitle>{{subtitle}}</itunes:subtitle>
+    <itunes:summary>{{summary}}</itunes:summary>
+    <itunes:image href="{{artwork_url}}"/>
+    <itunes:explicit>{{explicit}}</itunes:explicit>
+    <itunes:category text="{{category}}">
+      <itunes:category text="{{subcategory}}"/>
+    </itunes:category>
+    <itunes:keywords>{{keywords}}</itunes:keywords>
+    {{#owners}}
+    <itunes:owner>
+      <itunes:name>{{name}}</itunes:name>
+    </itunes:owner>
+    {{/owners}}
+    {{#authors}}
+    <atom:author>
+      <atom:name>{{name}}</atom:name>
+    </atom:author>
+    {{/authors}}
+    {{#episodes}}
+    <item>
+      <title>{{title}}</title>
+      <pubDate>{{date}}</pubDate>
+      <guid>{{file_url}}</guid>
+      <link>{{url}}</link>
+      <enclosure url="{{file_url}}" length="{{file_length}}" type="audio/mpeg"/>
+      <atom:link rel="replies" type="text/html" href="{{discussion_url}}"/>
+      <itunes:duration>{{duration}}</itunes:duration>
+      {{#guests}}
+      <atom:contributor>
+        <atom:name>{{name}}</atom:name>
+      </atom:contributor>
+      {{/guests}}
+      <itunes:summary>
+        <![CDATA[
+{{&summary}}
+        ]]>
+      </itunes:summary>
+    </item>
+    {{/episodes}}
+  </channel>
+</rss>

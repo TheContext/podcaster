@@ -2,7 +2,6 @@ package io.thecontext.ci.output
 
 import io.reactivex.Scheduler
 import io.reactivex.Single
-import io.thecontext.ci.joinLines
 import io.thecontext.ci.value.Episode
 import io.thecontext.ci.value.Person
 import io.thecontext.ci.value.Podcast
@@ -12,33 +11,28 @@ interface EpisodeMarkdownFormatter {
     fun format(podcast: Podcast, episode: Episode): Single<String>
 
     class Impl(
+            private val mustacheRenderer: MustacheRenderer,
             private val ioScheduler: Scheduler
     ) : EpisodeMarkdownFormatter {
 
+        companion object {
+            private const val TEMPLATE_RESOURCE_NAME = "episode.md.mustache"
+        }
+
         override fun format(podcast: Podcast, episode: Episode) = Single
                 .fromCallable {
-                    """
-                    # ${episode.title}
+                    val contents = mapOf(
+                            "title" to episode.title,
+                            "podcast_url" to podcast.url,
+                            "discussion_url" to episode.discussionUrl,
+                            "description" to episode.notes.descriptionMarkdown,
+                            "guests" to episode.people.guests.map { mapOf("guest" to formatPerson(it)) },
+                            "hosts" to episode.people.hosts.map { mapOf("host" to formatPerson(it)) },
+                            "links" to episode.notes.links.map { mapOf("link" to formatLink(it.title, it.url)) }
+                    )
 
-                    * ${formatLink("How to listen and subscribe", podcast.url)}
-                    * ${formatLink("Discussion after the episode", episode.discussionUrl)}
-
-                    ${episode.notes.descriptionMarkdown}
-
-                    #### Guests
-
-                    ${formatList(episode.people.guests.map { formatPerson(it) })}
-
-                    #### Hosts
-
-                    ${formatList(episode.people.hosts.map { formatPerson(it) })}
-
-                    #### Links
-
-                    ${formatList(episode.notes.links.map { formatLink(it.title, it.url) })}
-                    """
+                    mustacheRenderer.render(TEMPLATE_RESOURCE_NAME, contents)
                 }
-                .map { it.trimIndent() }
                 .subscribeOn(ioScheduler)
 
         private fun formatPerson(person: Person): String {
@@ -63,7 +57,6 @@ interface EpisodeMarkdownFormatter {
             }
         }
 
-        private fun formatList(items: List<String>) =  items.map { "* $it" }.joinLines()
         private fun formatLink(title: String, url: String) = "[$title]($url)"
     }
 }
