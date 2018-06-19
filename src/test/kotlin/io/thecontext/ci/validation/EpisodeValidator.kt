@@ -34,6 +34,15 @@ class EpisodeValidatorSpec {
             }
         }
 
+        context("date is in wrong format") {
+
+            it("emits result as failure") {
+                env.validator.validate(testEpisode.copy(date = "ZERO"))
+                        .test()
+                        .assertValue { it is ValidationResult.Failure }
+            }
+        }
+
         context("file length is negative") {
 
             it("emits result as failure") {
