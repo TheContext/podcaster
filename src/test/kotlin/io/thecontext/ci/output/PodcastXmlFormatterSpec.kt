@@ -4,9 +4,7 @@ import com.greghaskins.spectrum.Spectrum
 import com.greghaskins.spectrum.dsl.specification.Specification.context
 import com.greghaskins.spectrum.dsl.specification.Specification.it
 import io.reactivex.schedulers.Schedulers
-import io.thecontext.ci.memoized
-import io.thecontext.ci.testEpisode
-import io.thecontext.ci.testPodcast
+import io.thecontext.ci.*
 import org.junit.runner.RunWith
 
 @RunWith(Spectrum::class)
@@ -44,7 +42,7 @@ class PodcastXmlFormatterSpec {
                         </atom:author>
                         <item>
                           <title>${episode.title}</title>
-                          <pubDate>${episode.date}</pubDate>
+                          <pubDate>${episode.date.toDate().toRfc2822()}</pubDate>
                           <guid>${episode.file.url}</guid>
                           <link>${episode.url}</link>
                           <enclosure url="${episode.file.url}" length="${episode.file.length}" type="audio/mpeg"/>

@@ -2,6 +2,8 @@ package io.thecontext.ci.output
 
 import io.reactivex.Scheduler
 import io.reactivex.Single
+import io.thecontext.ci.toDate
+import io.thecontext.ci.toRfc2822
 import io.thecontext.ci.value.Episode
 import io.thecontext.ci.value.Podcast
 
@@ -41,7 +43,7 @@ interface PodcastXmlFormatter {
                             "episodes" to episodes.map { (episode, episodeMarkdown) ->
                                 mapOf(
                                         "title" to episode.title,
-                                        "date" to episode.date,
+                                        "date" to episode.date.toDate().toRfc2822(),
                                         "file_url" to episode.file.url,
                                         "file_length" to episode.file.length,
                                         "url" to episode.url,
