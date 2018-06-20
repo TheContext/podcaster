@@ -6,6 +6,7 @@ import io.thecontext.ci.toDate
 import io.thecontext.ci.toRfc2822
 import io.thecontext.ci.value.Episode
 import io.thecontext.ci.value.Podcast
+import java.time.LocalDate
 
 interface PodcastXmlFormatter {
 
@@ -40,6 +41,7 @@ interface PodcastXmlFormatter {
                             "keywords" to podcast.keywords.joinToString(separator = ","),
                             "owners" to podcast.people.owners.map { mapOf("name" to it.name) },
                             "authors" to podcast.people.authors.map { mapOf("name" to it.name) },
+                            "build_date" to LocalDate.now().toRfc2822(),
                             "episodes" to episodes.map { (episode, episodeMarkdown) ->
                                 mapOf(
                                         "title" to episode.title,
@@ -49,6 +51,7 @@ interface PodcastXmlFormatter {
                                         "url" to episode.url,
                                         "discussion_url" to episode.discussionUrl,
                                         "duration" to episode.duration,
+                                        "hosts" to episode.people.hosts.map { mapOf("name" to it.name) },
                                         "guests" to episode.people.guests.map { mapOf("name" to it.name) },
                                         "summary" to markdownRenderer.renderHtml(episodeMarkdown).trim().prependIndent(" ".repeat(10))
                                 )
