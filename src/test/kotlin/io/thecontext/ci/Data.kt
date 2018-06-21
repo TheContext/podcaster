@@ -18,12 +18,12 @@ val testPodcast = Podcast(
         subtitle = "Podcast Subtitle",
         summary = "Podcast summary",
         peopleIds = Podcast.PeopleIds(
-                owners = listOf(testPerson.id),
-                authors = listOf(testPerson.id)
+                owners = listOf(testPerson.id, testPerson.id),
+                authors = listOf(testPerson.id, testPerson.id)
         ),
         people = Podcast.People(
-                owners = listOf(testPerson),
-                authors = listOf(testPerson)
+                owners = listOf(testPerson, testPerson),
+                authors = listOf(testPerson, testPerson)
         ),
         language = Podcast.Language(
                 code = "en",
@@ -47,12 +47,12 @@ val testEpisode = Episode(
         number = 42,
         title = "Title",
         peopleIds = Episode.PeopleIds(
-                hosts = listOf(testPerson.id),
-                guests = listOf(testPerson.id)
+                hosts = listOf(testPerson.id, testPerson.id),
+                guests = listOf(testPerson.id, testPerson.id)
         ),
         people = Episode.People(
-                hosts = listOf(testPerson),
-                guests = listOf(testPerson)
+                hosts = listOf(testPerson, testPerson),
+                guests = listOf(testPerson, testPerson)
         ),
         url = "localhost/episode",
         discussionUrl = "localhost/discussion",
