@@ -56,9 +56,11 @@ class YamlReaderSpec {
                     summary: ${podcast.summary}
                     peopleIds:
                         owners:
-                            - ${podcast.peopleIds.owners.first()}
+                            - ${podcast.peopleIds.owners[0]}
+                            - ${podcast.peopleIds.owners[1]}
                         authors:
-                            - ${podcast.peopleIds.authors.first()}
+                            - ${podcast.peopleIds.authors[0]}
+                            - ${podcast.peopleIds.authors[1]}
                     language:
                         code: ${podcast.language.code}
                         regionCode: ${podcast.language.regionCode}
@@ -91,9 +93,11 @@ class YamlReaderSpec {
                     duration: ${episode.duration}
                     peopleIds:
                         hosts:
-                            - ${episode.peopleIds.hosts.first()}
+                            - ${episode.peopleIds.hosts[0]}
+                            - ${episode.peopleIds.hosts[1]}
                         guests:
-                            - ${episode.peopleIds.guests.first()}
+                            - ${episode.peopleIds.guests[0]}
+                            - ${episode.peopleIds.guests[1]}
                     url: ${episode.url}
                     discussionUrl: ${episode.discussionUrl}
                     file:
