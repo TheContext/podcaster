@@ -3,10 +3,12 @@ package io.thecontext.ci.validation
 import io.reactivex.Single
 import io.thecontext.ci.toDate
 import io.thecontext.ci.value.Episode
+import io.thecontext.ci.value.Person
 import java.time.format.DateTimeParseException
 
 class EpisodeValidator(
-        private val urlValidator: Validator<String>
+        private val urlValidator: Validator<String>,
+        private val people: List<Person>
 ) : Validator<Episode> {
 
     override fun validate(value: Episode): Single<ValidationResult> {
@@ -16,6 +18,19 @@ class EpisodeValidator(
                 .plus(value.file.url)
                 .plus(value.notes.links.map { it.url })
                 .map { urlValidator.validate(it) }
+
+        val peopleResults = emptyList<String>()
+                .plus(value.people.hostIds)
+                .plus(value.people.guestIds)
+                .map { personId ->
+                    Single.fromCallable {
+                        if (people.find { it.id == personId } == null) {
+                            ValidationResult.Failure("Person [$personId] is not defined.")
+                        } else {
+                            ValidationResult.Success
+                        }
+                    }
+                }
 
         val numberResult = Single.fromCallable {
             if (value.number < 0) {
@@ -44,7 +59,7 @@ class EpisodeValidator(
         }
 
         return Single
-                .merge(urlResults + listOf(numberResult, dateResult, fileLengthResult))
+                .merge(urlResults + peopleResults + listOf(numberResult, dateResult, fileLengthResult))
                 .toList()
                 .map { it.merge() }
     }

@@ -25,8 +25,6 @@ class Runner {
     private val inputReader by lazy { InputReader.Impl(yamlReader, textReader, ioScheduler) }
 
     private val urlValidator by lazy { UrlValidator(ioScheduler) }
-    private val podcastValidator by lazy { PodcastValidator(urlValidator) }
-    private val episodeValidator by lazy { EpisodeValidator(urlValidator) }
 
     private val markdownRenderer by lazy { MarkdownRenderer.Impl() }
     private val mustacheRenderer by lazy { MustacheRenderer.Impl() }
@@ -48,17 +46,16 @@ class Runner {
                 .share()
 
         val validation = input
-                .ofType<InputReader.Result.Success>()
                 .switchMapSingle { inputResult ->
-                    val podcast = podcastValidator.validate(inputResult.podcast)
-                    val episodes = inputResult.episodes.map { episodeValidator.validate(it) }
+                    val podcast = PodcastValidator(urlValidator, inputResult.people).validate(inputResult.podcast)
+                    val episodes = inputResult.episodes.map { EpisodeValidator(urlValidator, inputResult.people).validate(it) }
 
                     Single.merge(episodes.plus(podcast)).toList().map { it.merge() }
                 }
 
         val output = validation
                 .ofType<ValidationResult.Success>()
-                .withLatestFrom(input.ofType<InputReader.Result.Success>()) { _, inputResult -> inputResult }
+                .withLatestFrom(input) { _, inputResult -> inputResult }
                 .switchMapSingle {
                     outputWriter.write(outputDirectory, it.podcast, it.episodes, it.people)
                 }
@@ -68,7 +65,6 @@ class Runner {
         val resultError = Observable
                 .merge(
                         inputFiles.ofType<InputFilesLocator.Result.Failure>().map { it.message },
-                        input.ofType<InputReader.Result.Failure>().map { it.message },
                         validation.ofType<ValidationResult.Failure>().map { it.message }
                 )
 

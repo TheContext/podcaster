@@ -36,62 +36,10 @@ class InputReaderSpec {
             env.textReader.text = episode.notes.descriptionMarkdown
         }
 
-        it("emits result as success") {
+        it("emits result") {
             env.reader.read(peopleFile, podcastFile, mapOf(episodeFile to episodeDescriptionFile))
                     .test()
-                    .assertResult(Result.Success(podcast, listOf(episode.copy(slug = episodeDir.name)), listOf(person)))
-        }
-
-        context("podcast owner is not available") {
-
-            beforeEach {
-                env.yamlReader.podcast = podcast.copy(people = podcast.people.copy(ownerIds = listOf("not available")))
-            }
-
-            it("emits result as failure") {
-                env.reader.read(peopleFile, podcastFile, mapOf(episodeFile to episodeDescriptionFile))
-                        .test()
-                        .assertValue { it is Result.Failure }
-            }
-        }
-
-        context("podcast author is not available") {
-
-            beforeEach {
-                env.yamlReader.podcast = podcast.copy(people = podcast.people.copy(authorIds = listOf("not available")))
-            }
-
-            it("emits result as failure") {
-                env.reader.read(peopleFile, podcastFile, mapOf(episodeFile to episodeDescriptionFile))
-                        .test()
-                        .assertValue { it is Result.Failure }
-            }
-        }
-
-        context("episode host is not available") {
-
-            beforeEach {
-                env.yamlReader.episode = episode.copy(people = episode.people.copy(hostIds = listOf("not available")))
-            }
-
-            it("emits result as failure") {
-                env.reader.read(peopleFile, podcastFile, mapOf(episodeFile to episodeDescriptionFile))
-                        .test()
-                        .assertValue { it is Result.Failure }
-            }
-        }
-
-        context("episode guest is not available") {
-
-            beforeEach {
-                env.yamlReader.episode = episode.copy(people = episode.people.copy(guestIds = listOf("not available")))
-            }
-
-            it("emits result as failure") {
-                env.reader.read(peopleFile, podcastFile, mapOf(episodeFile to episodeDescriptionFile))
-                        .test()
-                        .assertValue { it is Result.Failure }
-            }
+                    .assertResult(Result(podcast, listOf(episode.copy(slug = episodeDir.name)), listOf(person)))
         }
     }
 

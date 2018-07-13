@@ -4,11 +4,12 @@ import com.greghaskins.spectrum.Spectrum
 import com.greghaskins.spectrum.dsl.specification.Specification.*
 import io.reactivex.Single
 import io.thecontext.ci.memoized
-import io.thecontext.ci.testEpisode
+import io.thecontext.ci.testPerson
+import io.thecontext.ci.testPodcast
 import org.junit.runner.RunWith
 
 @RunWith(Spectrum::class)
-class EpisodeValidatorSpec {
+class PodcastValidatorSpec {
     init {
         val env by memoized { Environment() }
 
@@ -19,34 +20,25 @@ class EpisodeValidatorSpec {
             }
 
             it("emits result as failure") {
-                env.validator.validate(testEpisode)
+                env.validator.validate(testPodcast)
                         .test()
                         .assertValue { it is ValidationResult.Failure }
             }
         }
 
-        context("number is negative") {
+        context("owner is not available") {
 
             it("emits result as failure") {
-                env.validator.validate(testEpisode.copy(number = Int.MIN_VALUE))
+                env.validator.validate(testPodcast.copy(people = testPodcast.people.copy(ownerIds = listOf("not available"))))
                         .test()
                         .assertValue { it is ValidationResult.Failure }
             }
         }
 
-        context("date is in wrong format") {
+        context("author is not available") {
 
             it("emits result as failure") {
-                env.validator.validate(testEpisode.copy(date = "ZERO"))
-                        .test()
-                        .assertValue { it is ValidationResult.Failure }
-            }
-        }
-
-        context("file length is negative") {
-
-            it("emits result as failure") {
-                env.validator.validate(testEpisode.copy(file = testEpisode.file.copy(length = Long.MIN_VALUE)))
+                env.validator.validate(testPodcast.copy(people = testPodcast.people.copy(authorIds = listOf("not available"))))
                         .test()
                         .assertValue { it is ValidationResult.Failure }
             }
@@ -56,7 +48,7 @@ class EpisodeValidatorSpec {
     private class Environment {
         val urlValidator = TestUrlValidator()
 
-        val validator = EpisodeValidator(urlValidator)
+        val validator = PodcastValidator(urlValidator, listOf(testPerson))
     }
 
     private class TestUrlValidator : Validator<String> {
