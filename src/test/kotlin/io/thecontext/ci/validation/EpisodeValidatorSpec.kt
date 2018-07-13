@@ -70,6 +70,15 @@ class EpisodeValidatorSpec {
                         .assertValue { it is ValidationResult.Failure }
             }
         }
+
+        context("description length is too big") {
+
+            it("emits result as failure") {
+                env.validator.validate(testEpisode.copy(description = "Z".repeat(EpisodeValidator.MAXIMUM_DESCRIPTION_LENGTH + 1)))
+                        .test()
+                        .assertValue { it is ValidationResult.Failure }
+            }
+        }
     }
 
     private class Environment {

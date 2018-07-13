@@ -35,7 +35,7 @@ interface PodcastXmlFormatter {
                             "url" to podcast.url,
                             "feed_url" to podcast.feedUrl,
                             "subtitle" to podcast.subtitle,
-                            "summary" to podcast.summary,
+                            "description" to podcast.description,
                             "artwork_url" to podcast.artworkUrl,
                             "explicit" to if (podcast.explicit) "yes" else "no",
                             "category" to podcast.category,
@@ -47,6 +47,7 @@ interface PodcastXmlFormatter {
                             "episodes" to episodes.map { (episode, episodeMarkdown) ->
                                 mapOf(
                                         "title" to episode.title,
+                                        "description" to episode.description,
                                         "date" to episode.date.toDate().toRfc2822(),
                                         "file_url" to episode.file.url,
                                         "file_length" to episode.file.length,

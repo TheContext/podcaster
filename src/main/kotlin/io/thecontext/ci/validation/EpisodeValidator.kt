@@ -11,12 +11,15 @@ class EpisodeValidator(
         private val people: List<Person>
 ) : Validator<Episode> {
 
+    companion object {
+        const val MAXIMUM_DESCRIPTION_LENGTH = 200
+    }
+
     override fun validate(value: Episode): Single<ValidationResult> {
         val urlResults = emptyList<String>()
                 .plus(value.url)
                 .plus(value.discussionUrl)
                 .plus(value.file.url)
-                .plus(value.notes.links.map { it.url })
                 .map { urlValidator.validate(it) }
 
         val peopleResults = emptyList<String>()
@@ -58,8 +61,16 @@ class EpisodeValidator(
             }
         }
 
+        val descriptionResult = Single.fromCallable {
+            if (value.description.length > MAXIMUM_DESCRIPTION_LENGTH) {
+                ValidationResult.Failure("Description length is [${value.description.length}] symbols but should less than [${MAXIMUM_DESCRIPTION_LENGTH}].")
+            } else {
+                ValidationResult.Success
+            }
+        }
+
         return Single
-                .merge(urlResults + peopleResults + listOf(numberResult, dateResult, fileLengthResult))
+                .merge(urlResults + peopleResults + listOf(numberResult, dateResult, fileLengthResult, descriptionResult))
                 .toList()
                 .map { it.merge() }
     }

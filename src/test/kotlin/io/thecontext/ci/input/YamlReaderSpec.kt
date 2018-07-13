@@ -6,7 +6,6 @@ import io.thecontext.ci.memoized
 import io.thecontext.ci.testEpisode
 import io.thecontext.ci.testPerson
 import io.thecontext.ci.testPodcast
-import io.thecontext.ci.value.Episode
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.rules.TemporaryFolder
 import org.junit.runner.RunWith
@@ -52,7 +51,7 @@ class YamlReaderSpec {
                     """
                     title: ${podcast.title}
                     subtitle: ${podcast.subtitle}
-                    summary: ${podcast.summary}
+                    description: ${podcast.description}
                     peopleIds:
                         owners:
                             - ${podcast.people.ownerIds[0]}
@@ -83,11 +82,12 @@ class YamlReaderSpec {
         }
 
         describe("episode") {
-            val episode = testEpisode.copy(notes = Episode.Notes(links = testEpisode.notes.links))
+            val episode = testEpisode.copy(notesMarkdown = "")
             val episodeYaml =
                     """
                     number: ${episode.number}
                     title: ${episode.title}
+                    description: ${episode.description}
                     date: ${episode.date}
                     duration: ${episode.duration}
                     peopleIds:
@@ -102,10 +102,6 @@ class YamlReaderSpec {
                     file:
                         url: ${episode.file.url}
                         length: ${episode.file.length}
-                    notes:
-                        links:
-                            - title: ${episode.notes.links.first().title}
-                              url: ${episode.notes.links.first().url}
                     """
 
             beforeEach {

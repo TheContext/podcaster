@@ -30,7 +30,7 @@ class EpisodeMarkdownFormatterSpec {
                     * [How to listen and subscribe](${podcast.url})
                     * [Discussion after the episode](${episode.discussionUrl})
 
-                    ${episode.notes.descriptionMarkdown}
+                    ${episode.description}
 
                     ## Guests
 
@@ -42,9 +42,9 @@ class EpisodeMarkdownFormatterSpec {
                     * ${people[0].name}: [Twitter](https://twitter.com/${people[0].twitter}), [GitHub](https://github.com/${people[0].github}), [website](${people[0].site})
                     * ${people[1].name}: [Twitter](https://twitter.com/${people[1].twitter}), [GitHub](https://github.com/${people[1].github}), [website](${people[1].site})
 
-                    ## Links
+                    ## Notes
 
-                    * [${episode.notes.links.first().title}](${episode.notes.links.first().url})
+                    ${episode.notesMarkdown}
 
                     """
 

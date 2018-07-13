@@ -26,10 +26,10 @@ interface EpisodeMarkdownFormatter {
                             "title" to episode.title,
                             "podcast_url" to podcast.url,
                             "discussion_url" to episode.discussionUrl,
-                            "description" to episode.notes.descriptionMarkdown,
+                            "description" to episode.description,
                             "guests" to episode.people.guestIds.map { people.find(it) }.map { mapOf("guest" to formatPerson(it)) },
                             "hosts" to episode.people.hostIds.map { people.find(it) }.map { mapOf("host" to formatPerson(it)) },
-                            "links" to episode.notes.links.map { mapOf("link" to formatLink(it.title, it.url)) }
+                            "notes" to episode.notesMarkdown
                     )
 
                     mustacheRenderer.render(TEMPLATE_RESOURCE_NAME, contents)

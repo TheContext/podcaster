@@ -37,7 +37,7 @@ class InputFilesLocatorSpec {
 
                 val episodeDir = workingDir.newFolder("episode-42")
 
-                listOf(FileNames.EPISODE, FileNames.EPISODE_DESCRIPTION).forEach {
+                listOf(FileNames.EPISODE, FileNames.EPISODE_NOTES).forEach {
                     File(episodeDir, it).createNewFile()
                 }
             }
@@ -56,7 +56,7 @@ class InputFilesLocatorSpec {
 
                 val episodeDir = workingDir.newFolder("episode-42")
 
-                listOf(FileNames.EPISODE, FileNames.EPISODE_DESCRIPTION).forEach {
+                listOf(FileNames.EPISODE, FileNames.EPISODE_NOTES).forEach {
                     File(episodeDir, it).createNewFile()
                 }
             }
@@ -76,7 +76,7 @@ class InputFilesLocatorSpec {
                 }
 
                 val episodeDir = workingDir.newFolder("episode-42")
-                File(episodeDir, FileNames.EPISODE_DESCRIPTION).createNewFile()
+                File(episodeDir, FileNames.EPISODE_NOTES).createNewFile()
             }
 
             it("emits result as failure") {
@@ -86,7 +86,7 @@ class InputFilesLocatorSpec {
             }
         }
 
-        describe("no episode description file available") {
+        describe("no episode notes file available") {
 
             beforeEach {
                 listOf(FileNames.PEOPLE, FileNames.PODCAST).forEach {
@@ -114,7 +114,7 @@ class InputFilesLocatorSpec {
 
                 val episodeDir = workingDir.newFolder("episode-42")
 
-                listOf(FileNames.EPISODE, FileNames.EPISODE_DESCRIPTION).forEach {
+                listOf(FileNames.EPISODE, FileNames.EPISODE_NOTES).forEach {
                     File(episodeDir, it).createNewFile()
                 }
             }

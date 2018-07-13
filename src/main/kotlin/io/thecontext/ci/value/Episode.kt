@@ -12,6 +12,9 @@ data class Episode(
         @JsonProperty("title")
         val title: String,
 
+        @JsonProperty("description")
+        val description: String,
+
         @JsonProperty("peopleIds")
         val people: People,
 
@@ -30,8 +33,7 @@ data class Episode(
         @JsonProperty("file")
         val file: File,
 
-        @JsonProperty("notes")
-        val notes: Notes
+        val notesMarkdown: String = ""
 
 ) {
 
@@ -52,14 +54,6 @@ data class Episode(
 
             @JsonProperty("length")
             val length: Long
-    )
-
-    data class Notes(
-
-            @JsonProperty("links")
-            val links: List<Link>,
-
-            val descriptionMarkdown: String = ""
 
     )
 

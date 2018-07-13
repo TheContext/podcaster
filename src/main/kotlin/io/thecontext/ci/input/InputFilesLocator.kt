@@ -15,7 +15,7 @@ interface InputFilesLocator {
         const val PEOPLE = "people.yaml"
         const val PODCAST = "podcast.yaml"
         const val EPISODE = "episode.yaml"
-        const val EPISODE_DESCRIPTION = "description.md"
+        const val EPISODE_NOTES = "notes.md"
     }
 
     fun locate(directory: File): Single<Result>
@@ -46,7 +46,7 @@ interface InputFilesLocator {
                             .walk()
                             .maxDepth(1)
                             .filter { it.isDirectory && it != directory }
-                            .map { File(it, FileNames.EPISODE) to File(it, FileNames.EPISODE_DESCRIPTION) }
+                            .map { File(it, FileNames.EPISODE) to File(it, FileNames.EPISODE_NOTES) }
                             .toMap()
 
                     episodes.forEach { (episode, episodeDescription) ->
@@ -55,7 +55,7 @@ interface InputFilesLocator {
                         }
 
                         if (!episodeDescription.exists()) {
-                            return@fromCallable Result.Failure("Episode directory [${episodeDescription.parentFile.path}] does not contain [${FileNames.EPISODE_DESCRIPTION}].")
+                            return@fromCallable Result.Failure("Episode directory [${episodeDescription.parentFile.path}] does not contain [${FileNames.EPISODE_NOTES}].")
                         }
                     }
 

@@ -23,12 +23,12 @@ interface InputReader {
                 .fromCallable {
                     val podcast = yamlReader.readPodcast(podcastFile)
 
-                    val episodes = episodeFiles.map { (episodeFile, episodeDescriptionFile) ->
+                    val episodes = episodeFiles.map { (episodeFile, episodeNotesFile) ->
                         val episode = yamlReader.readEpisode(episodeFile)
                         val episodeSlug = episodeFile.parentFile.name
-                        val episodeDescription = textReader.read(episodeDescriptionFile)
+                        val episodeNotes = textReader.read(episodeNotesFile)
 
-                        episode.copy(slug = episodeSlug, notes = episode.notes.copy(descriptionMarkdown = episodeDescription))
+                        episode.copy(slug = episodeSlug, notesMarkdown = episodeNotes)
                     }
 
                     val people = yamlReader.readPeople(peopleFile).distinctBy { it.id }

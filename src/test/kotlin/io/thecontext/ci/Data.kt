@@ -1,7 +1,6 @@
 package io.thecontext.ci
 
 import io.thecontext.ci.value.Episode
-import io.thecontext.ci.value.Link
 import io.thecontext.ci.value.Person
 import io.thecontext.ci.value.Podcast
 
@@ -16,7 +15,7 @@ val testPerson = Person(
 val testPodcast = Podcast(
         title = "Podcast Title",
         subtitle = "Podcast Subtitle",
-        summary = "Podcast summary",
+        description = "Podcast Description",
         people = Podcast.People(
                 ownerIds = listOf(testPerson.id, testPerson.id),
                 authorIds = listOf(testPerson.id, testPerson.id)
@@ -34,14 +33,10 @@ val testPodcast = Podcast(
         feedUrl = "localhost/podcast/feed"
 )
 
-val testEpisodeLink = Link(
-        title = "Link Title",
-        url = "link.url"
-)
-
 val testEpisode = Episode(
         number = 42,
-        title = "Title",
+        title = "Episode Title",
+        description = "Episode Description",
         people = Episode.People(
                 hostIds = listOf(testPerson.id, testPerson.id),
                 guestIds = listOf(testPerson.id, testPerson.id)
@@ -54,8 +49,5 @@ val testEpisode = Episode(
                 url = "localhost/episode/file",
                 length = 1_000_000
         ),
-        notes = Episode.Notes(
-                links = listOf(testEpisodeLink),
-                descriptionMarkdown = "Episode description"
-        )
+        notesMarkdown = "Notes"
 )

@@ -33,7 +33,7 @@ class InputReaderSpec {
             env.yamlReader.people = listOf(person)
             env.yamlReader.podcast = podcast
             env.yamlReader.episode = episode
-            env.textReader.text = episode.notes.descriptionMarkdown
+            env.textReader.text = episode.notesMarkdown
         }
 
         it("emits result") {

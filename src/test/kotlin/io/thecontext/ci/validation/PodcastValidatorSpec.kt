@@ -43,6 +43,15 @@ class PodcastValidatorSpec {
                         .assertValue { it is ValidationResult.Failure }
             }
         }
+
+        context("description length is too big") {
+
+            it("emits result as failure") {
+                env.validator.validate(testPodcast.copy(description = "Z".repeat(PodcastValidator.MAXIMUM_DESCRIPTION_LENGTH + 1)))
+                        .test()
+                        .assertValue { it is ValidationResult.Failure }
+            }
+        }
     }
 
     private class Environment {
