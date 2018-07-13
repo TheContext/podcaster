@@ -39,13 +39,13 @@ class InputReaderSpec {
         it("emits result as success") {
             env.reader.read(peopleFile, podcastFile, mapOf(episodeFile to episodeDescriptionFile))
                     .test()
-                    .assertResult(Result.Success(podcast, listOf(episode.copy(slug = episodeDir.name))))
+                    .assertResult(Result.Success(podcast, listOf(episode.copy(slug = episodeDir.name)), listOf(person)))
         }
 
         context("podcast owner is not available") {
 
             beforeEach {
-                env.yamlReader.podcast = podcast.copy(peopleIds = podcast.peopleIds.copy(owners = listOf("not available")))
+                env.yamlReader.podcast = podcast.copy(people = podcast.people.copy(ownerIds = listOf("not available")))
             }
 
             it("emits result as failure") {
@@ -58,7 +58,7 @@ class InputReaderSpec {
         context("podcast author is not available") {
 
             beforeEach {
-                env.yamlReader.podcast = podcast.copy(peopleIds = podcast.peopleIds.copy(authors = listOf("not available")))
+                env.yamlReader.podcast = podcast.copy(people = podcast.people.copy(authorIds = listOf("not available")))
             }
 
             it("emits result as failure") {
@@ -71,7 +71,7 @@ class InputReaderSpec {
         context("episode host is not available") {
 
             beforeEach {
-                env.yamlReader.episode = episode.copy(peopleIds = episode.peopleIds.copy(hosts = listOf("not available")))
+                env.yamlReader.episode = episode.copy(people = episode.people.copy(hostIds = listOf("not available")))
             }
 
             it("emits result as failure") {
@@ -84,7 +84,7 @@ class InputReaderSpec {
         context("episode guest is not available") {
 
             beforeEach {
-                env.yamlReader.episode = episode.copy(peopleIds = episode.peopleIds.copy(guests = listOf("not available")))
+                env.yamlReader.episode = episode.copy(people = episode.people.copy(guestIds = listOf("not available")))
             }
 
             it("emits result as failure") {

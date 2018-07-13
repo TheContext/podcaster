@@ -13,9 +13,7 @@ data class Episode(
         val title: String,
 
         @JsonProperty("peopleIds")
-        val peopleIds: PeopleIds,
-
-        val people: People = People(),
+        val people: People,
 
         @JsonProperty("url")
         val url: String,
@@ -37,19 +35,14 @@ data class Episode(
 
 ) {
 
-    data class PeopleIds(
+    data class People(
 
             @JsonProperty("hosts")
-            val hosts: List<String>,
+            val hostIds: List<String>,
 
             @JsonProperty("guests")
-            val guests: List<String>
+            val guestIds: List<String>
 
-    )
-
-    data class People(
-            val hosts: List<Person> = emptyList(),
-            val guests: List<Person> = emptyList()
     )
 
     data class File(

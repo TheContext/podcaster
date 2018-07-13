@@ -7,7 +7,6 @@ import io.thecontext.ci.testEpisode
 import io.thecontext.ci.testPerson
 import io.thecontext.ci.testPodcast
 import io.thecontext.ci.value.Episode
-import io.thecontext.ci.value.Podcast
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.rules.TemporaryFolder
 import org.junit.runner.RunWith
@@ -48,7 +47,7 @@ class YamlReaderSpec {
 
         describe("podcast") {
 
-            val podcast = testPodcast.copy(people = Podcast.People())
+            val podcast = testPodcast
             val podcastYaml =
                     """
                     title: ${podcast.title}
@@ -56,11 +55,11 @@ class YamlReaderSpec {
                     summary: ${podcast.summary}
                     peopleIds:
                         owners:
-                            - ${podcast.peopleIds.owners[0]}
-                            - ${podcast.peopleIds.owners[1]}
+                            - ${podcast.people.ownerIds[0]}
+                            - ${podcast.people.ownerIds[1]}
                         authors:
-                            - ${podcast.peopleIds.authors[0]}
-                            - ${podcast.peopleIds.authors[1]}
+                            - ${podcast.people.authorIds[0]}
+                            - ${podcast.people.authorIds[1]}
                     language:
                         code: ${podcast.language.code}
                         regionCode: ${podcast.language.regionCode}
@@ -84,7 +83,7 @@ class YamlReaderSpec {
         }
 
         describe("episode") {
-            val episode = testEpisode.copy(people = Episode.People(), notes = Episode.Notes(links = testEpisode.notes.links))
+            val episode = testEpisode.copy(notes = Episode.Notes(links = testEpisode.notes.links))
             val episodeYaml =
                     """
                     number: ${episode.number}
@@ -93,11 +92,11 @@ class YamlReaderSpec {
                     duration: ${episode.duration}
                     peopleIds:
                         hosts:
-                            - ${episode.peopleIds.hosts[0]}
-                            - ${episode.peopleIds.hosts[1]}
+                            - ${episode.people.hostIds[0]}
+                            - ${episode.people.hostIds[1]}
                         guests:
-                            - ${episode.peopleIds.guests[0]}
-                            - ${episode.peopleIds.guests[1]}
+                            - ${episode.people.guestIds[0]}
+                            - ${episode.people.guestIds[1]}
                     url: ${episode.url}
                     discussionUrl: ${episode.discussionUrl}
                     file:

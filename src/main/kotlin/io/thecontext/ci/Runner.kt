@@ -60,7 +60,7 @@ class Runner {
                 .ofType<ValidationResult.Success>()
                 .withLatestFrom(input.ofType<InputReader.Result.Success>()) { _, inputResult -> inputResult }
                 .switchMapSingle {
-                    outputWriter.write(outputDirectory, it.podcast, it.episodes)
+                    outputWriter.write(outputDirectory, it.podcast, it.episodes, it.people)
                 }
 
         val resultSuccess = output.map { "Done!" }

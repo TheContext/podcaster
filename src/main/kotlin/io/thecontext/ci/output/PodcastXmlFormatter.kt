@@ -5,12 +5,14 @@ import io.reactivex.Single
 import io.thecontext.ci.toDate
 import io.thecontext.ci.toRfc2822
 import io.thecontext.ci.value.Episode
+import io.thecontext.ci.value.Person
 import io.thecontext.ci.value.Podcast
+import io.thecontext.ci.value.find
 import java.time.LocalDate
 
 interface PodcastXmlFormatter {
 
-    fun format(podcast: Podcast, episodes: List<Episode>): Single<String>
+    fun format(podcast: Podcast, episodes: List<Episode>, people: List<Person>): Single<String>
 
     class Impl(
             private val episodeMarkdownFormatter: EpisodeMarkdownFormatter,
@@ -23,8 +25,8 @@ interface PodcastXmlFormatter {
             private const val TEMPLATE_RESOURCE_NAME = "podcast.xml.mustache"
         }
 
-        override fun format(podcast: Podcast, episodes: List<Episode>) = Single
-                .merge(episodes.map { episode -> episodeMarkdownFormatter.format(podcast, episode).map { episode to it } })
+        override fun format(podcast: Podcast, episodes: List<Episode>, people: List<Person>) = Single
+                .merge(episodes.map { episode -> episodeMarkdownFormatter.format(podcast, episode, people).map { episode to it } })
                 .toList()
                 .map { episodes ->
                     val contents = mapOf(
@@ -39,8 +41,8 @@ interface PodcastXmlFormatter {
                             "category" to podcast.category,
                             "subcategory" to podcast.subcategory,
                             "keywords" to podcast.keywords.joinToString(separator = ","),
-                            "owners" to podcast.people.owners.map { mapOf("name" to it.name) },
-                            "authors" to podcast.people.authors.map { mapOf("name" to it.name) },
+                            "owners" to podcast.people.ownerIds.map { people.find(it) }.map { mapOf("name" to it.name) },
+                            "authors" to podcast.people.authorIds.map { people.find(it) }.map { mapOf("name" to it.name) },
                             "build_date" to LocalDate.now().toRfc2822(),
                             "episodes" to episodes.map { (episode, episodeMarkdown) ->
                                 mapOf(
@@ -51,8 +53,8 @@ interface PodcastXmlFormatter {
                                         "url" to episode.url,
                                         "discussion_url" to episode.discussionUrl,
                                         "duration" to episode.duration,
-                                        "hosts" to episode.people.hosts.map { mapOf("name" to it.name) },
-                                        "guests" to episode.people.guests.map { mapOf("name" to it.name) },
+                                        "hosts" to episode.people.hostIds.map { people.find(it) }.map { mapOf("name" to it.name) },
+                                        "guests" to episode.people.guestIds.map { people.find(it) }.map { mapOf("name" to it.name) },
                                         "summary" to markdownRenderer.renderHtml(episodeMarkdown).trim().prependIndent(" ".repeat(10))
                                 )
                             }

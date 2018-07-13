@@ -5,10 +5,11 @@ import io.reactivex.Single
 import io.thecontext.ci.value.Episode
 import io.thecontext.ci.value.Person
 import io.thecontext.ci.value.Podcast
+import io.thecontext.ci.value.find
 
 interface EpisodeMarkdownFormatter {
 
-    fun format(podcast: Podcast, episode: Episode): Single<String>
+    fun format(podcast: Podcast, episode: Episode, people: List<Person>): Single<String>
 
     class Impl(
             private val mustacheRenderer: MustacheRenderer,
@@ -19,15 +20,15 @@ interface EpisodeMarkdownFormatter {
             private const val TEMPLATE_RESOURCE_NAME = "episode.md.mustache"
         }
 
-        override fun format(podcast: Podcast, episode: Episode) = Single
+        override fun format(podcast: Podcast, episode: Episode, people: List<Person>) = Single
                 .fromCallable {
                     val contents = mapOf(
                             "title" to episode.title,
                             "podcast_url" to podcast.url,
                             "discussion_url" to episode.discussionUrl,
                             "description" to episode.notes.descriptionMarkdown,
-                            "guests" to episode.people.guests.map { mapOf("guest" to formatPerson(it)) },
-                            "hosts" to episode.people.hosts.map { mapOf("host" to formatPerson(it)) },
+                            "guests" to episode.people.guestIds.map { people.find(it) }.map { mapOf("guest" to formatPerson(it)) },
+                            "hosts" to episode.people.hostIds.map { people.find(it) }.map { mapOf("host" to formatPerson(it)) },
                             "links" to episode.notes.links.map { mapOf("link" to formatLink(it.title, it.url)) }
                     )
 

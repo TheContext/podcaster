@@ -15,6 +15,7 @@ class PodcastXmlFormatterSpec {
 
         val podcast = testPodcast
         val episode = testEpisode
+        val people = listOf(testPerson, testPerson)
 
         context("regular podcast") {
 
@@ -38,16 +39,16 @@ class PodcastXmlFormatterSpec {
                         </itunes:category>
                         <itunes:keywords>${podcast.keywords.joinToString(separator = ",")}</itunes:keywords>
                         <itunes:owner>
-                          <itunes:name>${podcast.people.owners[0].name}</itunes:name>
+                          <itunes:name>${people[0].name}</itunes:name>
                         </itunes:owner>
                         <itunes:owner>
-                          <itunes:name>${podcast.people.owners[1].name}</itunes:name>
+                          <itunes:name>${people[1].name}</itunes:name>
                         </itunes:owner>
                         <atom:author>
-                          <atom:name>${podcast.people.authors[0].name}</atom:name>
+                          <atom:name>${people[0].name}</atom:name>
                         </atom:author>
                         <atom:author>
-                          <atom:name>${podcast.people.authors[1].name}</atom:name>
+                          <atom:name>${people[1].name}</atom:name>
                         </atom:author>
                         <item>
                           <title>${episode.title}</title>
@@ -58,16 +59,16 @@ class PodcastXmlFormatterSpec {
                           <atom:link rel="replies" type="text/html" href="${episode.discussionUrl}"/>
                           <itunes:duration>${episode.duration}</itunes:duration>
                           <atom:author>
-                            <atom:name>${episode.people.hosts[0].name}</atom:name>
+                            <atom:name>${people[0].name}</atom:name>
                           </atom:author>
                           <atom:author>
-                            <atom:name>${episode.people.hosts[1].name}</atom:name>
+                            <atom:name>${people[1].name}</atom:name>
                           </atom:author>
                           <atom:contributor>
-                            <atom:name>${episode.people.guests[0].name}</atom:name>
+                            <atom:name>${people[0].name}</atom:name>
                           </atom:contributor>
                           <atom:contributor>
-                            <atom:name>${episode.people.guests[1].name}</atom:name>
+                            <atom:name>${people[1].name}</atom:name>
                           </atom:contributor>
                           <itunes:summary>
                             <![CDATA[
@@ -81,7 +82,7 @@ class PodcastXmlFormatterSpec {
                     """
 
                 // Note: Mustache inserts EOL in the end. It is simulated here using an empty line.
-                env.formatter.format(podcast, listOf(episode))
+                env.formatter.format(podcast, listOf(episode), people)
                         .test()
                         .assertResult(expected.trimIndent())
             }
