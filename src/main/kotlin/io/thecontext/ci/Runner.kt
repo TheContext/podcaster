@@ -9,7 +9,6 @@ import io.thecontext.ci.input.TextReader
 import io.thecontext.ci.input.YamlReader
 import io.thecontext.ci.output.*
 import io.thecontext.ci.validation.*
-import okhttp3.OkHttpClient
 import java.io.File
 
 fun main(args: Array<String>) {
@@ -25,7 +24,7 @@ class Runner {
     private val inputFilesLocator: InputFilesLocator by lazy { InputFilesLocator.Impl(ioScheduler) }
     private val inputReader: InputReader by lazy { InputReader.Impl(yamlReader, textReader, ioScheduler) }
 
-    private val urlValidator by lazy { UrlValidator(OkHttpClient(), ioScheduler) }
+    private val urlValidator by lazy { UrlValidator(ioScheduler) }
     private val podcastValidator by lazy { PodcastValidator(urlValidator) }
     private val episodeValidator by lazy { EpisodeValidator(urlValidator) }
 
