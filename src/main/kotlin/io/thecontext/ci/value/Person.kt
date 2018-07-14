@@ -21,3 +21,4 @@ data class Person(
 
 )
 
+fun List<Person>.find(id: String) = this.find { it.id == id } ?: throw IllegalArgumentException("Person [$id] is not available.")

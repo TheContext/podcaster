@@ -15,6 +15,7 @@ class PodcastXmlFormatterSpec {
 
         val podcast = testPodcast
         val episode = testEpisode
+        val people = listOf(testPerson, testPerson)
 
         context("regular podcast") {
 
@@ -24,13 +25,12 @@ class PodcastXmlFormatterSpec {
                     <rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
                       <channel>
                         <title>${podcast.title}</title>
-                        <description>${podcast.summary}</description>
+                        <description>${podcast.description}</description>
                         <language>${podcast.language.code.toLowerCase()}-${podcast.language.regionCode.toLowerCase()}</language>
                         <link>${podcast.url}</link>
                         <lastBuildDate>${LocalDate.now().toRfc2822()}</lastBuildDate>
                         <atom:link rel="self" type="application/rss+xml" href="${podcast.feedUrl}"/>
                         <itunes:subtitle>${podcast.subtitle}</itunes:subtitle>
-                        <itunes:summary>${podcast.summary}</itunes:summary>
                         <itunes:image href="${podcast.artworkUrl}"/>
                         <itunes:explicit>${if (podcast.explicit) "yes" else "no"}</itunes:explicit>
                         <itunes:category text="${podcast.category}">
@@ -38,19 +38,20 @@ class PodcastXmlFormatterSpec {
                         </itunes:category>
                         <itunes:keywords>${podcast.keywords.joinToString(separator = ",")}</itunes:keywords>
                         <itunes:owner>
-                          <itunes:name>${podcast.people.owners[0].name}</itunes:name>
+                          <itunes:name>${people[0].name}</itunes:name>
                         </itunes:owner>
                         <itunes:owner>
-                          <itunes:name>${podcast.people.owners[1].name}</itunes:name>
+                          <itunes:name>${people[1].name}</itunes:name>
                         </itunes:owner>
                         <atom:author>
-                          <atom:name>${podcast.people.authors[0].name}</atom:name>
+                          <atom:name>${people[0].name}</atom:name>
                         </atom:author>
                         <atom:author>
-                          <atom:name>${podcast.people.authors[1].name}</atom:name>
+                          <atom:name>${people[1].name}</atom:name>
                         </atom:author>
                         <item>
                           <title>${episode.title}</title>
+                          <description>${episode.description}</description>
                           <pubDate>${episode.date.toDate().toRfc2822()}</pubDate>
                           <guid>${episode.file.url}</guid>
                           <link>${episode.url}</link>
@@ -58,22 +59,22 @@ class PodcastXmlFormatterSpec {
                           <atom:link rel="replies" type="text/html" href="${episode.discussionUrl}"/>
                           <itunes:duration>${episode.duration}</itunes:duration>
                           <atom:author>
-                            <atom:name>${episode.people.hosts[0].name}</atom:name>
+                            <atom:name>${people[0].name}</atom:name>
                           </atom:author>
                           <atom:author>
-                            <atom:name>${episode.people.hosts[1].name}</atom:name>
+                            <atom:name>${people[1].name}</atom:name>
                           </atom:author>
                           <atom:contributor>
-                            <atom:name>${episode.people.guests[0].name}</atom:name>
+                            <atom:name>${people[0].name}</atom:name>
                           </atom:contributor>
                           <atom:contributor>
-                            <atom:name>${episode.people.guests[1].name}</atom:name>
+                            <atom:name>${people[1].name}</atom:name>
                           </atom:contributor>
-                          <itunes:summary>
+                          <content:encoded>
                             <![CDATA[
                               ${env.markdownRenderer.renderResult}
                             ]]>
-                          </itunes:summary>
+                          </content:encoded>
                         </item>
                       </channel>
                     </rss>
@@ -81,7 +82,7 @@ class PodcastXmlFormatterSpec {
                     """
 
                 // Note: Mustache inserts EOL in the end. It is simulated here using an empty line.
-                env.formatter.format(podcast, listOf(episode))
+                env.formatter.format(podcast, listOf(episode), people)
                         .test()
                         .assertResult(expected.trimIndent())
             }

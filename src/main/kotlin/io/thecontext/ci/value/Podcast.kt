@@ -10,13 +10,11 @@ data class Podcast(
         @JsonProperty("subtitle")
         val subtitle: String,
 
-        @JsonProperty("summary")
-        val summary: String,
+        @JsonProperty("description")
+        val description: String,
 
         @JsonProperty("peopleIds")
-        val peopleIds: PeopleIds,
-
-        val people: People = People(),
+        val people: People,
 
         @JsonProperty("language")
         val language: Language,
@@ -54,19 +52,14 @@ data class Podcast(
 
     )
 
-    data class PeopleIds(
+    data class People(
 
             @JsonProperty("owners")
-            val owners: List<String>,
+            val ownerIds: List<String>,
 
             @JsonProperty("authors")
-            val authors: List<String>
+            val authorIds: List<String>
 
-    )
-
-    data class People(
-            val owners: List<Person> = emptyList(),
-            val authors: List<Person> = emptyList()
     )
 
 }
