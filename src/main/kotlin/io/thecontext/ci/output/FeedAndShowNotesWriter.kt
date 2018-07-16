@@ -7,7 +7,7 @@ import io.thecontext.ci.value.Episode
 import io.thecontext.ci.value.Podcast
 import java.io.File
 
-interface OutputWriter {
+interface FeedAndShowNotesWriter {
 
     object FileNames {
         const val FEED = "podcast.rss"
@@ -16,11 +16,11 @@ interface OutputWriter {
     fun write(directory: File, podcast: Podcast, episodes: List<Episode>): Single<Unit>
 
     class Impl(
-            private val podcastXmlFormatter: PodcastXmlFormatter,
+            private val rssFormatter: RssFormatter,
             private val episodeMarkdownFormatter: EpisodeMarkdownFormatter,
             private val textWriter: TextWriter,
             private val ioScheduler: Scheduler
-    ) : OutputWriter {
+    ) : FeedAndShowNotesWriter {
 
         override fun write(directory: File, podcast: Podcast, episodes: List<Episode>): Single<Unit> {
             val notes = Single
@@ -39,7 +39,7 @@ interface OutputWriter {
                     }
                     .map { Unit }
 
-            val feed = podcastXmlFormatter.format(podcast, episodes)
+            val feed = rssFormatter.format(podcast, episodes)
                     .flatMap { podcastXml ->
                         Single.fromCallable {
                             directory.mkdirs()

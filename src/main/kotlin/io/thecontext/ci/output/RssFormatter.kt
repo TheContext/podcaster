@@ -8,7 +8,7 @@ import io.thecontext.ci.value.Episode
 import io.thecontext.ci.value.Podcast
 import java.time.LocalDate
 
-interface PodcastXmlFormatter {
+interface RssFormatter {
 
     fun format(podcast: Podcast, episodes: List<Episode>): Single<String>
 
@@ -17,7 +17,7 @@ interface PodcastXmlFormatter {
             private val markdownRenderer: MarkdownRenderer,
             private val mustacheRenderer: MustacheRenderer,
             private val ioScheduler: Scheduler
-    ) : PodcastXmlFormatter {
+    ) : RssFormatter {
 
         companion object {
             private const val TEMPLATE_RESOURCE_NAME = "podcast.xml.mustache"

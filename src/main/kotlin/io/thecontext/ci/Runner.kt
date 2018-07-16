@@ -32,8 +32,8 @@ class Runner {
     private val mustacheRenderer: MustacheRenderer by lazy { MustacheRenderer.Impl() }
     private val textWriter: TextWriter by lazy { TextWriter.Impl() }
     private val episodeMarkdownFormatter: EpisodeMarkdownFormatter by lazy { EpisodeMarkdownFormatter.Impl(mustacheRenderer, ioScheduler) }
-    private val podcastXmlFormatter: PodcastXmlFormatter by lazy { PodcastXmlFormatter.Impl(episodeMarkdownFormatter, markdownRenderer, mustacheRenderer, ioScheduler) }
-    private val outputWriter: OutputWriter by lazy { OutputWriter.Impl(podcastXmlFormatter, episodeMarkdownFormatter, textWriter, ioScheduler) }
+    private val rssFormatter: RssFormatter by lazy { RssFormatter.Impl(episodeMarkdownFormatter, markdownRenderer, mustacheRenderer, ioScheduler) }
+    private val outputWriter: FeedAndShowNotesWriter by lazy { FeedAndShowNotesWriter.Impl(rssFormatter, episodeMarkdownFormatter, textWriter, ioScheduler) }
 
     fun run(inputDirectory: File, outputDirectory: File) {
         val inputFiles = inputFilesLocator.locate(inputDirectory)

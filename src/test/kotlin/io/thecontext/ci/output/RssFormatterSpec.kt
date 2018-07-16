@@ -9,7 +9,7 @@ import org.junit.runner.RunWith
 import java.time.LocalDate
 
 @RunWith(Spectrum::class)
-class PodcastXmlFormatterSpec {
+class RssFormatterSpec {
     init {
         val env by memoized { Environment() }
 
@@ -91,7 +91,7 @@ class PodcastXmlFormatterSpec {
     class Environment {
         val markdownRenderer = TestMarkdownRenderer()
 
-        val formatter = PodcastXmlFormatter.Impl(
+        val formatter = RssFormatter.Impl(
                 episodeMarkdownFormatter = EpisodeMarkdownFormatter.Impl(MustacheRenderer.Impl(), Schedulers.trampoline()),
                 markdownRenderer = markdownRenderer,
                 mustacheRenderer = MustacheRenderer.Impl(),
