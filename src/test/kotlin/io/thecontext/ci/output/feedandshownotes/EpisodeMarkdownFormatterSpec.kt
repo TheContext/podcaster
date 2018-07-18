@@ -1,9 +1,10 @@
-package io.thecontext.ci.output
+package io.thecontext.ci.output.feedandshownotes
 
 import com.greghaskins.spectrum.Spectrum
 import com.greghaskins.spectrum.dsl.specification.Specification.context
 import com.greghaskins.spectrum.dsl.specification.Specification.it
 import io.reactivex.schedulers.Schedulers
+import io.thecontext.ci.output.MustacheRenderer
 import io.thecontext.ci.testEpisode
 import io.thecontext.ci.testPodcast
 import org.junit.runner.RunWith

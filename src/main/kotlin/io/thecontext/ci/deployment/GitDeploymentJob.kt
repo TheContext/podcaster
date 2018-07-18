@@ -29,7 +29,7 @@ class GitDeploymentJob(
         val commitMessage: String
 ) : DeploymentJob {
 
-    override fun deploy(): Single<DeploymentJob.Result> = Single.fromCallable {
+    override fun deploy(): Single<DeploymentJob.Result> = Single.fromCallable<DeploymentJob.Result> {
         Runtime.getRuntime().run {
             exec("cd $localRepoDestination")
             exec("git clone $repositoryUrl")
@@ -38,5 +38,5 @@ class GitDeploymentJob(
             exec("git commit -am \"$commitMessage\"")
         }
         DeploymentJob.Result.Success
-    }
+    }.onErrorReturn { DeploymentJob.Result.Failed(it) }
 }

@@ -1,4 +1,4 @@
-package io.thecontext.ci.output
+package io.thecontext.ci.output.feedandshownotes
 
 import org.commonmark.parser.Parser
 import org.commonmark.renderer.html.HtmlRenderer

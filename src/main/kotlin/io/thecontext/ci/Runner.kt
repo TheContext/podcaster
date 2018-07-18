@@ -8,6 +8,10 @@ import io.thecontext.ci.input.InputReader
 import io.thecontext.ci.input.TextReader
 import io.thecontext.ci.input.YamlReader
 import io.thecontext.ci.output.*
+import io.thecontext.ci.output.feedandshownotes.EpisodeMarkdownFormatter
+import io.thecontext.ci.output.feedandshownotes.FeedAndShowNotesArtifactGenerator
+import io.thecontext.ci.output.feedandshownotes.MarkdownRenderer
+import io.thecontext.ci.output.feedandshownotes.RssFormatter
 import io.thecontext.ci.validation.*
 import java.io.File
 
@@ -33,7 +37,7 @@ class Runner {
     private val textWriter: TextWriter by lazy { TextWriter.Impl() }
     private val episodeMarkdownFormatter: EpisodeMarkdownFormatter by lazy { EpisodeMarkdownFormatter.Impl(mustacheRenderer, ioScheduler) }
     private val rssFormatter: RssFormatter by lazy { RssFormatter.Impl(episodeMarkdownFormatter, markdownRenderer, mustacheRenderer, ioScheduler) }
-    private val outputWriter: FeedAndShowNotesWriter by lazy { FeedAndShowNotesWriter.Impl(rssFormatter, episodeMarkdownFormatter, textWriter, ioScheduler) }
+    private val outputWriter: FeedAndShowNotesArtifactGenerator by lazy { FeedAndShowNotesArtifactGenerator.Impl(rssFormatter, episodeMarkdownFormatter, textWriter, ioScheduler) }
 
     fun run(inputDirectory: File, outputDirectory: File) {
         val inputFiles = inputFilesLocator.locate(inputDirectory)
