@@ -2,6 +2,7 @@ package io.thecontext.ci
 
 import io.reactivex.Observable
 import io.reactivex.Single
+import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
 import io.thecontext.ci.input.InputFilesLocator
 import io.thecontext.ci.input.InputReader
@@ -18,7 +19,7 @@ import io.thecontext.ci.validation.*
 import java.io.File
 
 fun main(args: Array<String>) {
-    Runner().run(File("/tmp/podcast-input"), File("/tmp/podcast-artifact"))
+    Runner().run(File("/tmp/podcast-input"))
 }
 
 class Runner {
@@ -39,10 +40,11 @@ class Runner {
     private val textWriter: TextWriter by lazy { TextWriter.Impl() }
     private val episodeMarkdownFormatter: EpisodeMarkdownFormatter by lazy { EpisodeMarkdownFormatter.Impl(mustacheRenderer, ioScheduler) }
     private val rssFormatter: RssFormatter by lazy { RssFormatter.Impl(episodeMarkdownFormatter, markdownRenderer, mustacheRenderer, ioScheduler) }
-    private val feedAndShowNotesArtifactGenerator: FeedAndShowNotesArtifactGenerator by lazy { FeedAndShowNotesArtifactGenerator.Impl(rssFormatter, episodeMarkdownFormatter, textWriter, ioScheduler) }
-    private val websiteArtifactGenerator: WebsiteArtifactGenerator by lazy { WebsiteArtifactGenerator.Impl(WebsiteFormatter.Impl(mustacheRenderer, Schedulers.io()), textWriter) }
+    private val feedAndShowNotesArtifactGenerator: FeedAndShowNotesArtifactGenerator by lazy { FeedAndShowNotesArtifactGenerator(rssFormatter, episodeMarkdownFormatter, textWriter, ioScheduler, File("/tmp/podcast-artifact")) }
+    private val websiteArtifactGenerator: WebsiteArtifactGenerator by lazy { WebsiteArtifactGenerator(WebsiteFormatter.Impl(mustacheRenderer, Schedulers.io()), textWriter, File("/tmp/podcast-website")) }
+    private val artifactGenerators: List<ArtifactGenerator> by lazy { listOf(feedAndShowNotesArtifactGenerator, websiteArtifactGenerator) }
 
-    fun run(inputDirectory: File, outputDirectory: File) {
+    fun run(inputDirectory: File) {
         val inputFiles = inputFilesLocator.locate(inputDirectory)
                 .toObservable()
                 .share()
@@ -63,14 +65,18 @@ class Runner {
                     Single.merge(episodes.plus(podcast)).toList().map { it.merge() }
                 }
 
-        val output = validation
+
+        val deployment = validation
                 .ofType<ValidationResult.Success>()
                 .withLatestFrom(input.ofType<InputReader.Result.Success>()) { _, inputResult -> inputResult }
-                .switchMapSingle {
-                    feedAndShowNotesArtifactGenerator.write(outputDirectory, it.podcast, it.episodes)
+                .switchMapSingle { (podcast, episodes) ->
+                    val generatorTasks: List<Single<ArtifactGenerationResult>> = artifactGenerators
+                            .map { it.generateArtifact(podcast, episodes) }
+
+                    feedAndShowNotesArtifactGenerator.generateArtifact(podcast, episodes)
                 }
 
-        val resultSuccess = output.map { "Done!" }
+        val resultSuccess = deployment.map { "Done!" }
 
         val resultError = Observable
                 .merge(

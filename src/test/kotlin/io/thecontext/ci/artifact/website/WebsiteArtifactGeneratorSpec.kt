@@ -7,7 +7,7 @@ import com.greghaskins.spectrum.dsl.specification.Specification.context
 import com.greghaskins.spectrum.dsl.specification.Specification.it
 import io.reactivex.Single
 import io.thecontext.ci.artifact.ArtifactGenerationError
-import io.thecontext.ci.artifact.ArtifcatGenerationResult
+import io.thecontext.ci.artifact.ArtifactGenerationResult
 import io.thecontext.ci.artifact.DeployableArtifact
 import io.thecontext.ci.artifact.TextWriter
 import io.thecontext.ci.testEpisode
@@ -43,17 +43,18 @@ class WebsiteArtifactGeneratorSpec {
             val expectedGeneratedFile2 = File(tmpDir, "${episode2.date}-${episode2.slug}.md")
             val expectedGeneratedFileContent1 = JustTitleWebsiteFormatter.format(podcast, episode1).blockingGet()
             val expectedGeneratedFileContent2 = JustTitleWebsiteFormatter.format(podcast, episode2).blockingGet()
-            val generator = WebsiteArtifactGenerator.Impl(
+            val generator = WebsiteArtifactGenerator(
                     websiteFormatter = formatter,
-                    textWriter = TextWriter.Impl()
+                    textWriter = TextWriter.Impl(),
+                    directoryForSavingWebsite = tmpDir
             )
 
             it("generates a artifact consisting of a file named $expectedGeneratedFile1 with content \"$expectedGeneratedFileContent1\""
                     + " and a file $expectedGeneratedFile2.md with content \"$expectedGeneratedFileContent2\"") {
-                generator.write(tmpDir, podcast, listOf(episode1, episode2))
+                generator.generateArtifact(podcast, listOf(episode1, episode2))
                         .test()
                         .assertComplete()
-                        .assertResult(ArtifcatGenerationResult.Success(
+                        .assertResult(ArtifactGenerationResult.Success(
                                 DeployableArtifact.FolderArtifact(tmpDir)
                         ))
 
@@ -71,16 +72,17 @@ class WebsiteArtifactGeneratorSpec {
 
         context("A WebsiteArtifactGenerator with an WebsiteFormatter that causes errors") {
             val formatter = ErrorWebsiteFormatter
-            val generator = WebsiteArtifactGenerator.Impl(
+            val generator = WebsiteArtifactGenerator(
                     websiteFormatter = formatter,
-                    textWriter = TextWriter.Impl()
+                    textWriter = TextWriter.Impl(),
+                    directoryForSavingWebsite = tmpDir
             )
 
             it("generates proper errors") {
-                generator.write(tmpDir, podcast, listOf(episode1, episode2))
+                generator.generateArtifact(podcast, listOf(episode1, episode2))
                         .test()
                         .assertComplete()
-                        .assertResult(ArtifcatGenerationResult.Failed(
+                        .assertResult(ArtifactGenerationResult.Failed(
                                 listOf(
                                         ArtifactGenerationError("Could not generate Front Matter for episode ${episode1.title}", ErrorWebsiteFormatter.fakeException),
                                         ArtifactGenerationError("Could not generate Front Matter for episode ${episode2.title}", ErrorWebsiteFormatter.fakeException)
@@ -93,16 +95,17 @@ class WebsiteArtifactGeneratorSpec {
         context("A WebsiteArtifactGenerator with an TextWritter that causes errors") {
             val formatter = JustTitleWebsiteFormatter
             val textWriter = ErrorTextWriter
-            val generator = WebsiteArtifactGenerator.Impl(
+            val generator = WebsiteArtifactGenerator(
                     websiteFormatter = formatter,
-                    textWriter = textWriter
+                    textWriter = textWriter,
+                    directoryForSavingWebsite = tmpDir
             )
 
             it("generates proper errors") {
-                generator.write(tmpDir, podcast, listOf(episode1, episode2))
+                generator.generateArtifact(podcast, listOf(episode1, episode2))
                         .test()
                         .assertComplete()
-                        .assertResult(ArtifcatGenerationResult.Failed(
+                        .assertResult(ArtifactGenerationResult.Failed(
                                 listOf(
                                         ArtifactGenerationError("Could not generate Front Matter for episode ${episode1.title}", ErrorTextWriter.fakeException),
                                         ArtifactGenerationError("Could not generate Front Matter for episode ${episode2.title}", ErrorTextWriter.fakeException)
