@@ -20,6 +20,7 @@ class FeedAndShowNotesArtifactGenerator(
         private val ioScheduler: Scheduler,
         private val directory: File
 ) : ArtifactGenerator {
+    // TODO write tests
 
     override fun generateArtifact(podcast: Podcast, episodes: List<Episode>): Single<ArtifactGenerationResult> {
 

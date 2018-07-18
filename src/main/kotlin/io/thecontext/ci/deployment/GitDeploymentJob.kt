@@ -8,6 +8,8 @@ import java.io.File
  * This implementation assumes that git (command line) is installed locally on the machine that runs this code
  */
 class GitDeploymentJob(
+        // TODO write tests for this class (and maybe use jGit)
+
         /**
          * The repository that the should be checked out
          */
@@ -37,6 +39,6 @@ class GitDeploymentJob(
             exec("git add .")
             exec("git commit -am \"$commitMessage\"")
         }
-        DeploymentJob.Result.Success
-    }.onErrorReturn { DeploymentJob.Result.Failure(it) }
+        DeploymentJob.Result.Success("Successfully deployed to $repositoryUrl at branch $branch")
+    }.onErrorReturn { DeploymentJob.Result.Failure("Could not deploy to $repositoryUrl at branch $branch. Error $it", it) }
 }

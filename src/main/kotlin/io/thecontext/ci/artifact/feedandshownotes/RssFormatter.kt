@@ -27,7 +27,7 @@ interface RssFormatter {
         override fun format(podcast: Podcast, episodes: List<Episode>) = Single
                 .merge(episodes.map { episode -> episodeMarkdownFormatter.format(podcast, episode).map { episode to it } })
                 .toList()
-                .map { episodes ->
+                .map { episodesList ->
                     val contents = mapOf(
                             "title" to podcast.title,
                             "language" to "${podcast.language.code.toLowerCase()}-${podcast.language.regionCode.toLowerCase()}",
@@ -43,7 +43,7 @@ interface RssFormatter {
                             "owners" to podcast.people.owners.map { mapOf("name" to it.name) },
                             "authors" to podcast.people.authors.map { mapOf("name" to it.name) },
                             "build_date" to LocalDate.now().toRfc2822(),
-                            "episodes" to episodes.map { (episode, episodeMarkdown) ->
+                            "episodes" to episodesList.map { (episode, episodeMarkdown) ->
                                 mapOf(
                                         "title" to episode.title,
                                         "date" to episode.date.toDate().toRfc2822(),

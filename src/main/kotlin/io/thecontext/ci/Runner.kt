@@ -21,13 +21,14 @@ import io.thecontext.ci.validation.*
 import java.io.File
 
 fun main(args: Array<String>) {
-    Runner().run(File("/tmp/podcast-input"))
+    val result = Runner().run(File("/tmp/podcast-input"))
+    System.exit(result.exitCode)
 }
 
 class Runner {
-    enum class ReturnType {
-        SUCCESS,
-        FAILURE
+    enum class ReturnType(val exitCode: Int) {
+        SUCCESS(0),
+        FAILURE(1)
     }
 
     private val ioScheduler by lazy { Schedulers.io() }

@@ -48,7 +48,7 @@ class WebsiteArtifactGenerator(
                 if (errors.isEmpty()) {
                     ArtifactGenerationResult.Success(DeployableArtifact.FolderArtifact(directoryForSavingWebsite))
                 } else {
-                    ArtifactGenerationResult.Failure(errors = errors.map { it.right() })#
+                    ArtifactGenerationResult.Failure(errors = errors.map { it.right() })
                 }
             }
         }
