@@ -7,16 +7,18 @@ import io.thecontext.ci.input.InputFilesLocator
 import io.thecontext.ci.input.InputReader
 import io.thecontext.ci.input.TextReader
 import io.thecontext.ci.input.YamlReader
-import io.thecontext.ci.output.*
-import io.thecontext.ci.output.feedandshownotes.EpisodeMarkdownFormatter
-import io.thecontext.ci.output.feedandshownotes.FeedAndShowNotesArtifactGenerator
-import io.thecontext.ci.output.feedandshownotes.MarkdownRenderer
-import io.thecontext.ci.output.feedandshownotes.RssFormatter
+import io.thecontext.ci.artifact.*
+import io.thecontext.ci.artifact.feedandshownotes.EpisodeMarkdownFormatter
+import io.thecontext.ci.artifact.feedandshownotes.FeedAndShowNotesArtifactGenerator
+import io.thecontext.ci.artifact.feedandshownotes.MarkdownRenderer
+import io.thecontext.ci.artifact.feedandshownotes.RssFormatter
+import io.thecontext.ci.artifact.website.WebsiteArtifactGenerator
+import io.thecontext.ci.artifact.website.WebsiteFormatter
 import io.thecontext.ci.validation.*
 import java.io.File
 
 fun main(args: Array<String>) {
-    Runner().run(File("/tmp/podcast-input"), File("/tmp/podcast-output"))
+    Runner().run(File("/tmp/podcast-input"), File("/tmp/podcast-artifact"))
 }
 
 class Runner {
@@ -37,7 +39,8 @@ class Runner {
     private val textWriter: TextWriter by lazy { TextWriter.Impl() }
     private val episodeMarkdownFormatter: EpisodeMarkdownFormatter by lazy { EpisodeMarkdownFormatter.Impl(mustacheRenderer, ioScheduler) }
     private val rssFormatter: RssFormatter by lazy { RssFormatter.Impl(episodeMarkdownFormatter, markdownRenderer, mustacheRenderer, ioScheduler) }
-    private val outputWriter: FeedAndShowNotesArtifactGenerator by lazy { FeedAndShowNotesArtifactGenerator.Impl(rssFormatter, episodeMarkdownFormatter, textWriter, ioScheduler) }
+    private val feedAndShowNotesArtifactGenerator: FeedAndShowNotesArtifactGenerator by lazy { FeedAndShowNotesArtifactGenerator.Impl(rssFormatter, episodeMarkdownFormatter, textWriter, ioScheduler) }
+    private val websiteArtifactGenerator: WebsiteArtifactGenerator by lazy { WebsiteArtifactGenerator.Impl(WebsiteFormatter.Impl(mustacheRenderer, Schedulers.io()), textWriter) }
 
     fun run(inputDirectory: File, outputDirectory: File) {
         val inputFiles = inputFilesLocator.locate(inputDirectory)
@@ -64,7 +67,7 @@ class Runner {
                 .ofType<ValidationResult.Success>()
                 .withLatestFrom(input.ofType<InputReader.Result.Success>()) { _, inputResult -> inputResult }
                 .switchMapSingle {
-                    outputWriter.write(outputDirectory, it.podcast, it.episodes)
+                    feedAndShowNotesArtifactGenerator.write(outputDirectory, it.podcast, it.episodes)
                 }
 
         val resultSuccess = output.map { "Done!" }

@@ -1,11 +1,11 @@
-package io.thecontext.ci.output.feedandshownotes
+package io.thecontext.ci.artifact.feedandshownotes
 
 import com.greghaskins.spectrum.Spectrum
 import com.greghaskins.spectrum.dsl.specification.Specification.context
 import com.greghaskins.spectrum.dsl.specification.Specification.it
 import io.reactivex.schedulers.Schedulers
 import io.thecontext.ci.*
-import io.thecontext.ci.output.MustacheRenderer
+import io.thecontext.ci.artifact.MustacheRenderer
 import org.junit.runner.RunWith
 import java.time.LocalDate
 

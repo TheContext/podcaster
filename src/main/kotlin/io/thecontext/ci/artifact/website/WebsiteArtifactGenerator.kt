@@ -1,10 +1,10 @@
-package io.thecontext.ci.output.website
+package io.thecontext.ci.artifact.website
 
 import io.reactivex.Single
-import io.thecontext.ci.output.ArtifactGenerationError
-import io.thecontext.ci.output.ArtifcatGenerationResult
-import io.thecontext.ci.output.DeployableArtifact
-import io.thecontext.ci.output.TextWriter
+import io.thecontext.ci.artifact.ArtifactGenerationError
+import io.thecontext.ci.artifact.ArtifcatGenerationResult
+import io.thecontext.ci.artifact.DeployableArtifact
+import io.thecontext.ci.artifact.TextWriter
 import io.thecontext.ci.utils.Either
 import io.thecontext.ci.utils.right
 import io.thecontext.ci.value.Episode

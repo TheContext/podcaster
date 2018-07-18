@@ -1,4 +1,4 @@
-package io.thecontext.ci.output.website
+package io.thecontext.ci.artifact.website
 
 import com.greghaskins.spectrum.Spectrum
 import com.greghaskins.spectrum.dsl.specification.Specification.afterEach
@@ -6,10 +6,10 @@ import com.greghaskins.spectrum.dsl.specification.Specification.beforeEach
 import com.greghaskins.spectrum.dsl.specification.Specification.context
 import com.greghaskins.spectrum.dsl.specification.Specification.it
 import io.reactivex.Single
-import io.thecontext.ci.output.ArtifactGenerationError
-import io.thecontext.ci.output.ArtifcatGenerationResult
-import io.thecontext.ci.output.DeployableArtifact
-import io.thecontext.ci.output.TextWriter
+import io.thecontext.ci.artifact.ArtifactGenerationError
+import io.thecontext.ci.artifact.ArtifcatGenerationResult
+import io.thecontext.ci.artifact.DeployableArtifact
+import io.thecontext.ci.artifact.TextWriter
 import io.thecontext.ci.testEpisode
 import io.thecontext.ci.testPodcast
 import io.thecontext.ci.value.Episode

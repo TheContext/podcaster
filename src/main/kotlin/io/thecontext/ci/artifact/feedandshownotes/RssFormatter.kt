@@ -1,8 +1,8 @@
-package io.thecontext.ci.output.feedandshownotes
+package io.thecontext.ci.artifact.feedandshownotes
 
 import io.reactivex.Scheduler
 import io.reactivex.Single
-import io.thecontext.ci.output.MustacheRenderer
+import io.thecontext.ci.artifact.MustacheRenderer
 import io.thecontext.ci.toDate
 import io.thecontext.ci.toRfc2822
 import io.thecontext.ci.value.Episode

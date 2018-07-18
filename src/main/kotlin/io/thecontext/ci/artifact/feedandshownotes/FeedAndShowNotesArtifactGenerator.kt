@@ -1,10 +1,10 @@
-package io.thecontext.ci.output.feedandshownotes
+package io.thecontext.ci.artifact.feedandshownotes
 
 import io.reactivex.Scheduler
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
-import io.thecontext.ci.output.DeployableArtifact
-import io.thecontext.ci.output.TextWriter
+import io.thecontext.ci.artifact.DeployableArtifact
+import io.thecontext.ci.artifact.TextWriter
 import io.thecontext.ci.value.Episode
 import io.thecontext.ci.value.Podcast
 import java.io.File

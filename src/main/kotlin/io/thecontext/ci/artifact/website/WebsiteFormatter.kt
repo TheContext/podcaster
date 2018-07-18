@@ -1,8 +1,8 @@
-package io.thecontext.ci.output.website
+package io.thecontext.ci.artifact.website
 
 import io.reactivex.Scheduler
 import io.reactivex.Single
-import io.thecontext.ci.output.MustacheRenderer
+import io.thecontext.ci.artifact.MustacheRenderer
 import io.thecontext.ci.value.Episode
 import io.thecontext.ci.value.Person
 import io.thecontext.ci.value.Podcast

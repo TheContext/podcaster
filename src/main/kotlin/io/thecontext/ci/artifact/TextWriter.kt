@@ -1,4 +1,4 @@
-package io.thecontext.ci.output
+package io.thecontext.ci.artifact
 
 import java.io.File
 
