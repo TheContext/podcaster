@@ -82,10 +82,10 @@ class WebsiteArtifactGeneratorSpec {
                 generator.generateArtifact(podcast, listOf(episode1, episode2))
                         .test()
                         .assertComplete()
-                        .assertResult(ArtifactGenerationResult.Failed(
+                        .assertResult(ArtifactGenerationResult.Failure(
                                 listOf(
-                                        ArtifactGenerationError("Could not generate Front Matter for episode ${episode1.title}", ErrorWebsiteFormatter.fakeException),
-                                        ArtifactGenerationError("Could not generate Front Matter for episode ${episode2.title}", ErrorWebsiteFormatter.fakeException)
+                                        ArtifactGenerationError("Could not generate Front Matter for episode ${episode1.title}. Error ${ErrorWebsiteFormatter.fakeException}", ErrorWebsiteFormatter.fakeException),
+                                        ArtifactGenerationError("Could not generate Front Matter for episode ${episode2.title}. Error ${ErrorWebsiteFormatter.fakeException}", ErrorWebsiteFormatter.fakeException)
                                 )
                         ))
             }
@@ -105,10 +105,10 @@ class WebsiteArtifactGeneratorSpec {
                 generator.generateArtifact(podcast, listOf(episode1, episode2))
                         .test()
                         .assertComplete()
-                        .assertResult(ArtifactGenerationResult.Failed(
+                        .assertResult(ArtifactGenerationResult.Failure(
                                 listOf(
-                                        ArtifactGenerationError("Could not generate Front Matter for episode ${episode1.title}", ErrorTextWriter.fakeException),
-                                        ArtifactGenerationError("Could not generate Front Matter for episode ${episode2.title}", ErrorTextWriter.fakeException)
+                                        ArtifactGenerationError("Could not generate Front Matter for episode ${episode1.title}. Error ${ErrorTextWriter.fakeException}", ErrorTextWriter.fakeException),
+                                        ArtifactGenerationError("Could not generate Front Matter for episode ${episode2.title}. Error ${ErrorTextWriter.fakeException}", ErrorTextWriter.fakeException)
                                 )
                         ))
             }

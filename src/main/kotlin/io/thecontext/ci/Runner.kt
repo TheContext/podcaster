@@ -2,7 +2,6 @@ package io.thecontext.ci
 
 import io.reactivex.Observable
 import io.reactivex.Single
-import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
 import io.thecontext.ci.input.InputFilesLocator
 import io.thecontext.ci.input.InputReader
@@ -15,6 +14,9 @@ import io.thecontext.ci.artifact.feedandshownotes.MarkdownRenderer
 import io.thecontext.ci.artifact.feedandshownotes.RssFormatter
 import io.thecontext.ci.artifact.website.WebsiteArtifactGenerator
 import io.thecontext.ci.artifact.website.WebsiteFormatter
+import io.thecontext.ci.deployment.DeploymentJob
+import io.thecontext.ci.deployment.createDeploymentJob
+import io.thecontext.ci.utils.Singles
 import io.thecontext.ci.validation.*
 import java.io.File
 
@@ -23,6 +25,10 @@ fun main(args: Array<String>) {
 }
 
 class Runner {
+    enum class ReturnType {
+        SUCCESS,
+        FAILURE
+    }
 
     private val ioScheduler by lazy { Schedulers.io() }
 
@@ -44,7 +50,10 @@ class Runner {
     private val websiteArtifactGenerator: WebsiteArtifactGenerator by lazy { WebsiteArtifactGenerator(WebsiteFormatter.Impl(mustacheRenderer, Schedulers.io()), textWriter, File("/tmp/podcast-website")) }
     private val artifactGenerators: List<ArtifactGenerator> by lazy { listOf(feedAndShowNotesArtifactGenerator, websiteArtifactGenerator) }
 
-    fun run(inputDirectory: File) {
+    fun run(inputDirectory: File): ReturnType {
+
+        // TODO refactor the whole pipeline to one gian Single<List<ConsoleOutput>>
+
         val inputFiles = inputFilesLocator.locate(inputDirectory)
                 .toObservable()
                 .share()
@@ -66,25 +75,69 @@ class Runner {
                 }
 
 
-        val deployment = validation
+        val deployment: Observable<List<ConsoleOutput>> = validation
                 .ofType<ValidationResult.Success>()
                 .withLatestFrom(input.ofType<InputReader.Result.Success>()) { _, inputResult -> inputResult }
                 .switchMapSingle { (podcast, episodes) ->
-                    val generatorTasks: List<Single<ArtifactGenerationResult>> = artifactGenerators
+                    val artifactTasks: List<Single<ArtifactGenerationResult>> = artifactGenerators
                             .map { it.generateArtifact(podcast, episodes) }
 
-                    feedAndShowNotesArtifactGenerator.generateArtifact(podcast, episodes)
+                    val consoleOutputs: Single<List<ConsoleOutput>> = Singles.zip(artifactTasks).flatMap { artifactGenerationResults ->
+                        // only start deployment if all artifacts has been generated
+                        val (success, error) = artifactGenerationResults.partition {
+                            when (it) {
+                                is ArtifactGenerationResult.Success -> true
+                                is ArtifactGenerationResult.Failure -> false
+                            }
+                        }
+
+                        if (error.isEmpty()) {
+                            // Do deployment
+                            val artifactsToDeploy = success.map { (it as ArtifactGenerationResult.Success).artifact }
+                            val deploymentJobs = artifactsToDeploy.map(::createDeploymentJob)
+                            val deploymentTasks: List<Single<DeploymentJob.Result>> = deploymentJobs.map { it.deploy() }
+
+                            Singles.zip(deploymentTasks) { deploymentResults ->
+                                deploymentResults.map {
+                                    when (it) {
+                                        is DeploymentJob.Result.Success -> ConsoleOutput(type = ConsoleOutput.Type.INFO, message = it.message)
+                                        is DeploymentJob.Result.Failure -> ConsoleOutput(type = ConsoleOutput.Type.ERROR, message = it.message)
+                                    }
+                                }
+                            }
+                        } else {
+                            // Errors, don't deploy!
+                            val errorMessages: List<ConsoleOutput> = error.flatMap {
+                                (it as ArtifactGenerationResult.Failure)
+                                        .errors
+                                        .map { ConsoleOutput(type = ConsoleOutput.Type.ERROR, message = it.message) }
+                            }
+                            Single.just(errorMessages)
+                        }
+                    }
+                    consoleOutputs
+
                 }
 
-        val resultSuccess = deployment.map { "Done!" }
-
-        val resultError = Observable
+        val resultError: Observable<List<ConsoleOutput>> = Observable
                 .merge(
-                        inputFiles.ofType<InputFilesLocator.Result.Failure>().map { it.message },
-                        input.ofType<InputReader.Result.Failure>().map { it.message },
-                        validation.ofType<ValidationResult.Failure>().map { it.message }
+                        inputFiles.ofType<InputFilesLocator.Result.Failure>().map { listOf(ConsoleOutput(ConsoleOutput.Type.ERROR, it.message)) },
+                        input.ofType<InputReader.Result.Failure>().map { listOf(ConsoleOutput(ConsoleOutput.Type.ERROR, it.message)) },
+                        validation.ofType<ValidationResult.Failure>().map { listOf(ConsoleOutput(ConsoleOutput.Type.ERROR, it.message)) }
                 )
 
-        println(Observable.merge(resultSuccess, resultError).blockingFirst())
+        val consoleOutputs: List<ConsoleOutput> = Observable.merge(deployment, resultError)
+                .toList()
+                .blockingGet()
+                .flatMap { it }
+
+        consoleOutputs.forEach { it.print() }
+
+        return if (consoleOutputs.find { ConsoleOutput.Type.ERROR == it.type } != null) {
+            ReturnType.FAILURE
+        } else {
+            ReturnType.SUCCESS
+        }
     }
 }
+

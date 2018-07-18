@@ -31,7 +31,7 @@ sealed class ArtifactGenerationResult {
      * The case when generating [DeployableArtifact] failed. A list of [ArtifactGenerationError] provides
      * details why the generation failed
      */
-    data class Failed(val errors: List<ArtifactGenerationError>) : ArtifactGenerationResult()
+    data class Failure(val errors: List<ArtifactGenerationError>) : ArtifactGenerationResult()
 }
 
 

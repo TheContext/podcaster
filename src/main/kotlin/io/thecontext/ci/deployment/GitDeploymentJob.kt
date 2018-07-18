@@ -38,5 +38,5 @@ class GitDeploymentJob(
             exec("git commit -am \"$commitMessage\"")
         }
         DeploymentJob.Result.Success
-    }.onErrorReturn { DeploymentJob.Result.Failed(it) }
+    }.onErrorReturn { DeploymentJob.Result.Failure(it) }
 }

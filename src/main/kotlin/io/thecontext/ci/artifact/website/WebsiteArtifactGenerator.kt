@@ -32,7 +32,7 @@ class WebsiteArtifactGenerator(
             ).map<Either<Unit, ArtifactGenerationError>> { websiteContent ->
                 textWriter.write(File(directoryForSavingWebsite, "${episode.date}-${episode.slug}.md"), websiteContent)
                 Either.Left(Unit)
-            }.onErrorReturn { Either.Right(ArtifactGenerationError("Could not generate Front Matter for episode ${episode.title}", it)) }
+            }.onErrorReturn { Either.Right(ArtifactGenerationError("Could not generate Front Matter for episode ${episode.title}. Error $it", it)) }
         }
 
         return createDirs.flatMap { _ ->
@@ -48,7 +48,7 @@ class WebsiteArtifactGenerator(
                 if (errors.isEmpty()) {
                     ArtifactGenerationResult.Success(DeployableArtifact.FolderArtifact(directoryForSavingWebsite))
                 } else {
-                    ArtifactGenerationResult.Failed(errors = errors.map { it.right() })
+                    ArtifactGenerationResult.Failure(errors = errors.map { it.right() })#
                 }
             }
         }

@@ -14,12 +14,12 @@ interface DeploymentJob {
         /**
          * Deployment successful
          */
-        object Success : Result()
+        data class Success(val message: String) : Result()
 
         /**
          * Deployment failed with an error
          */
-        data class Failed(val error: Throwable) : Result()
+        data class Failure(val message: String, val error: Throwable) : Result()
     }
 
 
