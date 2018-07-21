@@ -21,7 +21,15 @@ class EpisodeValidator(
                 .plus(value.url)
                 .plus(value.discussionUrl)
                 .plus(value.file.url)
-                .map { urlValidator.validate(it) }
+                .map {
+                    urlValidator.validate(it)
+                            .map {
+                                when (it) {
+                                    ValidationResult.Success -> it
+                                    is ValidationResult.Failure -> it.copy("$episodeIdentifierForError: ${it.message}")
+                                }
+                            }
+                }
 
         val peopleResults = emptyList<String>()
                 .plus(value.people.hostIds)
@@ -37,11 +45,11 @@ class EpisodeValidator(
                 }
 
         val guidResult = Single.fromCallable {
-            if (value.guid.isEmpty()){
+            if (value.guid.isEmpty()) {
                 ValidationResult.Failure("$episodeIdentifierForError: guid is empty")
             }
 
-            if (value.guid.contains(' ')){
+            if (value.guid.contains(' ')) {
                 ValidationResult.Failure("$episodeIdentifierForError: guid contains white space")
             }
 
