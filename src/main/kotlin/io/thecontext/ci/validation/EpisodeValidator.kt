@@ -35,6 +35,18 @@ class EpisodeValidator(
                     }
                 }
 
+        val uuidResult = Single.fromCallable {
+            if (value.guid.isBlank()){
+                ValidationResult.Failure("guid is blank")
+            }
+
+            if (value.guid.contains(' ')){
+                ValidationResult.Failure("guid contains white space")
+            }
+
+            ValidationResult.Success
+        }
+
         val numberResult = Single.fromCallable {
             if (value.number < 0) {
                 ValidationResult.Failure("Episode number is negative.")
@@ -70,7 +82,7 @@ class EpisodeValidator(
         }
 
         return Single
-                .merge(urlResults + peopleResults + listOf(numberResult, dateResult, fileLengthResult, descriptionResult))
+                .merge(urlResults + peopleResults + listOf(uuidResult, numberResult, dateResult, fileLengthResult, descriptionResult))
                 .toList()
                 .map { it.merge() }
     }

@@ -34,6 +34,7 @@ val testPodcast = Podcast(
 )
 
 val testEpisode = Episode(
+        guid = "TestEpisode",
         number = 42,
         title = "Episode Title",
         description = "Episode Description",
