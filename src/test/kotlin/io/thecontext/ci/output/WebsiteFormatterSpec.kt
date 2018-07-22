@@ -90,10 +90,6 @@ class WebsiteFormatterSpec {
                     We use Github issue tracker for discussion. Do you wanna join our discussion? [Click here](${episode.discussionUrl})
                     """
 
-                println(expected.trimIndent())
-                println("--------------")
-                println( formatter.format(podcast, episode, people).blockingGet())
-
                 // Note: Mustache inserts EOL in the end. It is simulated here using an empty line.
                 formatter.format(podcast, episode, people)
                         .test()
