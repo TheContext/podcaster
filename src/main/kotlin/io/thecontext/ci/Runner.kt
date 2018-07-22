@@ -24,20 +24,20 @@ class Runner {
 
     private val ioScheduler by lazy { Schedulers.io() }
 
-    private val yamlReader by lazy { YamlReader.Impl() }
-    private val textReader by lazy { TextReader.Impl() }
-    private val inputFilesLocator by lazy { InputFilesLocator.Impl(ioScheduler) }
-    private val inputReader by lazy { InputReader.Impl(yamlReader, textReader, ioScheduler) }
+    private val yamlReader: YamlReader by lazy { YamlReader.Impl() }
+    private val textReader: TextReader by lazy { TextReader.Impl() }
+    private val inputFilesLocator: InputFilesLocator by lazy { InputFilesLocator.Impl(ioScheduler) }
+    private val inputReader: InputReader by lazy { InputReader.Impl(yamlReader, textReader, ioScheduler) }
 
-    private val urlValidator by lazy { UrlValidator(ioScheduler) }
+    private val urlValidator: UrlValidator by lazy { UrlValidator(ioScheduler) }
 
-    private val markdownRenderer by lazy { MarkdownRenderer.Impl() }
-    private val mustacheRenderer by lazy { MustacheRenderer.Impl() }
-    private val textWriter by lazy { TextWriter.Impl() }
-    private val episodeMarkdownFormatter by lazy { EpisodeMarkdownFormatter.Impl(mustacheRenderer, ioScheduler) }
-    private val podcastXmlFormatter by lazy { PodcastXmlFormatter.Impl(episodeMarkdownFormatter, markdownRenderer, mustacheRenderer, ioScheduler) }
+    private val markdownRenderer: MarkdownRenderer by lazy { MarkdownRenderer.Impl() }
+    private val mustacheRenderer: MustacheRenderer by lazy { MustacheRenderer.Impl() }
+    private val textWriter: TextWriter by lazy { TextWriter.Impl() }
+    private val episodeMarkdownFormatter: EpisodeMarkdownFormatter by lazy { EpisodeMarkdownFormatter.Impl(mustacheRenderer, ioScheduler) }
+    private val podcastXmlFormatter: PodcastXmlFormatter by lazy { PodcastXmlFormatter.Impl(episodeMarkdownFormatter, markdownRenderer, mustacheRenderer, ioScheduler) }
     private val websiteFormatter: WebsiteFormatter by lazy { WebsiteFormatter.Impl(mustacheRenderer, ioScheduler) }
-    private val outputWriter by lazy { OutputWriter.Impl(podcastXmlFormatter, episodeMarkdownFormatter, websiteFormatter, textWriter, ioScheduler) }
+    private val outputWriter: OutputWriter by lazy { OutputWriter.Impl(podcastXmlFormatter, episodeMarkdownFormatter, websiteFormatter, textWriter, ioScheduler) }
 
     fun run(inputDirectory: File, showNotesDirectory: File, rssFeedDirectory: File, websiteDirectory: File) {
         val inputFiles = inputFilesLocator.locate(inputDirectory)
