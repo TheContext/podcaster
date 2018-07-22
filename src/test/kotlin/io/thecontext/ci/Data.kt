@@ -34,7 +34,6 @@ val testPodcast = Podcast(
 )
 
 val testEpisode = Episode(
-        number = 42,
         title = "Episode Title",
         description = "Episode Description",
         people = Episode.People(

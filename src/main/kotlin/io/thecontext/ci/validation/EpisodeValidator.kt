@@ -62,7 +62,7 @@ class EpisodeValidator(
         }
 
         return Single
-                .merge(urlResults + peopleResults + listOf(numberResult, dateResult, fileLengthResult, descriptionResult))
+                .merge(urlResults + peopleResults + listOf(dateResult, fileLengthResult, descriptionResult))
                 .toList()
                 .map { it.merge() }
     }

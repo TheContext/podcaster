@@ -85,7 +85,6 @@ class YamlReaderSpec {
             val episode = testEpisode.copy(notesMarkdown = "")
             val episodeYaml =
                     """
-                    number: ${episode.number}
                     title: ${episode.title}
                     description: ${episode.description}
                     date: ${episode.date}
