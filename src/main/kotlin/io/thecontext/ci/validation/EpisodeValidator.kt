@@ -35,14 +35,6 @@ class EpisodeValidator(
                     }
                 }
 
-        val numberResult = Single.fromCallable {
-            if (value.number < 0) {
-                ValidationResult.Failure("Episode number is negative.")
-            } else {
-                ValidationResult.Success
-            }
-        }
-
         val dateResult = Single.fromCallable {
             try {
                 value.date.toDate()

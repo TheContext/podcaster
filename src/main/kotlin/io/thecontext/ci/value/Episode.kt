@@ -6,9 +6,6 @@ data class Episode(
 
         val slug: String = "",
 
-        @JsonProperty("number")
-        val number: Int,
-
         @JsonProperty("title")
         val title: String,
 
