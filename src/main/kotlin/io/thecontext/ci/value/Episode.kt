@@ -1,14 +1,13 @@
 package io.thecontext.ci.value
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import java.io.File
 
 data class Episode(
 
         val slug: String = "",
 
         @JsonProperty("guid")
-        val guid : String,
+        val guid: String,
 
         @JsonProperty("number")
         val number: Int,

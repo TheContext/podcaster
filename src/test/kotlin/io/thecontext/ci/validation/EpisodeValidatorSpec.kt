@@ -14,9 +14,6 @@ class EpisodeValidatorSpec {
         val env by memoized { Environment() }
 
         context("guid validation failed") {
-            beforeEach {
-                env.urlValidator.result = ValidationResult.Failure("nope")
-            }
 
             it("emits result as failure on empty guid") {
                 env.validator.validate(testEpisode.copy(guid = ""))
@@ -24,14 +21,8 @@ class EpisodeValidatorSpec {
                         .assertValue { it is ValidationResult.Failure }
             }
 
-            it("emits result as failure on empty guid") {
+            it("emits result as failure on blank guid") {
                 env.validator.validate(testEpisode.copy(guid = " "))
-                        .test()
-                        .assertValue { it is ValidationResult.Failure }
-            }
-
-            it("emits result as failure on white space in guid") {
-                env.validator.validate(testEpisode.copy(guid = "u u i d"))
                         .test()
                         .assertValue { it is ValidationResult.Failure }
             }

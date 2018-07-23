@@ -45,15 +45,11 @@ class EpisodeValidator(
                 }
 
         val guidResult = Single.fromCallable {
-            if (value.guid.isEmpty()) {
-                ValidationResult.Failure("$episodeIdentifierForError: guid is empty")
+            if (value.guid.isBlank()) {
+                ValidationResult.Failure("$episodeIdentifierForError: guid is blank")
+            } else {
+                ValidationResult.Success
             }
-
-            if (value.guid.contains(' ')) {
-                ValidationResult.Failure("$episodeIdentifierForError: guid contains white space")
-            }
-
-            ValidationResult.Success
         }
 
         val numberResult = Single.fromCallable {

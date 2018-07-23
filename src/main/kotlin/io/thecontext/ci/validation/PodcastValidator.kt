@@ -24,7 +24,7 @@ class PodcastValidator(
                 .map { personId ->
                     Single.fromCallable {
                         if (people.find { it.id == personId } == null) {
-                            ValidationResult.Failure("Podcast Authors or Owner: Person [$personId] is not defined.")
+                            ValidationResult.Failure("Podcast person [$personId] is not defined.")
                         } else {
                             ValidationResult.Success
                         }
