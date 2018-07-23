@@ -49,8 +49,9 @@ class Runner {
                 .switchMapSingle { inputResult ->
                     val podcast = PodcastValidator(urlValidator, inputResult.people).validate(inputResult.podcast)
                     val episodes = inputResult.episodes.map { EpisodeValidator(urlValidator, inputResult.people).validate(it) }
+                    val episodeList = EpisodeListValidator(ioScheduler).validate(inputResult.episodes)
 
-                    Single.merge(episodes.plus(podcast)).toList().map { it.merge() }
+                    Single.merge(episodes.plus(podcast).plus(episodeList)).toList().map { it.merge() }
                 }
 
         val output = validation
