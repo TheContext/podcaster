@@ -44,9 +44,9 @@ class EpisodeValidator(
                     }
                 }
 
-        val guidResult = Single.fromCallable {
-            if (value.guid.isBlank()) {
-                ValidationResult.Failure("$episodeIdentifierForError: guid is blank")
+        val idResult = Single.fromCallable {
+            if (value.id.isBlank()) {
+                ValidationResult.Failure("$episodeIdentifierForError: id is blank")
             } else {
                 ValidationResult.Success
             }
@@ -87,7 +87,7 @@ class EpisodeValidator(
         }
 
         return Single
-                .merge(urlResults + peopleResults + listOf(guidResult, numberResult, dateResult, fileLengthResult, descriptionResult))
+                .merge(urlResults + peopleResults + listOf(idResult, numberResult, dateResult, fileLengthResult, descriptionResult))
                 .toList()
                 .map { it.merge() }
     }

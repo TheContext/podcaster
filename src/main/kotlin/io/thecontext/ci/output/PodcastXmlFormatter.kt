@@ -46,7 +46,7 @@ interface PodcastXmlFormatter {
                             "build_date" to LocalDate.now().toRfc2822(),
                             "episodes" to episodes.map { (episode, episodeMarkdown) ->
                                 mapOf(
-                                        "guid" to episode.guid,
+                                        "id" to episode.id,
                                         "title" to episode.title,
                                         "description" to episode.description,
                                         "date" to episode.date.toDate().toRfc2822(),

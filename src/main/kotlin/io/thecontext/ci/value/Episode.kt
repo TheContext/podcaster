@@ -6,8 +6,8 @@ data class Episode(
 
         val slug: String = "",
 
-        @JsonProperty("guid")
-        val guid: String,
+        @JsonProperty("id")
+        val id: String,
 
         @JsonProperty("number")
         val number: Int,
