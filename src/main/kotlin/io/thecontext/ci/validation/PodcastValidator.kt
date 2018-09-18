@@ -24,7 +24,7 @@ class PodcastValidator(
                 .map { personId ->
                     Single.fromCallable {
                         if (people.find { it.id == personId } == null) {
-                            ValidationResult.Failure("Person [$personId] is not defined.")
+                            ValidationResult.Failure("Podcast person [$personId] is not defined.")
                         } else {
                             ValidationResult.Success
                         }
@@ -33,7 +33,7 @@ class PodcastValidator(
 
         val descriptionResult = Single.fromCallable {
             if (value.description.length > MAXIMUM_DESCRIPTION_LENGTH) {
-                ValidationResult.Failure("Description length is [${value.description.length}] symbols but should less than [$MAXIMUM_DESCRIPTION_LENGTH].")
+                ValidationResult.Failure("Podcast description length is [${value.description.length}] symbols but should less than [$MAXIMUM_DESCRIPTION_LENGTH].")
             } else {
                 ValidationResult.Success
             }
