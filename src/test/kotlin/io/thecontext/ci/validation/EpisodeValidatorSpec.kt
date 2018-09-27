@@ -59,15 +59,6 @@ class EpisodeValidatorSpec {
             }
         }
 
-        context("number is negative") {
-
-            it("emits result as failure") {
-                env.validator.validate(testEpisode.copy(number = Int.MIN_VALUE))
-                        .test()
-                        .assertValue { it is ValidationResult.Failure }
-            }
-        }
-
         context("date is in wrong format") {
 
             it("emits result as failure") {
