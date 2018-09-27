@@ -53,7 +53,7 @@ class PodcastXmlFormatterSpec {
                           <title>${episode.title}</title>
                           <description>${episode.description}</description>
                           <pubDate>${episode.date.toDate().toRfc2822()}</pubDate>
-                          <guid>${episode.file.url}</guid>
+                          <guid>${episode.id}</guid>
                           <link>${episode.url}</link>
                           <enclosure url="${episode.file.url}" length="${episode.file.length}" type="audio/mpeg"/>
                           <atom:link rel="replies" type="text/html" href="${episode.discussionUrl}"/>

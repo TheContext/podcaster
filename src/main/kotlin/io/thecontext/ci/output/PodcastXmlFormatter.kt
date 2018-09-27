@@ -26,7 +26,7 @@ interface PodcastXmlFormatter {
         }
 
         override fun format(podcast: Podcast, episodes: List<Episode>, people: List<Person>) = Single
-                .merge(episodes.map { episode -> episodeMarkdownFormatter.format(podcast, episode, people).map { episode to it } })
+                .concat(episodes.map { episode -> episodeMarkdownFormatter.format(podcast, episode, people).map { episode to it } })
                 .toList()
                 .map { episodes ->
                     val contents = mapOf(
@@ -46,6 +46,7 @@ interface PodcastXmlFormatter {
                             "build_date" to LocalDate.now().toRfc2822(),
                             "episodes" to episodes.map { (episode, episodeMarkdown) ->
                                 mapOf(
+                                        "id" to episode.id,
                                         "title" to episode.title,
                                         "description" to episode.description,
                                         "date" to episode.date.toDate().toRfc2822(),
