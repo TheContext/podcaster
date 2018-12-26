@@ -34,16 +34,6 @@
       <enclosure url="{{file_url}}" length="{{file_length}}" type="audio/mpeg"/>
       <atom:link rel="replies" type="text/html" href="{{discussion_url}}"/>
       <itunes:duration>{{duration}}</itunes:duration>
-      {{#hosts}}
-      <atom:author>
-        <atom:name>{{name}}</atom:name>
-      </atom:author>
-      {{/hosts}}
-      {{#guests}}
-      <atom:contributor>
-        <atom:name>{{name}}</atom:name>
-      </atom:contributor>
-      {{/guests}}
       <content:encoded>
         <![CDATA[
 {{&summary}}

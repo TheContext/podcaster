@@ -55,8 +55,6 @@ interface PodcastXmlFormatter {
                                         "url" to episode.url,
                                         "discussion_url" to episode.discussionUrl,
                                         "duration" to episode.duration,
-                                        "hosts" to episode.people.hostIds.map { people.find(it) }.map { mapOf("name" to it.name) },
-                                        "guests" to episode.people.guestIds.map { people.find(it) }.map { mapOf("name" to it.name) },
                                         "summary" to markdownRenderer.renderHtml(episodeMarkdown).trim().prependIndent(" ".repeat(10))
                                 )
                             }
