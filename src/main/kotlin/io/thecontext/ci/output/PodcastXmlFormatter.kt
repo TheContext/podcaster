@@ -28,7 +28,7 @@ interface PodcastXmlFormatter {
         override fun format(podcast: Podcast, episodes: List<Episode>, people: List<Person>) = Single
                 .concat(episodes.map { episode -> episodeMarkdownFormatter.format(podcast, episode, people).map { episode to it } })
                 .toList()
-                .map { episodes ->
+                .map { preparedEpisodes ->
                     val contents = mapOf(
                             "title" to podcast.title,
                             "language" to "${podcast.language.code.toLowerCase()}-${podcast.language.regionCode.toLowerCase()}",
@@ -44,7 +44,7 @@ interface PodcastXmlFormatter {
                             "owners" to podcast.people.ownerIds.map { people.find(it) }.map { mapOf("name" to it.name) },
                             "authors" to podcast.people.authorIds.map { people.find(it) }.map { mapOf("name" to it.name) },
                             "build_date" to LocalDate.now().toRfc2822(),
-                            "episodes" to episodes.map { (episode, episodeMarkdown) ->
+                            "episodes" to preparedEpisodes.map { (episode, episodeMarkdown) ->
                                 mapOf(
                                         "id" to episode.id,
                                         "title" to episode.title,
