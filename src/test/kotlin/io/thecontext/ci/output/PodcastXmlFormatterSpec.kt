@@ -58,18 +58,6 @@ class PodcastXmlFormatterSpec {
                           <enclosure url="${episode.file.url}" length="${episode.file.length}" type="audio/mpeg"/>
                           <atom:link rel="replies" type="text/html" href="${episode.discussionUrl}"/>
                           <itunes:duration>${episode.duration}</itunes:duration>
-                          <atom:author>
-                            <atom:name>${people[0].name}</atom:name>
-                          </atom:author>
-                          <atom:author>
-                            <atom:name>${people[1].name}</atom:name>
-                          </atom:author>
-                          <atom:contributor>
-                            <atom:name>${people[0].name}</atom:name>
-                          </atom:contributor>
-                          <atom:contributor>
-                            <atom:name>${people[1].name}</atom:name>
-                          </atom:contributor>
                           <content:encoded>
                             <![CDATA[
                               ${env.markdownRenderer.renderResult}
