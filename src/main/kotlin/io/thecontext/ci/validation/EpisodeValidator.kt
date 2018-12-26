@@ -80,7 +80,7 @@ class EpisodeValidator(
 
         val descriptionResult = Single.fromCallable {
             if (value.description.length > MAXIMUM_DESCRIPTION_LENGTH) {
-                ValidationResult.Failure("$episodeIdentifierForError: Description length is [${value.description.length}] symbols but should less than [${MAXIMUM_DESCRIPTION_LENGTH}].")
+                ValidationResult.Failure("$episodeIdentifierForError: Description length is [${value.description.length}] symbols but should less than [$MAXIMUM_DESCRIPTION_LENGTH].")
             } else {
                 ValidationResult.Success
             }

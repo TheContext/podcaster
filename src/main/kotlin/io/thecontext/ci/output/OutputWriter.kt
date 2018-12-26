@@ -2,7 +2,6 @@ package io.thecontext.ci.output
 
 import io.reactivex.Scheduler
 import io.reactivex.Single
-import io.reactivex.functions.BiFunction
 import io.reactivex.functions.Function3
 import io.thecontext.ci.value.Episode
 import io.thecontext.ci.value.Person
