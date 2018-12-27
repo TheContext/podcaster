@@ -39,9 +39,11 @@ class PodcastXmlFormatterSpec {
                         <itunes:keywords>${podcast.keywords.joinToString(separator = ",")}</itunes:keywords>
                         <itunes:owner>
                           <itunes:name>${people[0].name}</itunes:name>
+                          <itunes:email>${people[0].email}</itunes:email>
                         </itunes:owner>
                         <itunes:owner>
                           <itunes:name>${people[1].name}</itunes:name>
+                          <itunes:email>${people[1].email}</itunes:email>
                         </itunes:owner>
                         <atom:author>
                           <atom:name>${people[0].name}</atom:name>

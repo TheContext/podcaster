@@ -7,6 +7,7 @@ import io.thecontext.ci.value.Podcast
 val testPerson = Person(
         id = "Person ID",
         name = "Person Name",
+        email = "person@mail.com",
         twitter = "Twitter ID",
         github = "GitHub ID",
         site = "localhost"

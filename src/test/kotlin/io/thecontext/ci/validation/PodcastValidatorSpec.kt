@@ -13,6 +13,15 @@ class PodcastValidatorSpec {
     init {
         val env by memoized { Environment() }
 
+        context("value is valid") {
+
+            it("emits result as success") {
+                env.validator.validate(testPodcast)
+                        .test()
+                        .assertValue { it is ValidationResult.Success }
+            }
+        }
+
         context("url validation failed") {
 
             beforeEach {
@@ -44,6 +53,15 @@ class PodcastValidatorSpec {
             }
         }
 
+        context("owner does not have email address") {
+
+            it("emits result as failure") {
+                env.validator.validate(testPodcast.copy(people = testPodcast.people.copy(ownerIds = listOf(Environment.PERSON_WITHOUT_EMAIL.id))))
+                        .test()
+                        .assertValue { it is ValidationResult.Failure }
+            }
+        }
+
         context("description length is too big") {
 
             it("emits result as failure") {
@@ -55,9 +73,15 @@ class PodcastValidatorSpec {
     }
 
     private class Environment {
+
+        companion object {
+            val PERSON = testPerson
+            val PERSON_WITHOUT_EMAIL = testPerson.copy(id = "person without email", email = null)
+        }
+
         val urlValidator = TestUrlValidator()
 
-        val validator = PodcastValidator(urlValidator, listOf(testPerson))
+        val validator = PodcastValidator(urlValidator, listOf(PERSON, PERSON_WITHOUT_EMAIL))
     }
 
     private class TestUrlValidator : Validator<String> {

@@ -10,6 +10,9 @@ data class Person(
         @JsonProperty("name")
         val name: String,
 
+        @JsonProperty("email")
+        val email: String?,
+
         @JsonProperty("twitter")
         val twitter: String?,
 

@@ -31,6 +31,14 @@ class PodcastValidator(
                     }
                 }
 
+        val ownerResults = Single.fromCallable {
+            if (value.people.ownerIds.any { ownerId -> people.find { it.id == ownerId }?.email == null }) {
+                ValidationResult.Failure("Podcast owners should have email address.")
+            } else {
+                ValidationResult.Success
+            }
+        }
+
         val descriptionResult = Single.fromCallable {
             if (value.description.length > MAXIMUM_DESCRIPTION_LENGTH) {
                 ValidationResult.Failure("Podcast description length is [${value.description.length}] symbols but should less than [$MAXIMUM_DESCRIPTION_LENGTH].")
@@ -40,7 +48,7 @@ class PodcastValidator(
         }
 
         return Single
-                .merge(urlResults + peopleResults + listOf(descriptionResult))
+                .merge(urlResults + peopleResults + ownerResults + listOf(descriptionResult))
                 .toList()
                 .map { it.merge() }
     }
