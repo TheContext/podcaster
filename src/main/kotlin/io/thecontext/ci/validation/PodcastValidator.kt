@@ -14,7 +14,7 @@ class PodcastValidator(
     }
 
     override fun validate(value: Podcast): Single<ValidationResult> {
-        val urlResults = listOf(value.url, value.artworkUrl, value.feedUrl).map {
+        val urlResults = listOf(value.url, value.artworkUrl).map {
             urlValidator.validate(it)
         }
 

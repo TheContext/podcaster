@@ -22,14 +22,13 @@ class PodcastXmlFormatterSpec {
             it("formats") {
                 val expected = """
                     <?xml version="1.0" encoding="utf-8"?>
-                    <rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+                    <rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:content="http://purl.org/rss/1.0/modules/content/">
                       <channel>
                         <title>${podcast.title}</title>
                         <description>${podcast.description}</description>
                         <language>${podcast.language.code.toLowerCase()}-${podcast.language.regionCode.toLowerCase()}</language>
                         <link>${podcast.url}</link>
                         <lastBuildDate>${LocalDate.now().toRfc2822()}</lastBuildDate>
-                        <atom:link rel="self" type="application/rss+xml" href="${podcast.feedUrl}"/>
                         <itunes:subtitle>${podcast.subtitle}</itunes:subtitle>
                         <itunes:image href="${podcast.artworkUrl}"/>
                         <itunes:explicit>${if (podcast.explicit) "yes" else "no"}</itunes:explicit>
@@ -52,7 +51,6 @@ class PodcastXmlFormatterSpec {
                           <guid>${episode.id}</guid>
                           <link>${episode.url}</link>
                           <enclosure url="${episode.file.url}" length="${episode.file.length}" type="audio/mpeg"/>
-                          <atom:link rel="replies" type="text/html" href="${episode.discussionUrl}"/>
                           <itunes:duration>${episode.duration}</itunes:duration>
                           <content:encoded>
                             <![CDATA[

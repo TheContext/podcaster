@@ -32,10 +32,7 @@ data class Podcast(
         val url: String,
 
         @JsonProperty("artworkUrl")
-        val artworkUrl: String,
-
-        @JsonProperty("feedUrl")
-        val feedUrl: String
+        val artworkUrl: String
 
 ) {
 
