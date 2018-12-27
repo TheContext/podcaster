@@ -36,7 +36,6 @@ class PodcastXmlFormatterSpec {
                         <itunes:category text="${podcast.category}">
                           <itunes:category text="${podcast.subcategory}"/>
                         </itunes:category>
-                        <itunes:keywords>${podcast.keywords.joinToString(separator = ",")}</itunes:keywords>
                         <itunes:owner>
                           <itunes:name>${people[0].name}</itunes:name>
                           <itunes:email>${people[0].email}</itunes:email>

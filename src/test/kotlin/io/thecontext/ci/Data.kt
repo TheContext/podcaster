@@ -28,7 +28,6 @@ val testPodcast = Podcast(
         explicit = false,
         category = "Podcast category",
         subcategory = "Podcast subcategory",
-        keywords = listOf("keyword"),
         url = "localhost/podcast",
         artworkUrl = "localhost/podcast/artwork",
         feedUrl = "localhost/podcast/feed"
