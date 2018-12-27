@@ -40,7 +40,6 @@ interface PodcastXmlFormatter {
                             "explicit" to if (podcast.explicit) "yes" else "no",
                             "category" to podcast.category,
                             "subcategory" to podcast.subcategory,
-                            "keywords" to podcast.keywords.joinToString(separator = ","),
                             "owners" to podcast.people.ownerIds.map { people.find(it) }.map { mapOf("name" to it.name, "email" to it.email) },
                             "authors" to podcast.people.authorIds.map { people.find(it) }.map { mapOf("name" to it.name) },
                             "build_date" to LocalDate.now().toRfc2822(),

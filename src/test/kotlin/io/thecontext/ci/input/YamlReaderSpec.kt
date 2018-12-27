@@ -66,8 +66,6 @@ class YamlReaderSpec {
                     explicit: ${podcast.explicit}
                     category: ${podcast.category}
                     subcategory: ${podcast.subcategory}
-                    keywords:
-                        - ${podcast.keywords.first()}
                     url: ${podcast.url}
                     artworkUrl: ${podcast.artworkUrl}
                     feedUrl: ${podcast.feedUrl}

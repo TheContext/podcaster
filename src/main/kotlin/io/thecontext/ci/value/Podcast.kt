@@ -28,9 +28,6 @@ data class Podcast(
         @JsonProperty("subcategory")
         val subcategory: String,
 
-        @JsonProperty("keywords")
-        val keywords: List<String>,
-
         @JsonProperty("url")
         val url: String,
 
