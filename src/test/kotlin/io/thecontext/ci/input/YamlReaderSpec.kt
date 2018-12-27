@@ -30,6 +30,7 @@ class YamlReaderSpec {
                     """
                     - id: ${person.id}
                       name: ${person.name}
+                      email: ${person.email}
                       twitter: ${person.twitter}
                       github: ${person.github}
                       website: ${person.site}

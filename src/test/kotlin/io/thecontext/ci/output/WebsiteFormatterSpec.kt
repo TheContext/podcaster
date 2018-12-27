@@ -19,7 +19,7 @@ class WebsiteFormatterSpec {
                 ioScheduler = Schedulers.trampoline()
         )
 
-        val host1 = Person(
+        val host1 = testPerson.copy(
                 id = "host1",
                 github = "github1",
                 name = "Person 1",
@@ -27,7 +27,7 @@ class WebsiteFormatterSpec {
                 twitter = "person1"
         )
 
-        val host2 = Person(
+        val host2 = testPerson.copy(
                 id = "host2",
                 github = "github2",
                 name = "Person 2",
@@ -35,7 +35,7 @@ class WebsiteFormatterSpec {
                 twitter = "person2"
         )
 
-        val guest1 = Person(
+        val guest1 = testPerson.copy(
                 id = "guest1",
                 github = "github3",
                 name = "Person 3",
@@ -43,7 +43,7 @@ class WebsiteFormatterSpec {
                 twitter = "person3"
         )
 
-        val guest2 = Person(
+        val guest2 = testPerson.copy(
                 id = "guest2",
                 github = "github4",
                 name = "Person 4",
