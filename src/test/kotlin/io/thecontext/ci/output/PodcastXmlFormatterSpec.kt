@@ -44,12 +44,7 @@ class PodcastXmlFormatterSpec {
                           <itunes:name>${people[1].name}</itunes:name>
                           <itunes:email>${people[1].email}</itunes:email>
                         </itunes:owner>
-                        <atom:author>
-                          <atom:name>${people[0].name}</atom:name>
-                        </atom:author>
-                        <atom:author>
-                          <atom:name>${people[1].name}</atom:name>
-                        </atom:author>
+                        <itunes:author>${people.map { it.name }.joinToString()}</itunes:author>
                         <item>
                           <title>${episode.title}</title>
                           <description>${episode.description}</description>
