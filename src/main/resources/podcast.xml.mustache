@@ -19,11 +19,7 @@
       <itunes:email>{{email}}</itunes:email>
     </itunes:owner>
     {{/owners}}
-    {{#authors}}
-    <atom:author>
-      <atom:name>{{name}}</atom:name>
-    </atom:author>
-    {{/authors}}
+    <itunes:author>{{authors}}</itunes:author>
     {{#episodes}}
     <item>
       <title>{{title}}</title>
