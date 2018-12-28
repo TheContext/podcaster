@@ -7,9 +7,6 @@ data class Podcast(
         @JsonProperty("title")
         val title: String,
 
-        @JsonProperty("subtitle")
-        val subtitle: String,
-
         @JsonProperty("description")
         val description: String,
 

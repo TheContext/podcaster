@@ -51,7 +51,6 @@ class YamlReaderSpec {
             val podcastYaml =
                     """
                     title: ${podcast.title}
-                    subtitle: ${podcast.subtitle}
                     description: ${podcast.description}
                     peopleIds:
                         owners:
