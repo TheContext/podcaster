@@ -33,7 +33,6 @@ interface PodcastXmlFormatter {
                             "title" to podcast.title,
                             "language" to "${podcast.language.code.toLowerCase()}-${podcast.language.regionCode.toLowerCase()}",
                             "url" to podcast.url,
-                            "feed_url" to podcast.feedUrl,
                             "subtitle" to podcast.subtitle,
                             "description" to podcast.description,
                             "artwork_url" to podcast.artworkUrl,

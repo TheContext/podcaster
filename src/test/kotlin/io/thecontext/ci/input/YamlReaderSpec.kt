@@ -68,7 +68,6 @@ class YamlReaderSpec {
                     subcategory: ${podcast.subcategory}
                     url: ${podcast.url}
                     artworkUrl: ${podcast.artworkUrl}
-                    feedUrl: ${podcast.feedUrl}
                     """
 
             beforeEach {
