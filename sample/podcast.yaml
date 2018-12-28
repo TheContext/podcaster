@@ -1,8 +1,7 @@
 title: "The Context #androiddev"
-description: The Context is a podcast about Android Development
+description: "The Context is a podcast about Android Development"
 peopleIds:
-  owners:
-    - artem.zinnatullin
+  owner: artem.zinnatullin
   authors:
     - artem.zinnatullin
     - hannes.dorfmann

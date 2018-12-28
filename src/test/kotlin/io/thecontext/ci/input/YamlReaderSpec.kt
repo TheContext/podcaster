@@ -53,9 +53,7 @@ class YamlReaderSpec {
                     title: ${podcast.title}
                     description: ${podcast.description}
                     peopleIds:
-                        owners:
-                            - ${podcast.people.ownerIds[0]}
-                            - ${podcast.people.ownerIds[1]}
+                        owner: ${podcast.people.ownerId}
                         authors:
                             - ${podcast.people.authorIds[0]}
                             - ${podcast.people.authorIds[1]}

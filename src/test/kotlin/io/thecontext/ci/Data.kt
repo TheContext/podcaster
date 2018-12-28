@@ -17,7 +17,7 @@ val testPodcast = Podcast(
         title = "Podcast Title",
         description = "Podcast Description",
         people = Podcast.People(
-                ownerIds = listOf(testPerson.id, testPerson.id),
+                ownerId = testPerson.id,
                 authorIds = listOf(testPerson.id, testPerson.id)
         ),
         language = Podcast.Language(
