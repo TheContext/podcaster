@@ -29,7 +29,6 @@ class PodcastXmlFormatterSpec {
                         <language>${podcast.language.code.toLowerCase()}-${podcast.language.regionCode.toLowerCase()}</language>
                         <link>${podcast.url}</link>
                         <lastBuildDate>${LocalDate.now().toRfc2822()}</lastBuildDate>
-                        <itunes:subtitle>${podcast.subtitle}</itunes:subtitle>
                         <itunes:image href="${podcast.artworkUrl}"/>
                         <itunes:explicit>${if (podcast.explicit) "yes" else "no"}</itunes:explicit>
                         <itunes:category text="${podcast.category}">

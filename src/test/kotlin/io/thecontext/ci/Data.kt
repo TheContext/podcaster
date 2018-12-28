@@ -15,7 +15,6 @@ val testPerson = Person(
 
 val testPodcast = Podcast(
         title = "Podcast Title",
-        subtitle = "Podcast Subtitle",
         description = "Podcast Description",
         people = Podcast.People(
                 ownerIds = listOf(testPerson.id, testPerson.id),
