@@ -19,7 +19,7 @@ class PodcastValidator(
         }
 
         val peopleResults = emptyList<String>()
-                .plus(value.people.ownerIds)
+                .plus(value.people.ownerId)
                 .plus(value.people.authorIds)
                 .map { personId ->
                     Single.fromCallable {
@@ -32,8 +32,8 @@ class PodcastValidator(
                 }
 
         val ownerResults = Single.fromCallable {
-            if (value.people.ownerIds.any { ownerId -> people.find { it.id == ownerId }?.email == null }) {
-                ValidationResult.Failure("Podcast owners should have email address.")
+            if (people.find { it.id == value.people.ownerId }?.email == null) {
+                ValidationResult.Failure("Podcast owner should have an email address.")
             } else {
                 ValidationResult.Success
             }

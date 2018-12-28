@@ -35,12 +35,8 @@ class PodcastXmlFormatterSpec {
                           <itunes:category text="${podcast.subcategory}"/>
                         </itunes:category>
                         <itunes:owner>
-                          <itunes:name>${people[0].name}</itunes:name>
-                          <itunes:email>${people[0].email}</itunes:email>
-                        </itunes:owner>
-                        <itunes:owner>
-                          <itunes:name>${people[1].name}</itunes:name>
-                          <itunes:email>${people[1].email}</itunes:email>
+                          <itunes:name>${people.first().name}</itunes:name>
+                          <itunes:email>${people.first().email}</itunes:email>
                         </itunes:owner>
                         <itunes:author>${people.map { it.name }.joinToString()}</itunes:author>
                         <item>

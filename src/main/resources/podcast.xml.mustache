@@ -11,12 +11,10 @@
     <itunes:category text="{{category}}">
       <itunes:category text="{{subcategory}}"/>
     </itunes:category>
-    {{#owners}}
     <itunes:owner>
-      <itunes:name>{{name}}</itunes:name>
-      <itunes:email>{{email}}</itunes:email>
+      <itunes:name>{{owner_name}}</itunes:name>
+      <itunes:email>{{owner_email}}</itunes:email>
     </itunes:owner>
-    {{/owners}}
     <itunes:author>{{authors}}</itunes:author>
     {{#episodes}}
     <item>

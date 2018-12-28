@@ -45,8 +45,8 @@ data class Podcast(
 
     data class People(
 
-            @JsonProperty("owners")
-            val ownerIds: List<String>,
+            @JsonProperty("owner")
+            val ownerId: String,
 
             @JsonProperty("authors")
             val authorIds: List<String>

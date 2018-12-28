@@ -38,7 +38,7 @@ class PodcastValidatorSpec {
         context("owner is not available") {
 
             it("emits result as failure") {
-                env.validator.validate(testPodcast.copy(people = testPodcast.people.copy(ownerIds = listOf("not available"))))
+                env.validator.validate(testPodcast.copy(people = testPodcast.people.copy(ownerId = "not available")))
                         .test()
                         .assertValue { it is ValidationResult.Failure }
             }
@@ -56,7 +56,7 @@ class PodcastValidatorSpec {
         context("owner does not have email address") {
 
             it("emits result as failure") {
-                env.validator.validate(testPodcast.copy(people = testPodcast.people.copy(ownerIds = listOf(Environment.PERSON_WITHOUT_EMAIL.id))))
+                env.validator.validate(testPodcast.copy(people = testPodcast.people.copy(ownerId = Environment.PERSON_WITHOUT_EMAIL.id)))
                         .test()
                         .assertValue { it is ValidationResult.Failure }
             }
