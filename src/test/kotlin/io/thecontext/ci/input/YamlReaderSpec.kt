@@ -82,6 +82,7 @@ class YamlReaderSpec {
                     """
                     id: ${episode.id}
                     number: ${episode.number}
+                    part: ${episode.part}
                     title: ${episode.title}
                     description: ${episode.description}
                     date: ${episode.date}

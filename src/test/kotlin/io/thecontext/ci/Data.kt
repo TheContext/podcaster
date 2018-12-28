@@ -34,6 +34,7 @@ val testPodcast = Podcast(
 val testEpisode = Episode(
         id = "thecontext/episode/42",
         number = 42,
+        part = 2,
         title = "Episode Title",
         description = "Episode Description",
         people = Episode.People(

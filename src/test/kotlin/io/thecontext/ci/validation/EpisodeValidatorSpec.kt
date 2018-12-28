@@ -28,6 +28,24 @@ class EpisodeValidatorSpec {
             }
         }
 
+        context("number is negative") {
+
+            it("emits result as failure") {
+                env.validator.validate(testEpisode.copy(number = -1))
+                        .test()
+                        .assertValue { it is ValidationResult.Failure }
+            }
+        }
+
+        context("part is negative") {
+
+            it("emits result as failure") {
+                env.validator.validate(testEpisode.copy(part = -1))
+                        .test()
+                        .assertValue { it is ValidationResult.Failure }
+            }
+        }
+
         context("url validation failed") {
 
             beforeEach {

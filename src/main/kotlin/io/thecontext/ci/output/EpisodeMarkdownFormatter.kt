@@ -23,7 +23,6 @@ interface EpisodeMarkdownFormatter {
         override fun format(podcast: Podcast, episode: Episode, people: List<Person>) = Single
                 .fromCallable {
                     val contents = mapOf(
-                            "title" to episode.title,
                             "podcast_url" to podcast.url,
                             "discussion_url" to episode.discussionUrl,
                             "description" to episode.description,
