@@ -10,7 +10,10 @@ val testPerson = Person(
         email = "person@mail.com",
         twitter = "Twitter ID",
         github = "GitHub ID",
-        site = "localhost"
+        links = listOf(Person.Link(
+                name = "blog",
+                url = "https://localhost"
+        ))
 )
 
 val testPodcast = Podcast(

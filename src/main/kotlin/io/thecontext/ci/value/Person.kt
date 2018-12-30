@@ -19,9 +19,21 @@ data class Person(
         @JsonProperty("github")
         val github: String?,
 
-        @JsonProperty("website")
-        val site: String?
+        @JsonProperty("links")
+        val links: List<Link>
 
-)
+) {
+
+    data class Link(
+
+            @JsonProperty("name")
+            val name: String,
+
+            @JsonProperty("url")
+            val url: String
+
+    )
+
+}
 
 fun List<Person>.find(id: String) = this.find { it.id == id } ?: throw IllegalArgumentException("Person [$id] is not available.")
