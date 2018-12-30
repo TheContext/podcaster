@@ -44,9 +44,9 @@ interface OutputWriter {
             val feed = podcastXmlFormatter.format(podcast, episodes, people)
                     .flatMap { podcastXml ->
                         Single.fromCallable {
-                            showNotesDirectory.mkdirs()
+                            rssFeedDirectory.mkdirs()
 
-                            textWriter.write(File(showNotesDirectory, FileNames.FEED), podcastXml)
+                            textWriter.write(File(rssFeedDirectory, FileNames.FEED), podcastXml)
                         }
                     }
                     .map { Unit }
