@@ -32,13 +32,13 @@ class EpisodeMarkdownFormatterSpec {
 
                     ## Guests
 
-                    * ${people[0].name}: [Twitter](https://twitter.com/${people[0].twitter}), [GitHub](https://github.com/${people[0].github}), [website](${people[0].site})
-                    * ${people[1].name}: [Twitter](https://twitter.com/${people[1].twitter}), [GitHub](https://github.com/${people[1].github}), [website](${people[1].site})
+                    * ${people[0].name}: [Twitter](https://twitter.com/${people[0].twitter}), [GitHub](https://github.com/${people[0].github}), [${people[0].links.first().name}](${people[0].links.first().url})
+                    * ${people[1].name}: [Twitter](https://twitter.com/${people[1].twitter}), [GitHub](https://github.com/${people[1].github}), [${people[1].links.first().name}](${people[1].links.first().url})
 
                     ## Hosts
 
-                    * ${people[0].name}: [Twitter](https://twitter.com/${people[0].twitter}), [GitHub](https://github.com/${people[0].github}), [website](${people[0].site})
-                    * ${people[1].name}: [Twitter](https://twitter.com/${people[1].twitter}), [GitHub](https://github.com/${people[1].github}), [website](${people[1].site})
+                    * ${people[0].name}: [Twitter](https://twitter.com/${people[0].twitter}), [GitHub](https://github.com/${people[0].github}), [${people[0].links.first().name}](${people[0].links.first().url})
+                    * ${people[1].name}: [Twitter](https://twitter.com/${people[1].twitter}), [GitHub](https://github.com/${people[1].github}), [${people[1].links.first().name}](${people[1].links.first().url})
 
                     ## Notes
 

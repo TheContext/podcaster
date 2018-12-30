@@ -41,11 +41,7 @@ interface WebsiteFormatter {
                 formatLink("GitHub", "https://github.com/$it")
             }
 
-            val siteLink = person.site?.let {
-                formatLink("website", it)
-            }
-
-            val links = listOfNotNull(twitterLink, githubLink, siteLink)
+            val links = listOfNotNull(twitterLink, githubLink) + person.links.map { formatLink(it.name, it.url) }
 
             return if (links.isEmpty()) {
                 person.name

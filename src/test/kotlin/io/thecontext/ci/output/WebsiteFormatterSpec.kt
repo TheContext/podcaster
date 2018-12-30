@@ -7,9 +7,7 @@ import io.reactivex.schedulers.Schedulers
 import io.thecontext.ci.testEpisode
 import io.thecontext.ci.testPerson
 import io.thecontext.ci.testPodcast
-import io.thecontext.ci.value.Person
 import org.junit.runner.RunWith
-import kotlin.math.exp
 
 @RunWith(Spectrum::class)
 class WebsiteFormatterSpec {
@@ -23,7 +21,6 @@ class WebsiteFormatterSpec {
                 id = "host1",
                 github = "github1",
                 name = "Person 1",
-                site = "person1.com",
                 twitter = "person1"
         )
 
@@ -31,7 +28,6 @@ class WebsiteFormatterSpec {
                 id = "host2",
                 github = "github2",
                 name = "Person 2",
-                site = "person2.com",
                 twitter = "person2"
         )
 
@@ -39,7 +35,6 @@ class WebsiteFormatterSpec {
                 id = "guest1",
                 github = "github3",
                 name = "Person 3",
-                site = "person3.com",
                 twitter = "person3"
         )
 
@@ -47,7 +42,6 @@ class WebsiteFormatterSpec {
                 id = "guest2",
                 github = "github4",
                 name = "Person 4",
-                site = "person4.com",
                 twitter = "person4"
         )
 
@@ -74,13 +68,13 @@ class WebsiteFormatterSpec {
 
                     ## Guests
 
-                    * ${guest1.name}: [Twitter](https://twitter.com/${guest1.twitter}), [GitHub](https://github.com/${guest1.github}), [website](${guest1.site})
-                    * ${guest2.name}: [Twitter](https://twitter.com/${guest2.twitter}), [GitHub](https://github.com/${guest2.github}), [website](${guest2.site})
+                    * ${guest1.name}: [Twitter](https://twitter.com/${guest1.twitter}), [GitHub](https://github.com/${guest1.github}), [${guest1.links.first().name}](${guest1.links.first().url})
+                    * ${guest2.name}: [Twitter](https://twitter.com/${guest2.twitter}), [GitHub](https://github.com/${guest2.github}), [${guest2.links.first().name}](${guest2.links.first().url})
 
                     ## Hosts
 
-                    * ${host1.name}: [Twitter](https://twitter.com/${host1.twitter}), [GitHub](https://github.com/${host1.github}), [website](${host1.site})
-                    * ${host2.name}: [Twitter](https://twitter.com/${host2.twitter}), [GitHub](https://github.com/${host2.github}), [website](${host2.site})
+                    * ${host1.name}: [Twitter](https://twitter.com/${host1.twitter}), [GitHub](https://github.com/${host1.github}), [${host1.links.first().name}](${host1.links.first().url})
+                    * ${host2.name}: [Twitter](https://twitter.com/${host2.twitter}), [GitHub](https://github.com/${host2.github}), [${host2.links.first().name}](${host2.links.first().url})
 
                     ## Notes
 

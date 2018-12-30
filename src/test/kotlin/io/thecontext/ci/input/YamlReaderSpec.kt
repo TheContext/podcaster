@@ -33,7 +33,9 @@ class YamlReaderSpec {
                       email: ${person.email}
                       twitter: ${person.twitter}
                       github: ${person.github}
-                      website: ${person.site}
+                      links:
+                          - name: ${person.links.first().name}
+                            url: ${person.links.first().url}
                     """
 
             beforeEach {
