@@ -14,8 +14,11 @@ class PodcastXmlFormatterSpec {
         val env by memoized { Environment() }
 
         val podcast = testPodcast
-        val episode = testEpisode
         val people = listOf(testPerson, testPerson)
+
+        val episode1 = testEpisode.copy(number = 1, part = null)
+        val episode2Part1 = testEpisode.copy(number = 2, part = 1)
+        val episode2Part2 = testEpisode.copy(number = 2, part = 2)
 
         context("regular podcast") {
 
@@ -40,13 +43,41 @@ class PodcastXmlFormatterSpec {
                         </itunes:owner>
                         <itunes:author>${people.map { it.name }.joinToString()}</itunes:author>
                         <item>
-                          <title>Episode ${episode.number}, Part ${episode.part}: ${episode.title}</title>
-                          <description>${episode.description}</description>
-                          <pubDate>${episode.date.toDate().toRfc2822()}</pubDate>
-                          <guid>${episode.id}</guid>
-                          <link>${episode.url}</link>
-                          <enclosure url="${episode.file.url}" length="${episode.file.length}" type="audio/mpeg"/>
-                          <itunes:duration>${episode.duration}</itunes:duration>
+                          <title>Episode ${episode1.number}: ${episode1.title}</title>
+                          <description>${episode1.description}</description>
+                          <pubDate>${episode1.date.toDate().toRfc2822()}</pubDate>
+                          <guid>${episode1.id}</guid>
+                          <link>${episode1.url}</link>
+                          <enclosure url="${episode1.file.url}" length="${episode1.file.length}" type="audio/mpeg"/>
+                          <itunes:duration>${episode1.duration}</itunes:duration>
+                          <content:encoded>
+                            <![CDATA[
+                              ${env.markdownRenderer.renderResult}
+                            ]]>
+                          </content:encoded>
+                        </item>
+                        <item>
+                          <title>Episode ${episode2Part1.number}, Part ${episode2Part1.part}: ${episode2Part1.title}</title>
+                          <description>${episode2Part1.description}</description>
+                          <pubDate>${episode2Part1.date.toDate().toRfc2822()}</pubDate>
+                          <guid>${episode2Part1.id}</guid>
+                          <link>${episode2Part1.url}</link>
+                          <enclosure url="${episode2Part1.file.url}" length="${episode2Part1.file.length}" type="audio/mpeg"/>
+                          <itunes:duration>${episode2Part1.duration}</itunes:duration>
+                          <content:encoded>
+                            <![CDATA[
+                              ${env.markdownRenderer.renderResult}
+                            ]]>
+                          </content:encoded>
+                        </item>
+                        <item>
+                          <title>Episode ${episode2Part2.number}, Part ${episode2Part2.part}: ${episode2Part2.title}</title>
+                          <description>${episode2Part2.description}</description>
+                          <pubDate>${episode2Part2.date.toDate().toRfc2822()}</pubDate>
+                          <guid>${episode2Part2.id}</guid>
+                          <link>${episode2Part2.url}</link>
+                          <enclosure url="${episode2Part2.file.url}" length="${episode2Part2.file.length}" type="audio/mpeg"/>
+                          <itunes:duration>${episode2Part2.duration}</itunes:duration>
                           <content:encoded>
                             <![CDATA[
                               ${env.markdownRenderer.renderResult}
@@ -59,7 +90,7 @@ class PodcastXmlFormatterSpec {
                     """
 
                 // Note: Mustache inserts EOL in the end. It is simulated here using an empty line.
-                env.formatter.format(podcast, listOf(episode), people)
+                env.formatter.format(podcast, listOf(episode2Part2, episode1, episode2Part1), people)
                         .test()
                         .assertResult(expected.trimIndent())
             }
