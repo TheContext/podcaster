@@ -45,7 +45,7 @@ interface InputFilesLocator {
                     val episodes = directory
                             .walk()
                             .maxDepth(1)
-                            .filter { it.isDirectory && it != directory }
+                            .filter { it.isDirectory && !it.isHidden && it != directory }
                             .map { File(it, FileNames.EPISODE) to File(it, FileNames.EPISODE_NOTES) }
                             .toMap()
 
