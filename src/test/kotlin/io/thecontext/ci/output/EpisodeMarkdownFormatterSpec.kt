@@ -25,12 +25,10 @@ class EpisodeMarkdownFormatterSpec {
 
             it("formats") {
                 val expected = """
-                    # ${episode.title}
+                    ${episode.description}
 
                     * [How to listen and subscribe](${podcast.url})
                     * [Discussion after the episode](${episode.discussionUrl})
-
-                    ${episode.description}
 
                     ## Guests
 

@@ -11,6 +11,9 @@ data class Episode(
 
         @JsonProperty("number")
         val number: Int,
+
+        @JsonProperty("part")
+        val part: Int?,
   
         @JsonProperty("title")
         val title: String,

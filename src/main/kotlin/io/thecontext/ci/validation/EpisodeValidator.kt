@@ -60,6 +60,14 @@ class EpisodeValidator(
             }
         }
 
+        val partResult = Single.fromCallable {
+            if (value.part != null && value.part < 0) {
+                ValidationResult.Failure("$episodeIdentifierForError: Episode part is negative.")
+            } else {
+                ValidationResult.Success
+            }
+        }
+
         val dateResult = Single.fromCallable {
             try {
                 value.date.toDate()
@@ -87,7 +95,7 @@ class EpisodeValidator(
         }
 
         return Single
-                .merge(urlResults + peopleResults + listOf(idResult, numberResult, dateResult, fileLengthResult, descriptionResult))
+                .merge(urlResults + peopleResults + listOf(idResult, numberResult, partResult, dateResult, fileLengthResult, descriptionResult))
                 .toList()
                 .map { it.merge() }
     }

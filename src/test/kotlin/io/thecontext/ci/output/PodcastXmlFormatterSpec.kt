@@ -40,7 +40,7 @@ class PodcastXmlFormatterSpec {
                         </itunes:owner>
                         <itunes:author>${people.map { it.name }.joinToString()}</itunes:author>
                         <item>
-                          <title>${episode.title}</title>
+                          <title>Episode ${episode.number}, Part ${episode.part}: ${episode.title}</title>
                           <description>${episode.description}</description>
                           <pubDate>${episode.date.toDate().toRfc2822()}</pubDate>
                           <guid>${episode.id}</guid>

@@ -43,9 +43,15 @@ interface PodcastXmlFormatter {
                             "authors" to podcast.people.authorIds.map { people.find(it).name }.joinToString(),
                             "build_date" to LocalDate.now().toRfc2822(),
                             "episodes" to preparedEpisodes.map { (episode, episodeMarkdown) ->
+                                val episodeTitle = if (episode.part == null) {
+                                    "Episode ${episode.number}: ${episode.title}"
+                                } else {
+                                    "Episode ${episode.number}, Part ${episode.part}: ${episode.title}"
+                                }
+
                                 mapOf(
                                         "id" to episode.id,
-                                        "title" to episode.title,
+                                        "title" to episodeTitle,
                                         "description" to episode.description,
                                         "date" to episode.date.toDate().toRfc2822(),
                                         "file_url" to episode.file.url,
