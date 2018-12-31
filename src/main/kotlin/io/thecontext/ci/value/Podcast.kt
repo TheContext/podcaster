@@ -14,7 +14,7 @@ data class Podcast(
         val people: People,
 
         @JsonProperty("language")
-        val language: Language,
+        val language: String,
 
         @JsonProperty("explicit")
         val explicit: Boolean,
@@ -32,16 +32,6 @@ data class Podcast(
         val artworkUrl: String
 
 ) {
-
-    data class Language(
-
-            @JsonProperty("code")
-            val code: String,
-
-            @JsonProperty("regionCode")
-            val regionCode: String
-
-    )
 
     data class People(
 

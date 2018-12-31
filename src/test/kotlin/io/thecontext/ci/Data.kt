@@ -23,10 +23,7 @@ val testPodcast = Podcast(
                 ownerId = testPerson.id,
                 authorIds = listOf(testPerson.id, testPerson.id)
         ),
-        language = Podcast.Language(
-                code = "en",
-                regionCode = "us"
-        ),
+        language = "en",
         explicit = false,
         category = "Podcast category",
         subcategory = "Podcast subcategory",
