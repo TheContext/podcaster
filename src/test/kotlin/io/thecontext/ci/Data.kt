@@ -41,7 +41,6 @@ val testEpisode = Episode(
                 hostIds = listOf(testPerson.id, testPerson.id),
                 guestIds = listOf(testPerson.id, testPerson.id)
         ),
-        url = "localhost/episode",
         discussionUrl = "localhost/discussion",
         time = "2000-12-30T10:15",
         duration = "100:00",
