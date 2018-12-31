@@ -16,9 +16,9 @@ class PodcastXmlFormatterSpec {
         val podcast = testPodcast
         val people = listOf(testPerson, testPerson)
 
-        val episode1 = testEpisode.copy(number = 1, part = null)
-        val episode2Part1 = testEpisode.copy(number = 2, part = 1)
-        val episode2Part2 = testEpisode.copy(number = 2, part = 2)
+        val episode1 = testEpisode.copy(number = 1, part = null, date = "2000-01-01")
+        val episode2Part1 = testEpisode.copy(number = 2, part = 1, date = "2000-01-02")
+        val episode2Part2 = testEpisode.copy(number = 2, part = 2, date = "2000-01-03")
 
         context("regular podcast") {
 
