@@ -55,7 +55,6 @@ interface FeedRenderer {
                                         "date" to time.formatRfc2822(time.parseIso(episode.time)),
                                         "file_url" to episode.file.url,
                                         "file_length" to episode.file.length,
-                                        "url" to episode.url,
                                         "discussion_url" to episode.discussionUrl,
                                         "duration" to episode.duration,
                                         "summary" to htmlRenderer.render(episodeMarkdown).trim().prependIndent(" ".repeat(10))

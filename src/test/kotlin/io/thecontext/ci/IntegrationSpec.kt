@@ -32,7 +32,7 @@ class IntegrationSpec {
                     }
                 }
 
-                Runner(context).run(inputDir, actualOutputDir, actualOutputDir, actualOutputDir)
+                Runner(context).run(inputDir, actualOutputDir, actualOutputDir)
             }
 
             it("creates RSS feed") {

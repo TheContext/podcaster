@@ -19,7 +19,6 @@ class EpisodeValidator(
     override fun validate(value: Episode): Single<ValidationResult> {
         val episodeIdentifierForError = value.title
         val urlResults = emptyList<String>()
-                .plus(value.url)
                 .plus(value.discussionUrl)
                 .plus(value.file.url)
                 .map {
