@@ -16,7 +16,7 @@ interface OutputContext : Context {
         private val textWriter by lazy { TextWriter.Impl() }
 
         private val feedEpisodeRenderer by lazy { FeedEpisodeRenderer.Impl(mustacheRenderer, ioScheduler) }
-        private val feedRenderer by lazy { FeedRenderer.Impl(feedEpisodeRenderer, markdownRenderer, mustacheRenderer, ioScheduler) }
+        private val feedRenderer by lazy { FeedRenderer.Impl(feedEpisodeRenderer, markdownRenderer, mustacheRenderer, time, ioScheduler) }
         private val websiteRenderer by lazy { WebsiteRenderer.Impl(mustacheRenderer, ioScheduler) }
 
         override val outputWriter by lazy { OutputWriter.Impl(feedRenderer, feedEpisodeRenderer, websiteRenderer, textWriter, ioScheduler) }

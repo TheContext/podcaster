@@ -17,7 +17,7 @@ interface ValidationContext : Context {
         private val urlValidator by lazy { UrlValidator(ioScheduler) }
 
         override val podcastValidator by lazy { PodcastValidator(urlValidator, people) }
-        override val episodeValidator by lazy { EpisodeValidator(urlValidator, people) }
+        override val episodeValidator by lazy { EpisodeValidator(urlValidator, people, time) }
         override val episodesValidator by lazy { EpisodeListValidator(ioScheduler) }
     }
 }

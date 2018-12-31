@@ -2,15 +2,13 @@ package io.thecontext.ci.output.feed
 
 import io.reactivex.Scheduler
 import io.reactivex.Single
+import io.thecontext.ci.Time
 import io.thecontext.ci.output.HtmlRenderer
 import io.thecontext.ci.output.TemplateRenderer
-import io.thecontext.ci.toDate
-import io.thecontext.ci.toRfc2822
 import io.thecontext.ci.value.Episode
 import io.thecontext.ci.value.Person
 import io.thecontext.ci.value.Podcast
 import io.thecontext.ci.value.find
-import java.time.LocalDate
 
 interface FeedRenderer {
 
@@ -20,11 +18,12 @@ interface FeedRenderer {
             private val feedEpisodeRenderer: FeedEpisodeRenderer,
             private val htmlRenderer: HtmlRenderer,
             private val templateRenderer: TemplateRenderer,
+            private val time: Time,
             private val ioScheduler: Scheduler
     ) : FeedRenderer {
 
         override fun render(podcast: Podcast, episodes: List<Episode>, people: List<Person>) = Single
-                .concat(episodes.sortedBy { it.date.toDate() }.map { episode ->
+                .concat(episodes.sortedBy { time.parseIso(it.time) }.map { episode ->
                     feedEpisodeRenderer.render(podcast, episode, people).map { episode to it }
                 })
                 .toList()
@@ -41,7 +40,7 @@ interface FeedRenderer {
                             "owner_name" to people.find(podcast.people.ownerId).name,
                             "owner_email" to people.find(podcast.people.ownerId).email!!,
                             "authors" to podcast.people.authorIds.map { people.find(it).name }.joinToString(),
-                            "build_date" to LocalDate.now().toRfc2822(),
+                            "build_date" to time.formatRfc2822(time.current()),
                             "episodes" to preparedEpisodes.map { (episode, episodeMarkdown) ->
                                 val episodeTitle = if (episode.part == null) {
                                     "Episode ${episode.number}: ${episode.title}"
@@ -53,7 +52,7 @@ interface FeedRenderer {
                                         "id" to episode.id,
                                         "title" to episodeTitle,
                                         "description" to episode.description,
-                                        "date" to episode.date.toDate().toRfc2822(),
+                                        "date" to time.formatRfc2822(time.parseIso(episode.time)),
                                         "file_url" to episode.file.url,
                                         "file_length" to episode.file.length,
                                         "url" to episode.url,

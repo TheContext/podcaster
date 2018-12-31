@@ -3,6 +3,7 @@ package io.thecontext.ci.validation
 import com.greghaskins.spectrum.Spectrum
 import com.greghaskins.spectrum.dsl.specification.Specification.*
 import io.reactivex.Single
+import io.thecontext.ci.Time
 import io.thecontext.ci.memoized
 import io.thecontext.ci.testEpisode
 import io.thecontext.ci.testPerson
@@ -80,7 +81,7 @@ class EpisodeValidatorSpec {
         context("date is in wrong format") {
 
             it("emits result as failure") {
-                env.validator.validate(testEpisode.copy(date = "ZERO"))
+                env.validator.validate(testEpisode.copy(time = "ZERO"))
                         .test()
                         .assertValue { it is ValidationResult.Failure }
             }
@@ -108,7 +109,7 @@ class EpisodeValidatorSpec {
     private class Environment {
         val urlValidator = TestUrlValidator()
 
-        val validator = EpisodeValidator(urlValidator, listOf(testPerson))
+        val validator = EpisodeValidator(urlValidator, listOf(testPerson), Time.Impl())
     }
 
     private class TestUrlValidator : Validator<String> {
