@@ -26,7 +26,9 @@ interface PodcastXmlFormatter {
         }
 
         override fun format(podcast: Podcast, episodes: List<Episode>, people: List<Person>) = Single
-                .concat(episodes.map { episode -> episodeMarkdownFormatter.format(podcast, episode, people).map { episode to it } })
+                .concat(episodes.sortedBy { it.date.toDate() }.map { episode ->
+                    episodeMarkdownFormatter.format(podcast, episode, people).map { episode to it }
+                })
                 .toList()
                 .map { preparedEpisodes ->
                     val contents = mapOf(
