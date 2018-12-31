@@ -1,26 +1,23 @@
-package io.thecontext.ci.output
+package io.thecontext.ci.output.feed
 
 import io.reactivex.Scheduler
 import io.reactivex.Single
+import io.thecontext.ci.output.TemplateRenderer
 import io.thecontext.ci.value.Episode
 import io.thecontext.ci.value.Person
 import io.thecontext.ci.value.Podcast
 import io.thecontext.ci.value.find
 
-interface EpisodeMarkdownFormatter {
+interface FeedEpisodeRenderer {
 
-    fun format(podcast: Podcast, episode: Episode, people: List<Person>): Single<String>
+    fun render(podcast: Podcast, episode: Episode, people: List<Person>): Single<String>
 
     class Impl(
-            private val mustacheRenderer: MustacheRenderer,
+            private val templateRenderer: TemplateRenderer,
             private val ioScheduler: Scheduler
-    ) : EpisodeMarkdownFormatter {
+    ) : FeedEpisodeRenderer {
 
-        companion object {
-            private const val TEMPLATE_RESOURCE_NAME = "episode.md.mustache"
-        }
-
-        override fun format(podcast: Podcast, episode: Episode, people: List<Person>) = Single
+        override fun render(podcast: Podcast, episode: Episode, people: List<Person>) = Single
                 .fromCallable {
                     val contents = mapOf(
                             "podcast_url" to podcast.url,
@@ -31,7 +28,7 @@ interface EpisodeMarkdownFormatter {
                             "notes" to episode.notesMarkdown
                     )
 
-                    mustacheRenderer.render(TEMPLATE_RESOURCE_NAME, contents)
+                    templateRenderer.render(TemplateRenderer.Template.FeedEpisode, contents)
                 }
                 .subscribeOn(ioScheduler)
 

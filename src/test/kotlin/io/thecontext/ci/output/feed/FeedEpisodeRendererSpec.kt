@@ -1,19 +1,20 @@
-package io.thecontext.ci.output
+package io.thecontext.ci.output.feed
 
 import com.greghaskins.spectrum.Spectrum
 import com.greghaskins.spectrum.dsl.specification.Specification.context
 import com.greghaskins.spectrum.dsl.specification.Specification.it
 import io.reactivex.schedulers.Schedulers
+import io.thecontext.ci.output.TemplateRenderer
 import io.thecontext.ci.testEpisode
 import io.thecontext.ci.testPerson
 import io.thecontext.ci.testPodcast
 import org.junit.runner.RunWith
 
 @RunWith(Spectrum::class)
-class EpisodeMarkdownFormatterSpec {
+class FeedEpisodeRendererSpec {
     init {
-        val formatter = EpisodeMarkdownFormatter.Impl(
-                mustacheRenderer = MustacheRenderer.Impl(),
+        val renderer = FeedEpisodeRenderer.Impl(
+                templateRenderer = TemplateRenderer.Impl(),
                 ioScheduler = Schedulers.trampoline()
         )
 
@@ -23,7 +24,7 @@ class EpisodeMarkdownFormatterSpec {
 
         context("regular episode") {
 
-            it("formats") {
+            it("renders") {
                 val expected = """
                     ${episode.description}
 
@@ -46,7 +47,7 @@ class EpisodeMarkdownFormatterSpec {
                     """
 
                 // Note: Mustache inserts EOL in the end. It is simulated here using an empty line.
-                formatter.format(podcast, episode, people)
+                renderer.render(podcast, episode, people)
                         .test()
                         .assertResult(expected.trimIndent())
             }

@@ -1,7 +1,9 @@
-package io.thecontext.ci.output
+package io.thecontext.ci.output.feed
 
 import io.reactivex.Scheduler
 import io.reactivex.Single
+import io.thecontext.ci.output.HtmlRenderer
+import io.thecontext.ci.output.TemplateRenderer
 import io.thecontext.ci.toDate
 import io.thecontext.ci.toRfc2822
 import io.thecontext.ci.value.Episode
@@ -10,24 +12,20 @@ import io.thecontext.ci.value.Podcast
 import io.thecontext.ci.value.find
 import java.time.LocalDate
 
-interface PodcastXmlFormatter {
+interface FeedRenderer {
 
-    fun format(podcast: Podcast, episodes: List<Episode>, people: List<Person>): Single<String>
+    fun render(podcast: Podcast, episodes: List<Episode>, people: List<Person>): Single<String>
 
     class Impl(
-            private val episodeMarkdownFormatter: EpisodeMarkdownFormatter,
-            private val markdownRenderer: MarkdownRenderer,
-            private val mustacheRenderer: MustacheRenderer,
+            private val feedEpisodeRenderer: FeedEpisodeRenderer,
+            private val htmlRenderer: HtmlRenderer,
+            private val templateRenderer: TemplateRenderer,
             private val ioScheduler: Scheduler
-    ) : PodcastXmlFormatter {
+    ) : FeedRenderer {
 
-        companion object {
-            private const val TEMPLATE_RESOURCE_NAME = "podcast.xml.mustache"
-        }
-
-        override fun format(podcast: Podcast, episodes: List<Episode>, people: List<Person>) = Single
+        override fun render(podcast: Podcast, episodes: List<Episode>, people: List<Person>) = Single
                 .concat(episodes.sortedBy { it.date.toDate() }.map { episode ->
-                    episodeMarkdownFormatter.format(podcast, episode, people).map { episode to it }
+                    feedEpisodeRenderer.render(podcast, episode, people).map { episode to it }
                 })
                 .toList()
                 .map { preparedEpisodes ->
@@ -61,12 +59,12 @@ interface PodcastXmlFormatter {
                                         "url" to episode.url,
                                         "discussion_url" to episode.discussionUrl,
                                         "duration" to episode.duration,
-                                        "summary" to markdownRenderer.renderHtml(episodeMarkdown).trim().prependIndent(" ".repeat(10))
+                                        "summary" to htmlRenderer.render(episodeMarkdown).trim().prependIndent(" ".repeat(10))
                                 )
                             }
                     )
 
-                    mustacheRenderer.render(TEMPLATE_RESOURCE_NAME, contents)
+                    templateRenderer.render(TemplateRenderer.Template.Feed, contents)
                 }
                 .subscribeOn(ioScheduler)
     }
