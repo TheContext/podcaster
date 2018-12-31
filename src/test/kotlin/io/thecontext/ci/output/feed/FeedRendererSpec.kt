@@ -8,7 +8,6 @@ import io.thecontext.ci.*
 import io.thecontext.ci.output.HtmlRenderer
 import io.thecontext.ci.output.TemplateRenderer
 import org.junit.runner.RunWith
-import java.time.LocalDate
 
 @RunWith(Spectrum::class)
 class FeedRendererSpec {
@@ -18,9 +17,9 @@ class FeedRendererSpec {
         val podcast = testPodcast
         val people = listOf(testPerson, testPerson)
 
-        val episode1 = testEpisode.copy(number = 1, part = null, date = "2000-01-01")
-        val episode2Part1 = testEpisode.copy(number = 2, part = 1, date = "2000-01-02")
-        val episode2Part2 = testEpisode.copy(number = 2, part = 2, date = "2000-01-03")
+        val episode1 = testEpisode.copy(number = 1, part = null, time = "2000-01-01T10:15")
+        val episode2Part1 = testEpisode.copy(number = 2, part = 1, time = "2000-01-02T10:15")
+        val episode2Part2 = testEpisode.copy(number = 2, part = 2, time = "2000-01-03T10:15")
 
         context("regular podcast") {
 
@@ -33,7 +32,7 @@ class FeedRendererSpec {
                         <description>${podcast.description}</description>
                         <language>${podcast.language.toLowerCase()}</language>
                         <link>${podcast.url}</link>
-                        <lastBuildDate>${LocalDate.now().toRfc2822()}</lastBuildDate>
+                        <lastBuildDate>${env.time.formatRfc2822Result}</lastBuildDate>
                         <itunes:image href="${podcast.artworkUrl}"/>
                         <itunes:explicit>${if (podcast.explicit) "yes" else "no"}</itunes:explicit>
                         <itunes:category text="${podcast.category}">
@@ -47,7 +46,7 @@ class FeedRendererSpec {
                         <item>
                           <title>Episode ${episode1.number}: ${episode1.title}</title>
                           <description>${episode1.description}</description>
-                          <pubDate>${episode1.date.toDate().toRfc2822()}</pubDate>
+                          <pubDate>${env.time.formatRfc2822Result}</pubDate>
                           <guid>${episode1.id}</guid>
                           <link>${episode1.url}</link>
                           <enclosure url="${episode1.file.url}" length="${episode1.file.length}" type="audio/mpeg"/>
@@ -61,7 +60,7 @@ class FeedRendererSpec {
                         <item>
                           <title>Episode ${episode2Part1.number}, Part ${episode2Part1.part}: ${episode2Part1.title}</title>
                           <description>${episode2Part1.description}</description>
-                          <pubDate>${episode2Part1.date.toDate().toRfc2822()}</pubDate>
+                          <pubDate>${env.time.formatRfc2822Result}</pubDate>
                           <guid>${episode2Part1.id}</guid>
                           <link>${episode2Part1.url}</link>
                           <enclosure url="${episode2Part1.file.url}" length="${episode2Part1.file.length}" type="audio/mpeg"/>
@@ -75,7 +74,7 @@ class FeedRendererSpec {
                         <item>
                           <title>Episode ${episode2Part2.number}, Part ${episode2Part2.part}: ${episode2Part2.title}</title>
                           <description>${episode2Part2.description}</description>
-                          <pubDate>${episode2Part2.date.toDate().toRfc2822()}</pubDate>
+                          <pubDate>${env.time.formatRfc2822Result}</pubDate>
                           <guid>${episode2Part2.id}</guid>
                           <link>${episode2Part2.url}</link>
                           <enclosure url="${episode2Part2.file.url}" length="${episode2Part2.file.length}" type="audio/mpeg"/>
@@ -101,11 +100,13 @@ class FeedRendererSpec {
 
     class Environment {
         val markdownRenderer = TestHtmlRenderer()
+        val time = TestTime()
 
         val renderer = FeedRenderer.Impl(
                 feedEpisodeRenderer = FeedEpisodeRenderer.Impl(TemplateRenderer.Impl(), Schedulers.trampoline()),
                 htmlRenderer = markdownRenderer,
                 templateRenderer = TemplateRenderer.Impl(),
+                time = time,
                 ioScheduler = Schedulers.trampoline()
         )
     }

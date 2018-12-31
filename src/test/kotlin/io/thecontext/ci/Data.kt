@@ -43,7 +43,7 @@ val testEpisode = Episode(
         ),
         url = "localhost/episode",
         discussionUrl = "localhost/discussion",
-        date = "2000-12-30",
+        time = "2000-12-30T10:15",
         duration = "100:00",
         file = Episode.File(
                 url = "localhost/episode/file",

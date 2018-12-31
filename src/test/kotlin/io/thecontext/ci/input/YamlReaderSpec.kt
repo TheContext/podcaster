@@ -85,7 +85,7 @@ class YamlReaderSpec {
                     part: ${episode.part}
                     title: ${episode.title}
                     description: ${episode.description}
-                    date: ${episode.date}
+                    time: ${episode.time}
                     duration: ${episode.duration}
                     peopleIds:
                         hosts:

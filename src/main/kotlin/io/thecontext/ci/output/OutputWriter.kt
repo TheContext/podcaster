@@ -61,7 +61,7 @@ interface OutputWriter {
                         websiteDirectory.mkdirs()
                         val operations = it.map { (episode, episodeWebsiteMarkdown) ->
                             Single.fromCallable {
-                                textWriter.write(File(websiteDirectory, "${episode.date}-${episode.slug}.md"), episodeWebsiteMarkdown)
+                                textWriter.write(File(websiteDirectory, "${episode.slug}.md"), episodeWebsiteMarkdown)
                             }
                         }
 

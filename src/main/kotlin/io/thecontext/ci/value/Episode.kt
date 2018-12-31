@@ -30,8 +30,8 @@ data class Episode(
         @JsonProperty("discussionUrl")
         val discussionUrl: String,
 
-        @JsonProperty("date")
-        val date: String,
+        @JsonProperty("time")
+        val time: String,
 
         @JsonProperty("duration")
         val duration: String,

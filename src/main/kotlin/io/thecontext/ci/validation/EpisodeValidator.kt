@@ -1,14 +1,15 @@
 package io.thecontext.ci.validation
 
 import io.reactivex.Single
-import io.thecontext.ci.toDate
+import io.thecontext.ci.Time
 import io.thecontext.ci.value.Episode
 import io.thecontext.ci.value.Person
 import java.time.format.DateTimeParseException
 
 class EpisodeValidator(
         private val urlValidator: Validator<String>,
-        private val people: List<Person>
+        private val people: List<Person>,
+        private val time: Time
 ) : Validator<Episode> {
 
     companion object {
@@ -70,7 +71,7 @@ class EpisodeValidator(
 
         val dateResult = Single.fromCallable {
             try {
-                value.date.toDate()
+                time.parseIso(value.time)
 
                 ValidationResult.Success
             } catch (e: DateTimeParseException) {
