@@ -59,9 +59,7 @@ class YamlReaderSpec {
                         authors:
                             - ${podcast.people.authorIds[0]}
                             - ${podcast.people.authorIds[1]}
-                    language:
-                        code: ${podcast.language.code}
-                        regionCode: ${podcast.language.regionCode}
+                    language: ${podcast.language}
                     explicit: ${podcast.explicit}
                     category: ${podcast.category}
                     subcategory: ${podcast.subcategory}

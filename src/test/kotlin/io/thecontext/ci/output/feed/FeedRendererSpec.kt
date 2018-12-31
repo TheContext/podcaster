@@ -31,7 +31,7 @@ class FeedRendererSpec {
                       <channel>
                         <title>${podcast.title}</title>
                         <description>${podcast.description}</description>
-                        <language>${podcast.language.code.toLowerCase()}-${podcast.language.regionCode.toLowerCase()}</language>
+                        <language>${podcast.language.toLowerCase()}</language>
                         <link>${podcast.url}</link>
                         <lastBuildDate>${LocalDate.now().toRfc2822()}</lastBuildDate>
                         <itunes:image href="${podcast.artworkUrl}"/>

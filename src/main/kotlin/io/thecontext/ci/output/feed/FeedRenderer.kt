@@ -31,7 +31,7 @@ interface FeedRenderer {
                 .map { preparedEpisodes ->
                     val contents = mapOf(
                             "title" to podcast.title,
-                            "language" to "${podcast.language.code.toLowerCase()}-${podcast.language.regionCode.toLowerCase()}",
+                            "language" to podcast.language.toLowerCase(),
                             "url" to podcast.url,
                             "description" to podcast.description,
                             "artwork_url" to podcast.artworkUrl,
