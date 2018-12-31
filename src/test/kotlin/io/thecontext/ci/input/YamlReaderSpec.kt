@@ -92,8 +92,8 @@ class YamlReaderSpec {
                             - ${episode.people.hostIds[0]}
                             - ${episode.people.hostIds[1]}
                         guests:
-                            - ${episode.people.guestIds[0]}
-                            - ${episode.people.guestIds[1]}
+                            - ${episode.people.guestIds!![0]}
+                            - ${episode.people.guestIds!![1]}
                     url: ${episode.url}
                     discussionUrl: ${episode.discussionUrl}
                     file:

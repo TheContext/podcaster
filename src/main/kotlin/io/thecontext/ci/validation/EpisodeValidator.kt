@@ -34,7 +34,7 @@ class EpisodeValidator(
 
         val peopleResults = emptyList<String>()
                 .plus(value.people.hostIds)
-                .plus(value.people.guestIds)
+                .plus(value.people.guestIds ?: emptyList())
                 .map { personId ->
                     Single.fromCallable {
                         if (people.find { it.id == personId } == null) {

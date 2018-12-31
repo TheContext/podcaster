@@ -19,13 +19,16 @@ interface FeedEpisodeRenderer {
 
         override fun render(podcast: Podcast, episode: Episode, people: List<Person>) = Single
                 .fromCallable {
+                    val guestIds = episode.people.guestIds ?: emptyList()
+                    val hostIds = episode.people.hostIds
+
                     val contents = mapOf(
                             "description" to episode.description,
                             "notes" to episode.notesMarkdown,
-                            "guests_available" to episode.people.guestIds.isNotEmpty(),
-                            "guests" to episode.people.guestIds.map { people.find(it) }.map { mapOf("guest" to formatPerson(it)) },
-                            "hosts_available" to episode.people.hostIds.isNotEmpty(),
-                            "hosts" to episode.people.hostIds.map { people.find(it) }.map { mapOf("host" to formatPerson(it)) },
+                            "guests_available" to guestIds.isNotEmpty(),
+                            "guests" to guestIds.map { people.find(it) }.map { mapOf("guest" to formatPerson(it)) },
+                            "hosts_available" to hostIds.isNotEmpty(),
+                            "hosts" to hostIds.map { people.find(it) }.map { mapOf("host" to formatPerson(it)) },
                             "discussion_url" to episode.discussionUrl
                     )
 

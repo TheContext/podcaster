@@ -49,7 +49,7 @@ data class Episode(
             val hostIds: List<String>,
 
             @JsonProperty("guests")
-            val guestIds: List<String>
+            val guestIds: List<String>?
 
     )
 
