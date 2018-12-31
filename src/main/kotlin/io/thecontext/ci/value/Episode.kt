@@ -21,7 +21,7 @@ data class Episode(
         @JsonProperty("description")
         val description: String,
 
-        @JsonProperty("peopleIds")
+        @JsonProperty("people")
         val people: People,
 
         @JsonProperty("discussionUrl")
