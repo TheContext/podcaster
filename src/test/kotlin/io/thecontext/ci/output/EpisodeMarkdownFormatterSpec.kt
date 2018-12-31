@@ -27,22 +27,21 @@ class EpisodeMarkdownFormatterSpec {
                 val expected = """
                     ${episode.description}
 
-                    * [How to listen and subscribe](${podcast.url})
-                    * [Discussion after the episode](${episode.discussionUrl})
-
-                    ## Guests
-
-                    * ${people[0].name}: [Twitter](https://twitter.com/${people[0].twitter}), [GitHub](https://github.com/${people[0].github}), [${people[0].links.first().name}](${people[0].links.first().url})
-                    * ${people[1].name}: [Twitter](https://twitter.com/${people[1].twitter}), [GitHub](https://github.com/${people[1].github}), [${people[1].links.first().name}](${people[1].links.first().url})
-
-                    ## Hosts
-
-                    * ${people[0].name}: [Twitter](https://twitter.com/${people[0].twitter}), [GitHub](https://github.com/${people[0].github}), [${people[0].links.first().name}](${people[0].links.first().url})
-                    * ${people[1].name}: [Twitter](https://twitter.com/${people[1].twitter}), [GitHub](https://github.com/${people[1].github}), [${people[1].links.first().name}](${people[1].links.first().url})
-
-                    ## Notes
-
                     ${episode.notesMarkdown}
+
+                    **Guests**
+
+                    * ${people[0].name}: [Twitter](https://twitter.com/${people[0].twitter}), [GitHub](https://github.com/${people[0].github}), [${people[0].links.first().name}](${people[0].links.first().url})
+                    * ${people[1].name}: [Twitter](https://twitter.com/${people[1].twitter}), [GitHub](https://github.com/${people[1].github}), [${people[1].links.first().name}](${people[1].links.first().url})
+
+                    **Hosts**
+
+                    * ${people[0].name}: [Twitter](https://twitter.com/${people[0].twitter}), [GitHub](https://github.com/${people[0].github}), [${people[0].links.first().name}](${people[0].links.first().url})
+                    * ${people[1].name}: [Twitter](https://twitter.com/${people[1].twitter}), [GitHub](https://github.com/${people[1].github}), [${people[1].links.first().name}](${people[1].links.first().url})
+
+                    **Discussion**
+
+                    [Give us your opinion on the episode](${episode.discussionUrl})!
 
                     """
 
