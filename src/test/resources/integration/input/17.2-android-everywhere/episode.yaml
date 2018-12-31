@@ -1,0 +1,18 @@
+id: "f7a2c5c2-1fba-4e7f-9f97-c1d580a99f47"
+number: 17
+part: 2
+title: "Android Everywhere"
+description: "In the second part of the episode Artur, Hannes and Artem discuss Android TV, Chromecast and Android Auto."
+time: "2018-05-07T09:30"
+duration: "01:01:46"
+peopleIds:
+  hosts:
+    - "artem.zinnatullin"
+    - "hannes.dorfmann"
+    - "artur.dryomov"
+  guests: []
+url: "https://thecontext.io/episodes/17.2"
+discussionUrl: "https://thecontext.io/episodes/17.2/discussion"
+file:
+  url: "https://thecontext.io/episodes/17.2.mp3"
+  length: 52152856

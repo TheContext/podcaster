@@ -1,0 +1,16 @@
+id: "4c3037ce-0992-4df9-a52d-bbfcb3722e1d"
+number: 11
+title: "Migration to RxJava 2 with Artur Dryomov from Juno"
+description: "We’ve talked with Artur about Juno’s way to migrate their Android Rider app from RxJava 1 to RxJava 2."
+time: "2017-05-15T09:30"
+duration: "00:52:46"
+peopleIds:
+  hosts:
+    - "hannes.dorfmann"
+  guests:
+    - "artur.dryomov"
+url: "https://thecontext.io/episodes/11"
+discussionUrl: "https://thecontext.io/episodes/11/discussion"
+file:
+  url: "https://thecontext.io/episodes/11.mp3"
+  length: 50658006
