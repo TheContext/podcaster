@@ -1,18 +1,22 @@
 {{&description}}
 
 {{&notes}}
+{{#guests_available}}
 
 **Guests**
 
 {{#guests}}
 * {{&guest}}
 {{/guests}}
+{{/guests_available}}
+{{#hosts_available}}
 
 **Hosts**
 
 {{#hosts}}
 * {{&host}}
 {{/hosts}}
+{{/hosts_available}}
 
 **Discussion**
 

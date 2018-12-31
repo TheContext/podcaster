@@ -20,12 +20,13 @@ interface FeedEpisodeRenderer {
         override fun render(podcast: Podcast, episode: Episode, people: List<Person>) = Single
                 .fromCallable {
                     val contents = mapOf(
-                            "podcast_url" to podcast.url,
-                            "discussion_url" to episode.discussionUrl,
                             "description" to episode.description,
+                            "notes" to episode.notesMarkdown,
+                            "guests_available" to episode.people.guestIds.isNotEmpty(),
                             "guests" to episode.people.guestIds.map { people.find(it) }.map { mapOf("guest" to formatPerson(it)) },
+                            "hosts_available" to episode.people.hostIds.isNotEmpty(),
                             "hosts" to episode.people.hostIds.map { people.find(it) }.map { mapOf("host" to formatPerson(it)) },
-                            "notes" to episode.notesMarkdown
+                            "discussion_url" to episode.discussionUrl
                     )
 
                     templateRenderer.render(TemplateRenderer.Template.FeedEpisode, contents)
@@ -33,20 +34,15 @@ interface FeedEpisodeRenderer {
                 .subscribeOn(ioScheduler)
 
         private fun formatPerson(person: Person): String {
-            val twitterLink = person.twitter?.let {
-                formatLink("Twitter", "https://twitter.com/$it")
-            }
+            val twitterLink = person.twitter?.let { Person.Link("Twitter", "https://twitter.com/$it") }
+            val githubLink = person.github?.let { Person.Link("GitHub", "https://github.com/$it") }
 
-            val githubLink = person.github?.let {
-                formatLink("GitHub", "https://github.com/$it")
-            }
-
-            val links = listOfNotNull(twitterLink, githubLink) + person.links.map { formatLink(it.name, it.url) }
+            val links = listOfNotNull(twitterLink, githubLink) + person.links
 
             return if (links.isEmpty()) {
                 person.name
             } else {
-                "${person.name}: ${links.joinToString(separator = ", ")}"
+                "${person.name}: ${links.map { formatLink(it.name, it.url) }.joinToString(separator = ", ")}"
             }
         }
 
