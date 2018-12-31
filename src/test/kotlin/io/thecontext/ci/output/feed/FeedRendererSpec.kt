@@ -1,15 +1,17 @@
-package io.thecontext.ci.output
+package io.thecontext.ci.output.feed
 
 import com.greghaskins.spectrum.Spectrum
 import com.greghaskins.spectrum.dsl.specification.Specification.context
 import com.greghaskins.spectrum.dsl.specification.Specification.it
 import io.reactivex.schedulers.Schedulers
 import io.thecontext.ci.*
+import io.thecontext.ci.output.HtmlRenderer
+import io.thecontext.ci.output.TemplateRenderer
 import org.junit.runner.RunWith
 import java.time.LocalDate
 
 @RunWith(Spectrum::class)
-class PodcastXmlFormatterSpec {
+class FeedRendererSpec {
     init {
         val env by memoized { Environment() }
 
@@ -22,7 +24,7 @@ class PodcastXmlFormatterSpec {
 
         context("regular podcast") {
 
-            it("formats") {
+            it("renders") {
                 val expected = """
                     <?xml version="1.0" encoding="utf-8"?>
                     <rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:content="http://purl.org/rss/1.0/modules/content/">
@@ -90,7 +92,7 @@ class PodcastXmlFormatterSpec {
                     """
 
                 // Note: Mustache inserts EOL in the end. It is simulated here using an empty line.
-                env.formatter.format(podcast, listOf(episode2Part2, episode1, episode2Part1), people)
+                env.renderer.render(podcast, listOf(episode2Part2, episode1, episode2Part1), people)
                         .test()
                         .assertResult(expected.trimIndent())
             }
@@ -98,19 +100,19 @@ class PodcastXmlFormatterSpec {
     }
 
     class Environment {
-        val markdownRenderer = TestMarkdownRenderer()
+        val markdownRenderer = TestHtmlRenderer()
 
-        val formatter = PodcastXmlFormatter.Impl(
-                episodeMarkdownFormatter = EpisodeMarkdownFormatter.Impl(MustacheRenderer.Impl(), Schedulers.trampoline()),
-                markdownRenderer = markdownRenderer,
-                mustacheRenderer = MustacheRenderer.Impl(),
+        val renderer = FeedRenderer.Impl(
+                feedEpisodeRenderer = FeedEpisodeRenderer.Impl(TemplateRenderer.Impl(), Schedulers.trampoline()),
+                htmlRenderer = markdownRenderer,
+                templateRenderer = TemplateRenderer.Impl(),
                 ioScheduler = Schedulers.trampoline()
         )
     }
 
-    class TestMarkdownRenderer : MarkdownRenderer {
+    class TestHtmlRenderer : HtmlRenderer {
         var renderResult = "html"
 
-        override fun renderHtml(markdown: String) = renderResult
+        override fun render(markdown: String) = renderResult
     }
 }

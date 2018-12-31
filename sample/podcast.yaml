@@ -1,5 +1,7 @@
 title: "The Context #androiddev"
 description: "The Context is a podcast about Android Development"
+url: "https://github.com/artem-zinnatullin/TheContext-Podcast"
+artworkUrl: "https://raw.githubusercontent.com/artem-zinnatullin/TheContext-Podcast/master/logo.png"
 peopleIds:
   owner: artem.zinnatullin
   authors:
@@ -8,8 +10,6 @@ peopleIds:
 language:
   code: en
   regionCode: us
-explicit: false
 category: Technology
 subcategory: Software How-To
-url: "https://github.com/artem-zinnatullin/TheContext-Podcast"
-artworkUrl: "https://raw.githubusercontent.com/artem-zinnatullin/TheContext-Podcast/master/logo.png"
+explicit: false

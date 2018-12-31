@@ -1,6 +1,9 @@
 package io.thecontext.ci.context
 
 import io.thecontext.ci.output.*
+import io.thecontext.ci.output.feed.FeedEpisodeRenderer
+import io.thecontext.ci.output.feed.FeedRenderer
+import io.thecontext.ci.output.website.WebsiteRenderer
 
 interface OutputContext : Context {
 
@@ -8,14 +11,14 @@ interface OutputContext : Context {
 
     class Impl(context: Context) : OutputContext, Context by context {
 
-        private val markdownRenderer by lazy { MarkdownRenderer.Impl() }
-        private val mustacheRenderer by lazy { MustacheRenderer.Impl() }
+        private val markdownRenderer by lazy { HtmlRenderer.Impl() }
+        private val mustacheRenderer by lazy { TemplateRenderer.Impl() }
         private val textWriter by lazy { TextWriter.Impl() }
 
-        private val episodeMarkdownFormatter by lazy { EpisodeMarkdownFormatter.Impl(mustacheRenderer, ioScheduler) }
-        private val podcastXmlFormatter by lazy { PodcastXmlFormatter.Impl(episodeMarkdownFormatter, markdownRenderer, mustacheRenderer, ioScheduler) }
-        private val websiteFormatter by lazy { WebsiteFormatter.Impl(mustacheRenderer, ioScheduler) }
+        private val feedEpisodeRenderer by lazy { FeedEpisodeRenderer.Impl(mustacheRenderer, ioScheduler) }
+        private val feedRenderer by lazy { FeedRenderer.Impl(feedEpisodeRenderer, markdownRenderer, mustacheRenderer, ioScheduler) }
+        private val websiteRenderer by lazy { WebsiteRenderer.Impl(mustacheRenderer, ioScheduler) }
 
-        override val outputWriter by lazy { OutputWriter.Impl(podcastXmlFormatter, episodeMarkdownFormatter, websiteFormatter, textWriter, ioScheduler) }
+        override val outputWriter by lazy { OutputWriter.Impl(feedRenderer, feedEpisodeRenderer, websiteRenderer, textWriter, ioScheduler) }
     }
 }

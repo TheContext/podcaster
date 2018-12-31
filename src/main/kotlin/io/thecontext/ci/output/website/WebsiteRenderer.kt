@@ -1,23 +1,22 @@
-package io.thecontext.ci.output
+package io.thecontext.ci.output.website
 
 import io.reactivex.Scheduler
 import io.reactivex.Single
+import io.thecontext.ci.output.TemplateRenderer
 import io.thecontext.ci.value.Episode
 import io.thecontext.ci.value.Person
 import io.thecontext.ci.value.Podcast
 import io.thecontext.ci.value.find
 
-private const val TEMPLATE_RESOURCE_NAME = "website.md.mustache"
-
-interface WebsiteFormatter {
-    fun format(podcast: Podcast, episode: Episode, people: List<Person>): Single<String>
+interface WebsiteRenderer {
+    fun render(podcast: Podcast, episode: Episode, people: List<Person>): Single<String>
 
     class Impl(
-            private val mustacheRenderer: MustacheRenderer,
+            private val templateRenderer: TemplateRenderer,
             private val ioScheduler: Scheduler
-    ) : WebsiteFormatter {
+    ) : WebsiteRenderer {
 
-        override fun format(podcast: Podcast, episode: Episode, people: List<Person>): Single<String> = Single.fromCallable {
+        override fun render(podcast: Podcast, episode: Episode, people: List<Person>): Single<String> = Single.fromCallable {
             val contents = mapOf(
                     "title" to episode.title,
                     "discussion_url" to episode.discussionUrl,
@@ -28,7 +27,7 @@ interface WebsiteFormatter {
                     "notes" to episode.notesMarkdown
             )
 
-            mustacheRenderer.render(TEMPLATE_RESOURCE_NAME, contents)
+            templateRenderer.render(TemplateRenderer.Template.WebsiteEpisode, contents)
         }.subscribeOn(ioScheduler)
 
 

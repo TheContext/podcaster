@@ -3,6 +3,9 @@ package io.thecontext.ci.output
 import io.reactivex.Scheduler
 import io.reactivex.Single
 import io.reactivex.functions.Function3
+import io.thecontext.ci.output.feed.FeedEpisodeRenderer
+import io.thecontext.ci.output.feed.FeedRenderer
+import io.thecontext.ci.output.website.WebsiteRenderer
 import io.thecontext.ci.value.Episode
 import io.thecontext.ci.value.Person
 import io.thecontext.ci.value.Podcast
@@ -17,16 +20,16 @@ interface OutputWriter {
     fun write(showNotesDirectory: File, rssFeedDirectory: File, websiteDirectory: File, podcast: Podcast, episodes: List<Episode>, people: List<Person>): Single<Unit>
 
     class Impl(
-            private val podcastXmlFormatter: PodcastXmlFormatter,
-            private val episodeMarkdownFormatter: EpisodeMarkdownFormatter,
-            private val websiteFormatter: WebsiteFormatter,
+            private val feedRenderer: FeedRenderer,
+            private val feedEpisodeRenderer: FeedEpisodeRenderer,
+            private val websiteRenderer: WebsiteRenderer,
             private val textWriter: TextWriter,
             private val ioScheduler: Scheduler
     ) : OutputWriter {
 
         override fun write(showNotesDirectory: File, rssFeedDirectory: File, websiteDirectory: File, podcast: Podcast, episodes: List<Episode>, people: List<Person>): Single<Unit> {
             val notes = Single
-                    .merge(episodes.map { episode -> episodeMarkdownFormatter.format(podcast, episode, people).map { episode to it } })
+                    .merge(episodes.map { episode -> feedEpisodeRenderer.render(podcast, episode, people).map { episode to it } })
                     .toList()
                     .flatMap {
                         val operations = it.map { (episode, episodeMarkdown) ->
@@ -41,7 +44,7 @@ interface OutputWriter {
                     }
                     .map { Unit }
 
-            val feed = podcastXmlFormatter.format(podcast, episodes, people)
+            val feed = feedRenderer.render(podcast, episodes, people)
                     .flatMap { podcastXml ->
                         Single.fromCallable {
                             rssFeedDirectory.mkdirs()
@@ -52,7 +55,7 @@ interface OutputWriter {
                     .map { Unit }
 
             val website = Single
-                    .merge(episodes.map { episode -> websiteFormatter.format(podcast, episode, people).map { episode to it } })
+                    .merge(episodes.map { episode -> websiteRenderer.render(podcast, episode, people).map { episode to it } })
                     .toList()
                     .flatMap {
                         websiteDirectory.mkdirs()
