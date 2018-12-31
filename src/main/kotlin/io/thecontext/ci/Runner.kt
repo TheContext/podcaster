@@ -14,14 +14,13 @@ fun main(args: Array<String>) {
     Runner(Context.Impl()).run(
             inputDirectory = File("/tmp/podcast-input"),
             rssFeedDirectory = File("/tmp/podcast-output"),
-            showNotesDirectory = File("/tmp/podcast-output"),
             websiteDirectory = File("/tmp/podcast-website")
     )
 }
 
 class Runner(private val context: Context) {
 
-    fun run(inputDirectory: File, showNotesDirectory: File, rssFeedDirectory: File, websiteDirectory: File) {
+    fun run(inputDirectory: File, rssFeedDirectory: File, websiteDirectory: File) {
         val inputContext = InputContext.Impl(context)
 
         val inputFiles = inputContext.inputFilesLocator.locate(inputDirectory)
@@ -53,7 +52,6 @@ class Runner(private val context: Context) {
                     val context = OutputContext.Impl(context)
 
                     context.outputWriter.write(
-                            showNotesDirectory = showNotesDirectory,
                             rssFeedDirectory = rssFeedDirectory,
                             websiteDirectory = websiteDirectory,
                             people = it.people,
