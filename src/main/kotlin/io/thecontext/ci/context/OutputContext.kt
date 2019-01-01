@@ -11,13 +11,15 @@ interface OutputContext : Context {
 
     class Impl(context: Context) : OutputContext, Context by context {
 
-        private val markdownRenderer by lazy { HtmlRenderer.Impl() }
-        private val mustacheRenderer by lazy { TemplateRenderer.Impl() }
+        private val htmlRenderer by lazy { HtmlRenderer.Impl() }
+        private val templateRenderer by lazy { TemplateRenderer.Impl() }
         private val textWriter by lazy { TextWriter.Impl() }
 
-        private val feedEpisodeRenderer by lazy { FeedEpisodeRenderer.Impl(mustacheRenderer, ioScheduler) }
-        private val feedRenderer by lazy { FeedRenderer.Impl(feedEpisodeRenderer, markdownRenderer, mustacheRenderer, time, ioScheduler) }
-        private val websiteRenderer by lazy { WebsiteRenderer.Impl(mustacheRenderer, ioScheduler) }
+        private val markdownEpisodeRenderer by lazy { MarkdownEpisodeRenderer.Impl(templateRenderer, ioScheduler) }
+
+        private val feedEpisodeRenderer by lazy { FeedEpisodeRenderer.Impl(markdownEpisodeRenderer, htmlRenderer, ioScheduler) }
+        private val feedRenderer by lazy { FeedRenderer.Impl(feedEpisodeRenderer, templateRenderer, time, ioScheduler) }
+        private val websiteRenderer by lazy { WebsiteRenderer.Impl(markdownEpisodeRenderer) }
 
         override val outputWriter by lazy { OutputWriter.Impl(feedRenderer, websiteRenderer, textWriter, ioScheduler) }
     }

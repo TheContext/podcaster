@@ -3,7 +3,6 @@ package io.thecontext.ci.output.feed
 import io.reactivex.Scheduler
 import io.reactivex.Single
 import io.thecontext.ci.Time
-import io.thecontext.ci.output.HtmlRenderer
 import io.thecontext.ci.output.TemplateRenderer
 import io.thecontext.ci.value.Episode
 import io.thecontext.ci.value.Person
@@ -15,8 +14,7 @@ interface FeedRenderer {
     fun render(podcast: Podcast, episodes: List<Episode>, people: List<Person>): Single<String>
 
     class Impl(
-            private val feedEpisodeRenderer: FeedEpisodeRenderer,
-            private val htmlRenderer: HtmlRenderer,
+            private val episodeRenderer: FeedEpisodeRenderer,
             private val templateRenderer: TemplateRenderer,
             private val time: Time,
             private val ioScheduler: Scheduler
@@ -24,7 +22,7 @@ interface FeedRenderer {
 
         override fun render(podcast: Podcast, episodes: List<Episode>, people: List<Person>) = Single
                 .concat(episodes.sortedBy { time.parseIso(it.time) }.map { episode ->
-                    feedEpisodeRenderer.render(podcast, episode, people).map { episode to it }
+                    episodeRenderer.render(episode, people).map { episode to it }
                 })
                 .toList()
                 .map { preparedEpisodes ->
@@ -41,23 +39,20 @@ interface FeedRenderer {
                             "owner_email" to people.find(podcast.people.ownerId).email!!,
                             "authors" to podcast.people.authorIds.map { people.find(it).name }.joinToString(),
                             "build_date" to time.formatRfc2822(time.current()),
-                            "episodes" to preparedEpisodes.map { (episode, episodeMarkdown) ->
-                                val episodeTitle = if (episode.part == null) {
-                                    "Episode ${episode.number}: ${episode.title}"
-                                } else {
-                                    "Episode ${episode.number}, Part ${episode.part}: ${episode.title}"
-                                }
-
+                            "episodes" to preparedEpisodes.map { (episode, episodeHtml) ->
                                 mapOf(
                                         "id" to episode.id,
-                                        "title" to episodeTitle,
+                                        "number" to episode.number,
+                                        "part" to episode.part,
+                                        "part_available" to (episode.part != null),
+                                        "title" to episode.title,
                                         "description" to episode.description,
                                         "date" to time.formatRfc2822(time.parseIso(episode.time)),
                                         "file_url" to episode.file.url,
                                         "file_length" to episode.file.length,
                                         "discussion_url" to episode.discussionUrl,
                                         "duration" to episode.duration,
-                                        "summary" to htmlRenderer.render(episodeMarkdown).trim().prependIndent(" ".repeat(10))
+                                        "summary" to episodeHtml.trim().prependIndent(" ".repeat(10))
                                 )
                             }
                     )

@@ -1,0 +1,32 @@
+---
+layout: episode
+{{^part_available}}
+title: "Episode {{number}}: {{title}}"
+{{/part_available}}
+{{#part_available}}
+title: "Episode {{number}}, Part {{part}}: {{title}}"
+{{/part_available}}
+description: "{{description}}"
+mp3: "{{file_url}}"
+---
+{{&notes}}
+{{#guests_available}}
+
+## Guests
+
+{{#guests}}
+* {{&guest}}
+{{/guests}}
+{{/guests_available}}
+{{#hosts_available}}
+
+## Hosts
+
+{{#hosts}}
+* {{&host}}
+{{/hosts}}
+{{/hosts_available}}
+
+## Discussion
+
+[Give us your opinion on the episode]({{discussion_url}})!

@@ -18,7 +18,12 @@
     <itunes:author>{{authors}}</itunes:author>
     {{#episodes}}
     <item>
-      <title>{{title}}</title>
+      {{^part_available}}
+      <title>Episode {{number}}: {{title}}</title>
+      {{/part_available}}
+      {{#part_available}}
+      <title>Episode {{number}}, Part {{part}}: {{title}}</title>
+      {{/part_available}}
       <description>{{description}}</description>
       <pubDate>{{date}}</pubDate>
       <guid>{{id}}</guid>
