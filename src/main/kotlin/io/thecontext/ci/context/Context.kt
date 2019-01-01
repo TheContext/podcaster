@@ -12,8 +12,8 @@ interface Context {
 
     class Impl : Context {
 
-        override val ioScheduler by lazy { Schedulers.io() }
+        override val ioScheduler: Scheduler by lazy { Schedulers.io() }
 
-        override val time by lazy { Time.Impl() }
+        override val time: Time by lazy { Time.Impl() }
     }
 }

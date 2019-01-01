@@ -11,16 +11,16 @@ interface OutputContext : Context {
 
     class Impl(context: Context) : OutputContext, Context by context {
 
-        private val htmlRenderer by lazy { HtmlRenderer.Impl() }
-        private val templateRenderer by lazy { TemplateRenderer.Impl() }
-        private val textWriter by lazy { TextWriter.Impl() }
+        private val htmlRenderer: HtmlRenderer by lazy { HtmlRenderer.Impl() }
+        private val templateRenderer: TemplateRenderer by lazy { TemplateRenderer.Impl() }
+        private val textWriter: TextWriter by lazy { TextWriter.Impl() }
 
-        private val markdownEpisodeRenderer by lazy { MarkdownEpisodeRenderer.Impl(templateRenderer, ioScheduler) }
+        private val markdownEpisodeRenderer: MarkdownEpisodeRenderer by lazy { MarkdownEpisodeRenderer.Impl(templateRenderer, ioScheduler) }
 
-        private val feedEpisodeRenderer by lazy { FeedEpisodeRenderer.Impl(markdownEpisodeRenderer, htmlRenderer, ioScheduler) }
-        private val feedRenderer by lazy { FeedRenderer.Impl(feedEpisodeRenderer, templateRenderer, time, ioScheduler) }
-        private val websiteRenderer by lazy { WebsiteRenderer.Impl(markdownEpisodeRenderer) }
+        private val feedEpisodeRenderer: FeedEpisodeRenderer by lazy { FeedEpisodeRenderer.Impl(markdownEpisodeRenderer, htmlRenderer, ioScheduler) }
+        private val feedRenderer: FeedRenderer by lazy { FeedRenderer.Impl(feedEpisodeRenderer, templateRenderer, time, ioScheduler) }
+        private val websiteRenderer: WebsiteRenderer by lazy { WebsiteRenderer.Impl(markdownEpisodeRenderer) }
 
-        override val outputWriter by lazy { OutputWriter.Impl(feedRenderer, websiteRenderer, textWriter, ioScheduler) }
+        override val outputWriter: OutputWriter by lazy { OutputWriter.Impl(feedRenderer, websiteRenderer, textWriter, ioScheduler) }
     }
 }
