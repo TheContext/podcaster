@@ -17,7 +17,6 @@ class EpisodeValidator(
     }
 
     override fun validate(value: Episode): Single<ValidationResult> {
-        val episodeIdentifierForError = value.title
         val urlResults = emptyList<String>()
                 .plus(value.discussionUrl)
                 .plus(value.file.url)
@@ -26,7 +25,7 @@ class EpisodeValidator(
                             .map {
                                 when (it) {
                                     ValidationResult.Success -> it
-                                    is ValidationResult.Failure -> it.copy("$episodeIdentifierForError: ${it.message}")
+                                    is ValidationResult.Failure -> it.copy("${value.slug}: ${it.message}")
                                 }
                             }
                 }
@@ -37,7 +36,7 @@ class EpisodeValidator(
                 .map { personId ->
                     Single.fromCallable {
                         if (people.find { it.id == personId } == null) {
-                            ValidationResult.Failure("$episodeIdentifierForError: Person [$personId] is not defined.")
+                            ValidationResult.Failure("${value.slug}: Person [$personId] is not defined.")
                         } else {
                             ValidationResult.Success
                         }
@@ -46,7 +45,7 @@ class EpisodeValidator(
 
         val idResult = Single.fromCallable {
             if (value.id.isBlank()) {
-                ValidationResult.Failure("$episodeIdentifierForError: id is blank")
+                ValidationResult.Failure("${value.slug}: ID is blank")
             } else {
                 ValidationResult.Success
             }
@@ -54,7 +53,7 @@ class EpisodeValidator(
 
         val numberResult = Single.fromCallable {
             if (value.number < 0) {
-                ValidationResult.Failure("$episodeIdentifierForError: Episode number is negative.")
+                ValidationResult.Failure("${value.slug}: Episode number is negative.")
             } else {
                 ValidationResult.Success
             }
@@ -62,7 +61,7 @@ class EpisodeValidator(
 
         val partResult = Single.fromCallable {
             if (value.part != null && value.part < 0) {
-                ValidationResult.Failure("$episodeIdentifierForError: Episode part is negative.")
+                ValidationResult.Failure("${value.slug}: Episode part is negative.")
             } else {
                 ValidationResult.Success
             }
@@ -74,13 +73,13 @@ class EpisodeValidator(
 
                 ValidationResult.Success
             } catch (e: DateTimeParseException) {
-                ValidationResult.Failure("$episodeIdentifierForError: Episode date is in wrong format. Should be YYYY-MM-DD.")
+                ValidationResult.Failure("${value.slug}: Episode time is in wrong format. Should be YYYY-MM-DDTHH:MM.")
             }
         }
 
         val fileLengthResult = Single.fromCallable {
             if (value.file.length < 0) {
-                ValidationResult.Failure("$episodeIdentifierForError: File length is negative.")
+                ValidationResult.Failure("${value.slug}: File length is negative.")
             } else {
                 ValidationResult.Success
             }
@@ -88,7 +87,7 @@ class EpisodeValidator(
 
         val descriptionResult = Single.fromCallable {
             if (value.description.length > MAXIMUM_DESCRIPTION_LENGTH) {
-                ValidationResult.Failure("$episodeIdentifierForError: Description length is [${value.description.length}] symbols but should less than [$MAXIMUM_DESCRIPTION_LENGTH].")
+                ValidationResult.Failure("${value.slug}: Description length is [${value.description.length}] symbols but should less than [$MAXIMUM_DESCRIPTION_LENGTH].")
             } else {
                 ValidationResult.Success
             }
