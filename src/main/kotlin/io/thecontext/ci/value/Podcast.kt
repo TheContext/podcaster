@@ -10,7 +10,7 @@ data class Podcast(
         @JsonProperty("description")
         val description: String,
 
-        @JsonProperty("peopleIds")
+        @JsonProperty("people")
         val people: People,
 
         @JsonProperty("language")

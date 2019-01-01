@@ -17,7 +17,7 @@ interface MarkdownEpisodeRenderer {
 
         override fun render(template: TemplateRenderer.Template, episode: Episode, people: List<Person>) = Single
                 .fromCallable {
-                    val guestIds = episode.people.guestIds ?: emptyList()
+                    val guestIds = episode.people.guestIds.orEmpty()
                     val hostIds = episode.people.hostIds
 
                     val contents = mapOf(
@@ -43,7 +43,7 @@ interface MarkdownEpisodeRenderer {
             val twitterLink = person.twitter?.let { Person.Link("Twitter", "https://twitter.com/$it") }
             val githubLink = person.github?.let { Person.Link("GitHub", "https://github.com/$it") }
 
-            val links = listOfNotNull(twitterLink, githubLink) + person.links
+            val links = listOfNotNull(twitterLink, githubLink) + person.links.orEmpty()
 
             return if (links.isEmpty()) {
                 person.name

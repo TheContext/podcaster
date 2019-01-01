@@ -1,20 +1,19 @@
 package io.thecontext.ci.context
 
-import io.thecontext.ci.validation.EpisodeListValidator
-import io.thecontext.ci.validation.EpisodeValidator
-import io.thecontext.ci.validation.PodcastValidator
-import io.thecontext.ci.validation.UrlValidator
+import io.thecontext.ci.validation.*
+import io.thecontext.ci.value.Episode
 import io.thecontext.ci.value.Person
+import io.thecontext.ci.value.Podcast
 
 interface ValidationContext : Context {
 
-    val podcastValidator: PodcastValidator
-    val episodeValidator: EpisodeValidator
-    val episodesValidator: EpisodeListValidator
+    val podcastValidator: Validator<Podcast>
+    val episodeValidator: Validator<Episode>
+    val episodesValidator: Validator<List<Episode>>
 
     class Impl(context: Context, people: List<Person>) : ValidationContext, Context by context {
 
-        private val urlValidator by lazy { UrlValidator(ioScheduler) }
+        private val urlValidator: Validator<String> by lazy { UrlValidator(ioScheduler) }
 
         override val podcastValidator by lazy { PodcastValidator(urlValidator, people) }
         override val episodeValidator by lazy { EpisodeValidator(urlValidator, people, time) }

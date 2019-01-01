@@ -4,7 +4,7 @@ import io.reactivex.Scheduler
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 import io.thecontext.ci.output.feed.FeedRenderer
-import io.thecontext.ci.output.website.WebsiteRenderer
+import io.thecontext.ci.output.website.WebsiteEpisodeRenderer
 import io.thecontext.ci.value.Episode
 import io.thecontext.ci.value.Person
 import io.thecontext.ci.value.Podcast
@@ -20,7 +20,7 @@ interface OutputWriter {
 
     class Impl(
             private val feedRenderer: FeedRenderer,
-            private val websiteRenderer: WebsiteRenderer,
+            private val websiteEpisodeRenderer: WebsiteEpisodeRenderer,
             private val textWriter: TextWriter,
             private val ioScheduler: Scheduler
     ) : OutputWriter {
@@ -37,7 +37,7 @@ interface OutputWriter {
                     .map { Unit }
 
             val website = Single
-                    .merge(episodes.map { episode -> websiteRenderer.render(episode, people).map { episode to it } })
+                    .merge(episodes.map { episode -> websiteEpisodeRenderer.render(episode, people).map { episode to it } })
                     .toList()
                     .flatMap {
                         websiteDirectory.mkdirs()

@@ -20,7 +20,7 @@ data class Person(
         val github: String?,
 
         @JsonProperty("links")
-        val links: List<Link>
+        val links: List<Link>?
 
 ) {
 

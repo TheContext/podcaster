@@ -5,12 +5,12 @@ title: "Android Everywhere"
 description: "In the first part of the episode Artur, Hannes und Artem discuss Android tablets, Chromebooks and Android Wear (Wear OS)."
 time: "2018-05-05T09:30"
 duration: "00:53:49"
+file:
+  url: "https://thecontext.io/episodes/17.1.mp3"
+  length: 45465440
 people:
   hosts:
     - "artem.zinnatullin"
     - "hannes.dorfmann"
     - "artur.dryomov"
 discussionUrl: "https://thecontext.io/episodes/17.1/discussion"
-file:
-  url: "https://thecontext.io/episodes/17.1.mp3"
-  length: 45465440

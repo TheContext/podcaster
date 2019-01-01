@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 data class Episode(
 
-        val slug: String = "",
-  
         @JsonProperty("id")
         val id: String,
 
@@ -35,6 +33,8 @@ data class Episode(
 
         @JsonProperty("file")
         val file: File,
+
+        val slug: String = "",
 
         val notesMarkdown: String = ""
 

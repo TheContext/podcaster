@@ -2,13 +2,13 @@ title: "The Context #androiddev"
 description: "The podcast about Android development and related topics."
 url: "https://thecontext.io"
 artworkUrl: "https://thecontext.io/img/cover.png"
-peopleIds:
+language: "en"
+explicit: false
+category: "Technology"
+subcategory: "Software How-To"
+people:
   owner: "artem.zinnatullin"
   authors:
     - "artem.zinnatullin"
     - "hannes.dorfmann"
     - "artur.dryomov"
-language: "en"
-category: "Technology"
-subcategory: "Software How-To"
-explicit: false

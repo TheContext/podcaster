@@ -22,3 +22,6 @@
   links:
     - name: "blog"
       url: "https://arturdryomov.online"
+
+- id: "john.doe"
+  name: "John Doe"

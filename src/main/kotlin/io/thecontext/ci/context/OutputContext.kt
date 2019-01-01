@@ -3,7 +3,7 @@ package io.thecontext.ci.context
 import io.thecontext.ci.output.*
 import io.thecontext.ci.output.feed.FeedEpisodeRenderer
 import io.thecontext.ci.output.feed.FeedRenderer
-import io.thecontext.ci.output.website.WebsiteRenderer
+import io.thecontext.ci.output.website.WebsiteEpisodeRenderer
 
 interface OutputContext : Context {
 
@@ -19,8 +19,8 @@ interface OutputContext : Context {
 
         private val feedEpisodeRenderer: FeedEpisodeRenderer by lazy { FeedEpisodeRenderer.Impl(markdownEpisodeRenderer, htmlRenderer, ioScheduler) }
         private val feedRenderer: FeedRenderer by lazy { FeedRenderer.Impl(feedEpisodeRenderer, templateRenderer, time, ioScheduler) }
-        private val websiteRenderer: WebsiteRenderer by lazy { WebsiteRenderer.Impl(markdownEpisodeRenderer) }
+        private val websiteEpisodeRenderer: WebsiteEpisodeRenderer by lazy { WebsiteEpisodeRenderer.Impl(markdownEpisodeRenderer) }
 
-        override val outputWriter: OutputWriter by lazy { OutputWriter.Impl(feedRenderer, websiteRenderer, textWriter, ioScheduler) }
+        override val outputWriter: OutputWriter by lazy { OutputWriter.Impl(feedRenderer, websiteEpisodeRenderer, textWriter, ioScheduler) }
     }
 }
