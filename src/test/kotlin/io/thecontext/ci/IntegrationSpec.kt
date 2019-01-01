@@ -43,6 +43,19 @@ class IntegrationSpec {
                         .usingCharset(Charsets.UTF_8)
                         .hasSameContentAs(expectFile)
             }
+
+            it("creates website") {
+                File(expectOutputDir, "website")
+                        .walkTopDown()
+                        .filter { it.extension == "md" }
+                        .forEach { expectFile ->
+                            val actualFile = File(actualOutputDir, expectFile.name)
+
+                            assertThat(actualFile)
+                                    .usingCharset(Charsets.UTF_8)
+                                    .hasSameContentAs(expectFile)
+                        }
+            }
         }
 
         afterEach {

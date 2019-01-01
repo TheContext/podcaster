@@ -37,7 +37,7 @@ interface OutputWriter {
                     .map { Unit }
 
             val website = Single
-                    .merge(episodes.map { episode -> websiteRenderer.render(podcast, episode, people).map { episode to it } })
+                    .merge(episodes.map { episode -> websiteRenderer.render(episode, people).map { episode to it } })
                     .toList()
                     .flatMap {
                         websiteDirectory.mkdirs()

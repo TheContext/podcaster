@@ -10,7 +10,7 @@ interface TemplateRenderer {
     enum class Template(val resourcePath: String) {
         Feed("feed/feed.rss.mustache"),
         FeedEpisode("feed/feed-episode.md.mustache"),
-        WebsiteEpisode("website/episode.md.mustache"),
+        WebsiteEpisode("website/website-episode.md.mustache"),
     }
 
     fun render(template: Template, contents: Map<String, Any>): String
