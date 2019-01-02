@@ -10,6 +10,7 @@ buildscript {
 
     dependencies {
         classpath deps.plugins.kotlin
+        classpath deps.plugins.shadow
         classpath deps.plugins.versions
     }
 }
@@ -18,8 +19,12 @@ repositories {
     mavenCentral()
 }
 
+apply plugin: "application"
+mainClassName = "io.thecontext.ci.MainKt"
+
 apply plugin: "kotlin"
 apply plugin: "com.github.ben-manes.versions"
+apply plugin: "com.github.johnrengelman.shadow"
 
 compileKotlin {
     kotlinOptions.jvmTarget = versions.java
@@ -34,13 +39,14 @@ dependencies {
     compile deps.kotlin.reflect
 
     compile deps.rxjava
-    compile deps.okhttp
-    compile deps.commonmark
-    compile deps.mustache
 
+    compile deps.commonmark
     compile deps.jackson.databind
-    compile deps.jackson.yaml
     compile deps.jackson.kotlin
+    compile deps.jackson.yaml
+    compile deps.jcommander
+    compile deps.mustache
+    compile deps.okhttp
 
     testCompile deps.assertj
     testCompile deps.spectrum

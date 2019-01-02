@@ -21,6 +21,8 @@ class IntegrationSpec {
 
         context("run") {
 
+            val actualFeedFileName = "feed.rss.xml"
+
             val inputDir = File("src/test/resources/integration/input")
             val expectOutputDir = File("src/test/resources/integration/output")
             val actualOutputDir by memoized { workingDir.root }
@@ -32,11 +34,16 @@ class IntegrationSpec {
                     }
                 }
 
-                Runner(context).run(inputDir, actualOutputDir, actualOutputDir)
+                Runner(
+                        context = context,
+                        inputDirectory = inputDir,
+                        outputFeedFile = File(actualOutputDir, actualFeedFileName),
+                        outputWebsiteDirectory = actualOutputDir
+                ).run()
             }
 
             it("creates RSS feed") {
-                val actualFile = File(actualOutputDir, OutputWriter.FileNames.FEED)
+                val actualFile = File(actualOutputDir, actualFeedFileName)
                 val expectFile = File(expectOutputDir, "feed.rss.xml")
 
                 assertThat(actualFile)

@@ -12,11 +12,7 @@ import java.io.File
 
 interface OutputWriter {
 
-    object FileNames {
-        const val FEED = "podcast.rss"
-    }
-
-    fun write(rssFeedDirectory: File, websiteDirectory: File, podcast: Podcast, episodes: List<Episode>, people: List<Person>): Single<Unit>
+    fun write(feedFile: File, websiteDirectory: File, podcast: Podcast, episodes: List<Episode>, people: List<Person>): Single<Unit>
 
     class Impl(
             private val feedRenderer: FeedRenderer,
@@ -25,13 +21,13 @@ interface OutputWriter {
             private val ioScheduler: Scheduler
     ) : OutputWriter {
 
-        override fun write(rssFeedDirectory: File, websiteDirectory: File, podcast: Podcast, episodes: List<Episode>, people: List<Person>): Single<Unit> {
+        override fun write(feedFile: File, websiteDirectory: File, podcast: Podcast, episodes: List<Episode>, people: List<Person>): Single<Unit> {
             val feed = feedRenderer.render(podcast, episodes, people)
                     .flatMap { podcastXml ->
                         Single.fromCallable {
-                            rssFeedDirectory.mkdirs()
+                            feedFile.parentFile.mkdirs()
 
-                            textWriter.write(File(rssFeedDirectory, FileNames.FEED), podcastXml)
+                            textWriter.write(feedFile, podcastXml)
                         }
                     }
                     .map { Unit }
