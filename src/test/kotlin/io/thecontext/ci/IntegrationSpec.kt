@@ -3,7 +3,6 @@ package io.thecontext.ci
 import com.greghaskins.spectrum.Spectrum
 import com.greghaskins.spectrum.dsl.specification.Specification.*
 import io.thecontext.ci.context.Context
-import io.thecontext.ci.output.OutputWriter
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.rules.TemporaryFolder
 import org.junit.runner.RunWith
@@ -34,12 +33,7 @@ class IntegrationSpec {
                     }
                 }
 
-                Runner(
-                        context = context,
-                        inputDirectory = inputDir,
-                        outputFeedFile = File(actualOutputDir, actualFeedFileName),
-                        outputWebsiteDirectory = actualOutputDir
-                ).run()
+                Runner.Impl(context).run(inputDir, File(actualOutputDir, actualFeedFileName), actualOutputDir).blockingGet()
             }
 
             it("creates RSS feed") {

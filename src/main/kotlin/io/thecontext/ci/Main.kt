@@ -5,6 +5,16 @@ import java.io.File
 
 fun main(args: Array<String>) {
     val arguments = Arguments.from(args)
+    val runner = Runner.Impl(Context.Impl())
 
-    Runner(Context.Impl(), File(arguments.inputPath), File(arguments.outputFeedPath), File(arguments.outputWebsitePath)).run()
+    val inputDirectory = File(arguments.inputPath)
+    val outputFeedFile = File(arguments.outputFeedPath)
+    val outputWebsiteDirectory = File(arguments.outputWebsitePath)
+
+    val result = runner.run(inputDirectory, outputFeedFile, outputWebsiteDirectory).blockingGet()
+
+    when (result) {
+        is Runner.Result.Success -> println(":: Success!")
+        is Runner.Result.Failure -> listOf(":: Failure.", result.message).forEach { println(it) }
+    }
 }

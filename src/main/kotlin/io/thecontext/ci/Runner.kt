@@ -7,65 +7,101 @@ import io.thecontext.ci.context.InputContext
 import io.thecontext.ci.context.OutputContext
 import io.thecontext.ci.context.ValidationContext
 import io.thecontext.ci.input.InputFilesLocator
+import io.thecontext.ci.input.InputReader
 import io.thecontext.ci.validation.ValidationResult
 import io.thecontext.ci.validation.merge
 import java.io.File
 
-class Runner(
-        private val context: Context,
-        private val inputDirectory: File,
-        private val outputFeedFile: File,
-        private val outputWebsiteDirectory: File
-) : Runnable {
+interface Runner {
 
-    override fun run() {
-        val inputContext = InputContext.Impl(context)
+    sealed class Result {
+        object Success : Result()
+        data class Failure(val message: String) : Result()
+    }
 
-        val inputFiles = inputContext.inputFilesLocator.locate(inputDirectory)
-                .toObservable()
-                .share()
+    fun run(inputDirectory: File, outputFeedFile: File, outputWebsiteDirectory: File): Single<Result>
 
-        val input = inputFiles
-                .ofType<InputFilesLocator.Result.Success>()
-                .switchMapSingle {
-                    inputContext.inputReader.read(it.people, it.podcast, it.episodes)
-                }
-                .share()
+    class Impl(private val context: Context) : Runner {
 
-        val validation = input
-                .switchMapSingle { inputResult ->
-                    val context = ValidationContext.Impl(context, inputResult.people)
+        override fun run(inputDirectory: File, outputFeedFile: File, outputWebsiteDirectory: File): Single<Result> {
+            val inputContext = InputContext.Impl(context)
 
-                    val podcast = context.podcastValidator.validate(inputResult.podcast)
-                    val episodes = inputResult.episodes.map { context.episodeValidator.validate(it) }
-                    val episodeList = context.episodesValidator.validate(inputResult.episodes)
+            val inputFiles = inputContext.inputFilesLocator.locate(inputDirectory)
+                    .cache()
 
-                    Single.merge(episodes.plus(podcast).plus(episodeList)).toList().map { it.merge() }
-                }
+            val input = inputFiles
+                    .flatMap {
+                        when (it) {
+                            is InputFilesLocator.Result.Success -> inputContext.inputReader.read(it.people, it.podcast, it.episodes)
+                            is InputFilesLocator.Result.Failure -> Single.never()
+                        }
+                    }
+                    .cache()
 
-        val output = validation
-                .ofType<ValidationResult.Success>()
-                .withLatestFrom(input) { _, inputResult -> inputResult }
-                .switchMapSingle {
-                    val context = OutputContext.Impl(context)
+            val validation = input
+                    .flatMap {
+                        when (it) {
+                            is InputReader.Result.Success -> Single.just(it)
+                            is InputReader.Result.Failure -> Single.never()
+                        }
+                    }
+                    .flatMap { inputResult ->
+                        val context = ValidationContext.Impl(context, inputResult.people)
 
-                    context.outputWriter.write(
-                            feedFile = outputFeedFile,
-                            websiteDirectory = outputWebsiteDirectory,
-                            people = it.people,
-                            podcast = it.podcast,
-                            episodes = it.episodes
+                        val podcast = context.podcastValidator.validate(inputResult.podcast)
+                        val episodes = inputResult.episodes.map { context.episodeValidator.validate(it) }
+                        val episodeList = context.episodesValidator.validate(inputResult.episodes)
+
+                        Single.merge(episodes.plus(podcast).plus(episodeList)).toList().map { it.merge() }
+                    }
+                    .cache()
+
+            val output = validation
+                    .flatMap {
+                        when (it) {
+                            is ValidationResult.Success -> input.cast(InputReader.Result.Success::class.java)
+                            is ValidationResult.Failure -> Single.never()
+                        }
+                    }
+                    .flatMap {
+                        val context = OutputContext.Impl(context)
+
+                        context.outputWriter.write(
+                                feedFile = outputFeedFile,
+                                websiteDirectory = outputWebsiteDirectory,
+                                people = it.people,
+                                podcast = it.podcast,
+                                episodes = it.episodes
+                        )
+                    }
+
+            val resultSuccess = output
+                    .map { Result.Success }
+
+            val resultError = Single
+                    .merge(
+                            inputFiles.flatMap {
+                                when (it) {
+                                    is InputFilesLocator.Result.Success -> Single.never()
+                                    is InputFilesLocator.Result.Failure -> Single.just(it.message)
+                                }
+                            },
+                            input.flatMap {
+                                when (it) {
+                                    is InputReader.Result.Success -> Single.never()
+                                    is InputReader.Result.Failure -> Single.just(it.message)
+                                }
+                            },
+                            validation.flatMap {
+                                when (it) {
+                                    is ValidationResult.Success -> Single.never()
+                                    is ValidationResult.Failure -> Single.just(it.message)
+                                }
+                            }
                     )
-                }
+                    .map { Result.Failure(it) }
 
-        val resultSuccess = output.map { "Done!" }
-
-        val resultError = Observable
-                .merge(
-                        inputFiles.ofType<InputFilesLocator.Result.Failure>().map { it.message },
-                        validation.ofType<ValidationResult.Failure>().map { it.message }
-                )
-
-        println(Observable.merge(resultSuccess, resultError).blockingFirst())
+            return Observable.merge(resultSuccess.toObservable(), resultError.toObservable()).firstOrError()
+        }
     }
 }
