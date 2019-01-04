@@ -7,20 +7,18 @@ import io.thecontext.ci.context.InputContext
 import io.thecontext.ci.context.OutputContext
 import io.thecontext.ci.context.ValidationContext
 import io.thecontext.ci.input.InputFilesLocator
-import io.thecontext.ci.validation.*
+import io.thecontext.ci.validation.ValidationResult
+import io.thecontext.ci.validation.merge
 import java.io.File
 
-fun main(args: Array<String>) {
-    Runner(Context.Impl()).run(
-            inputDirectory = File("/tmp/podcast-input"),
-            rssFeedDirectory = File("/tmp/podcast-output"),
-            websiteDirectory = File("/tmp/podcast-website")
-    )
-}
+class Runner(
+        private val context: Context,
+        private val inputDirectory: File,
+        private val outputFeedFile: File,
+        private val outputWebsiteDirectory: File
+) : Runnable {
 
-class Runner(private val context: Context) {
-
-    fun run(inputDirectory: File, rssFeedDirectory: File, websiteDirectory: File) {
+    override fun run() {
         val inputContext = InputContext.Impl(context)
 
         val inputFiles = inputContext.inputFilesLocator.locate(inputDirectory)
@@ -52,11 +50,12 @@ class Runner(private val context: Context) {
                     val context = OutputContext.Impl(context)
 
                     context.outputWriter.write(
-                            rssFeedDirectory = rssFeedDirectory,
-                            websiteDirectory = websiteDirectory,
+                            feedFile = outputFeedFile,
+                            websiteDirectory = outputWebsiteDirectory,
                             people = it.people,
                             podcast = it.podcast,
-                            episodes = it.episodes)
+                            episodes = it.episodes
+                    )
                 }
 
         val resultSuccess = output.map { "Done!" }
