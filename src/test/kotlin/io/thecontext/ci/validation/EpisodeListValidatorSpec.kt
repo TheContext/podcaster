@@ -1,11 +1,11 @@
 package io.thecontext.ci.validation
 
 import com.greghaskins.spectrum.Spectrum
-import com.greghaskins.spectrum.dsl.specification.Specification.*
+import com.greghaskins.spectrum.dsl.specification.Specification.context
+import com.greghaskins.spectrum.dsl.specification.Specification.it
 import io.reactivex.schedulers.Schedulers
 import io.thecontext.ci.memoized
 import io.thecontext.ci.testEpisode
-import io.thecontext.ci.value.Episode
 import org.junit.runner.RunWith
 
 @RunWith(Spectrum::class)

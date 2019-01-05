@@ -36,7 +36,9 @@ interface MarkdownEpisodeRenderer {
                             "hosts_available" to hosts.isNotEmpty(),
                             "hosts" to hosts.map { mapOf("host" to formatPerson(it)) },
                             "discussion_url" to episode.discussionUrl,
-                            "file_url" to episode.file.url
+                            "file_url" to episode.file.url,
+                            "time" to episode.time,
+                            "slug" to episode.slug
                     )
 
                     templateRenderer.render(template, contents)

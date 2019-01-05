@@ -1,5 +1,4 @@
 ---
-layout: episode
 {{^part_available}}
 title: "Episode {{number}}: {{title}}"
 {{/part_available}}
@@ -7,8 +6,13 @@ title: "Episode {{number}}: {{title}}"
 title: "Episode {{number}}, Part {{part}}: {{title}}"
 {{/part_available}}
 description: "{{description}}"
-mp3: "{{file_url}}"
+date: "{{time}}"
+slug: "{{slug}}"
 ---
+<audio controls preload="meta">
+  <source src="{{file_url}}" type="audio/mpeg">
+</audio>
+
 {{&notes}}
 {{#guests_available}}
 
