@@ -3,6 +3,7 @@ package io.thecontext.ci
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import java.util.*
 
 interface Time {
 
@@ -14,8 +15,10 @@ interface Time {
     class Impl : Time {
 
         companion object {
-            private val FORMATTER_ISO = DateTimeFormatter.ISO_LOCAL_DATE_TIME
-            private val FORMATTER_RFC_2822 = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss Z")
+            private val LOCALE = Locale.ENGLISH
+
+            private val FORMATTER_ISO = DateTimeFormatter.ISO_LOCAL_DATE_TIME.withLocale(LOCALE)
+            private val FORMATTER_RFC_2822 = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss Z").withLocale(LOCALE)
         }
 
         override fun current() = LocalDateTime.now()
