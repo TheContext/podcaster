@@ -26,6 +26,10 @@ interface InputFilesLocator {
 
         override fun locate(directory: File) = Single
                 .fromCallable {
+                    if (!directory.exists()) {
+                        return@fromCallable Result.Failure("Podcast directory does not exist.")
+                    }
+
                     if (!directory.isDirectory) {
                         return@fromCallable Result.Failure("Podcast directory [${directory.path}] is not actually a directory.")
                     }

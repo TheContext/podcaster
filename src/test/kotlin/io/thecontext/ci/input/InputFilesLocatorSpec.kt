@@ -21,16 +21,29 @@ class InputFilesLocatorSpec {
             workingDir.create()
         }
 
-        describe("directory is not a directory") {
+        describe("directory does not exist") {
 
             it("emits result as failure") {
-                locator.locate(File(workingDir.root, "just-a-file"))
+                val dir = File("does-not-actually-exist")
+
+                locator.locate(dir)
                         .test()
                         .assertValue { it is Result.Failure }
             }
         }
 
-        describe("no people file available") {
+        describe("directory is not a directory") {
+
+            it("emits result as failure") {
+                val file = workingDir.newFile("podcast")
+
+                locator.locate(file)
+                        .test()
+                        .assertValue { it is Result.Failure }
+            }
+        }
+
+        describe("people file is not available") {
 
             beforeEach {
                 workingDir.newFile(FileNames.PODCAST)
@@ -49,7 +62,7 @@ class InputFilesLocatorSpec {
             }
         }
 
-        describe("no podcast file available") {
+        describe("podcast file is not available") {
 
             beforeEach {
                 workingDir.newFile(FileNames.PEOPLE)
@@ -68,7 +81,7 @@ class InputFilesLocatorSpec {
             }
         }
 
-        describe("no episode file available") {
+        describe("episode file is not available") {
 
             beforeEach {
                 listOf(FileNames.PEOPLE, FileNames.PODCAST).forEach {
@@ -86,7 +99,7 @@ class InputFilesLocatorSpec {
             }
         }
 
-        describe("no episode notes file available") {
+        describe("episode notes file is not available") {
 
             beforeEach {
                 listOf(FileNames.PEOPLE, FileNames.PODCAST).forEach {
