@@ -1,9 +1,13 @@
 ---
-layout: episode
 title: "Episode 11: Migration to RxJava 2 with Artur Dryomov from Juno"
 description: "We’ve talked with Artur about Juno’s way to migrate their Android Rider app from RxJava 1 to RxJava 2."
-mp3: "https://thecontext.io/episodes/11.mp3"
+date: "2017-05-15T09:30"
+slug: "11-rxjava-2"
 ---
+<audio controls preload="meta">
+  <source src="https://thecontext.io/episodes/11.mp3" type="audio/mpeg">
+</audio>
+
 Links:
 
 * [RxKotlin](https://github.com/ReactiveX/RxKotlin)
