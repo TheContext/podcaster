@@ -2,36 +2,50 @@ package io.thecontext.ci
 
 import io.thecontext.ci.context.Context
 import java.io.File
+import kotlin.system.exitProcess
 
 enum class ResultCode(val value: Int) {
     Success(0),
     Failure(1),
 }
-
 fun main(args: Array<String>) {
-    val arguments = Arguments.from(args)
-    val runner = Runner.Impl(Context.Impl())
+    val argumentsResult = Arguments.from(args)
 
-    val inputDirectory = File(arguments.inputPath)
-    val outputFeedFile = File(arguments.outputFeedPath)
-    val outputWebsiteDirectory = File(arguments.outputWebsitePath)
+    val resultCode = when (argumentsResult) {
+        is ArgumentsResult.Success -> {
+            val arguments = argumentsResult.arguments
 
-    val result = runner.run(inputDirectory, outputFeedFile, outputWebsiteDirectory).blockingGet()
+            val inputDirectory = File(arguments.inputPath)
+            val outputFeedFile = File(arguments.outputFeedPath)
+            val outputWebsiteDirectory = File(arguments.outputWebsitePath)
 
-    val resultCode = when (result) {
-        is Runner.Result.Success -> {
-            println(":: Success!")
+            val runner = Runner.Impl(Context.Impl())
 
-            ResultCode.Success
+            val result = runner.run(inputDirectory, outputFeedFile, outputWebsiteDirectory).blockingGet()
+
+            when (result) {
+                is Runner.Result.Success -> {
+                    println(":: Success!")
+
+                    ResultCode.Success
+                }
+
+                is Runner.Result.Failure -> {
+                    println(":: Failure.")
+                    println(result.message)
+
+                    ResultCode.Failure
+                }
+            }
         }
 
-        is Runner.Result.Failure -> {
+        is ArgumentsResult.Failure -> {
             println(":: Failure.")
-            println(result.message)
+            println(argumentsResult.message)
 
             ResultCode.Failure
         }
     }
 
-    System.exit(resultCode.value)
+    exitProcess(resultCode.value)
 }
