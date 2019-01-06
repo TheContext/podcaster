@@ -3,6 +3,7 @@ package io.thecontext.ci.validation
 import io.reactivex.Single
 import io.thecontext.ci.value.Person
 import io.thecontext.ci.value.Podcast
+import java.util.*
 
 class PodcastValidator(
         private val urlValidator: Validator<String>,
@@ -14,9 +15,10 @@ class PodcastValidator(
     }
 
     override fun validate(value: Podcast): Single<ValidationResult> {
-        val urlResults = listOf(value.url, value.artworkUrl).map {
-            urlValidator.validate(it)
-        }
+        val urlResults = listOf(value.url, value.artworkUrl)
+                .map {
+                    urlValidator.validate(it)
+                }
 
         val peopleResults = emptyList<String>()
                 .plus(value.people.ownerId)
@@ -47,8 +49,16 @@ class PodcastValidator(
             }
         }
 
+        val languageResult = Single.fromCallable {
+            if (!Locale.getISOLanguages().contains(value.language)) {
+                ValidationResult.Failure("Podcast language should be ISO 639 code.")
+            } else {
+                ValidationResult.Success
+            }
+        }
+
         return Single
-                .merge(urlResults + peopleResults + ownerResults + listOf(descriptionResult))
+                .merge(urlResults + peopleResults + ownerResults + descriptionResult + languageResult)
                 .toList()
                 .map { it.merge() }
     }
