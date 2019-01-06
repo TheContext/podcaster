@@ -27,8 +27,8 @@ val testPodcast = Podcast(
         explicit = false,
         category = "Podcast category",
         subcategory = "Podcast subcategory",
-        url = "localhost/podcast",
-        artworkUrl = "localhost/podcast/artwork"
+        url = "https://localhost/podcast",
+        artworkUrl = "https://localhost/podcast/artwork"
 )
 
 val testEpisode = Episode(
@@ -41,12 +41,13 @@ val testEpisode = Episode(
                 hostIds = listOf(testPerson.id, testPerson.id),
                 guestIds = listOf(testPerson.id, testPerson.id)
         ),
-        discussionUrl = "localhost/discussion",
+        discussionUrl = "https://localhost/discussion",
         time = "2000-12-30T10:15",
         duration = "100:00",
         file = Episode.File(
-                url = "localhost/episode/file",
+                url = "https://localhost/episode/file",
                 length = 1_000_000
         ),
+        slug = "slug",
         notesMarkdown = "Notes"
 )

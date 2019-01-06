@@ -2,7 +2,7 @@ package io.thecontext.ci.validation
 
 import com.greghaskins.spectrum.Spectrum
 import com.greghaskins.spectrum.dsl.specification.Specification.*
-import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
 import io.thecontext.ci.Time
 import io.thecontext.ci.memoized
 import io.thecontext.ci.testEpisode
@@ -14,15 +14,27 @@ class EpisodeValidatorSpec {
     init {
         val env by memoized { Environment() }
 
-        context("id validation failed") {
+        context("value is valid") {
 
-            it("emits result as failure on empty id") {
+            it("emits result as success") {
+                env.validator.validate(testEpisode)
+                        .test()
+                        .assertResult(ValidationResult.Success)
+            }
+        }
+
+        context("ID is empty") {
+
+            it("emits result as failure") {
                 env.validator.validate(testEpisode.copy(id = ""))
                         .test()
                         .assertValue { it is ValidationResult.Failure }
             }
+        }
 
-            it("emits result as failure on blank id") {
+        context("ID is blank") {
+
+            it("emits result as failure") {
                 env.validator.validate(testEpisode.copy(id = " "))
                         .test()
                         .assertValue { it is ValidationResult.Failure }
@@ -47,14 +59,19 @@ class EpisodeValidatorSpec {
             }
         }
 
-        context("url validation failed") {
-
-            beforeEach {
-                env.urlValidator.result = ValidationResult.Failure("nope")
-            }
+        context("file URL is not valid") {
 
             it("emits result as failure") {
-                env.validator.validate(testEpisode)
+                env.validator.validate(testEpisode.copy(file = testEpisode.file.copy(url = "not URL")))
+                        .test()
+                        .assertValue { it is ValidationResult.Failure }
+            }
+        }
+
+        context("discussion URL is not valid") {
+
+            it("emits result as failure") {
+                env.validator.validate(testEpisode.copy(discussionUrl = "not URL"))
                         .test()
                         .assertValue { it is ValidationResult.Failure }
             }
@@ -96,7 +113,7 @@ class EpisodeValidatorSpec {
             }
         }
 
-        context("description length is too big") {
+        context("description length is too long") {
 
             it("emits result as failure") {
                 env.validator.validate(testEpisode.copy(description = "Z".repeat(EpisodeValidator.MAXIMUM_DESCRIPTION_LENGTH + 1)))
@@ -104,17 +121,22 @@ class EpisodeValidatorSpec {
                         .assertValue { it is ValidationResult.Failure }
             }
         }
+
+        context("notes contain heading") {
+
+            it("emits result as failure") {
+                env.validator.validate(testEpisode.copy(notesMarkdown = "# Heading"))
+                        .test()
+                        .assertValue { it is ValidationResult.Failure }
+            }
+        }
     }
 
     private class Environment {
-        val urlValidator = TestUrlValidator()
+        private val markdownValidator = MarkdownValidator(Schedulers.trampoline())
+        private val urlValidator = UrlValidator(Schedulers.trampoline())
+        private val time = Time.Impl()
 
-        val validator = EpisodeValidator(urlValidator, listOf(testPerson), Time.Impl())
-    }
-
-    private class TestUrlValidator : Validator<String> {
-        var result: ValidationResult = ValidationResult.Success
-
-        override fun validate(value: String) = Single.just(result)
+        val validator = EpisodeValidator(markdownValidator, urlValidator, listOf(testPerson), time)
     }
 }

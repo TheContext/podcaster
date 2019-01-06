@@ -21,6 +21,27 @@ class InputFilesLocatorSpec {
             workingDir.create()
         }
 
+        describe("files available") {
+
+            beforeEach {
+                listOf(FileNames.PEOPLE, FileNames.PODCAST).forEach {
+                    workingDir.newFile(it)
+                }
+
+                val episodeDir = workingDir.newFolder("episode-42")
+
+                listOf(FileNames.EPISODE, FileNames.EPISODE_NOTES).forEach {
+                    File(episodeDir, it).createNewFile()
+                }
+            }
+
+            it("emits result as success") {
+                locator.locate(workingDir.root)
+                        .test()
+                        .assertValue { it is Result.Success }
+            }
+        }
+
         describe("directory does not exist") {
 
             it("emits result as failure") {
@@ -115,27 +136,6 @@ class InputFilesLocatorSpec {
                 locator.locate(workingDir.root)
                         .test()
                         .assertValue { it is Result.Failure }
-            }
-        }
-
-        describe("files available") {
-
-            beforeEach {
-                listOf(FileNames.PEOPLE, FileNames.PODCAST).forEach {
-                    workingDir.newFile(it)
-                }
-
-                val episodeDir = workingDir.newFolder("episode-42")
-
-                listOf(FileNames.EPISODE, FileNames.EPISODE_NOTES).forEach {
-                    File(episodeDir, it).createNewFile()
-                }
-            }
-
-            it("emits result as success") {
-                locator.locate(workingDir.root)
-                        .test()
-                        .assertValue { it is Result.Success }
             }
         }
 

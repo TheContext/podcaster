@@ -15,7 +15,7 @@ class UrlValidatorSpec {
 
             listOf("schema://localhost", "asset://localhost", "file://localhost").forEach { uri ->
 
-                context("uri [$uri]") {
+                context("URI [$uri]") {
 
                     it("emits result as failure") {
                         validator.validate(uri)
@@ -30,12 +30,12 @@ class UrlValidatorSpec {
 
             listOf("http://localhost", "https://google.com", "https://github.com").forEach { url ->
 
-                context("url [$url]") {
+                context("URL [$url]") {
 
                     it("emits result as success") {
                         validator.validate(url)
                                 .test()
-                                .assertValue(ValidationResult.Success)
+                                .assertResult(ValidationResult.Success)
                     }
                 }
             }

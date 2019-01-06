@@ -1,8 +1,9 @@
 package io.thecontext.ci.validation
 
 import com.greghaskins.spectrum.Spectrum
-import com.greghaskins.spectrum.dsl.specification.Specification.*
-import io.reactivex.Single
+import com.greghaskins.spectrum.dsl.specification.Specification.context
+import com.greghaskins.spectrum.dsl.specification.Specification.it
+import io.reactivex.schedulers.Schedulers
 import io.thecontext.ci.memoized
 import io.thecontext.ci.testPerson
 import io.thecontext.ci.testPodcast
@@ -18,18 +19,23 @@ class PodcastValidatorSpec {
             it("emits result as success") {
                 env.validator.validate(testPodcast)
                         .test()
-                        .assertValue { it is ValidationResult.Success }
+                        .assertResult(ValidationResult.Success)
             }
         }
 
-        context("url validation failed") {
-
-            beforeEach {
-                env.urlValidator.result = ValidationResult.Failure("nope")
-            }
+        context("URL is not valid") {
 
             it("emits result as failure") {
-                env.validator.validate(testPodcast)
+                env.validator.validate(testPodcast.copy(url = "not URL"))
+                        .test()
+                        .assertValue { it is ValidationResult.Failure }
+            }
+        }
+
+        context("artwork URL is not valid") {
+
+            it("emits result as failure") {
+                env.validator.validate(testPodcast.copy(artworkUrl = "not URL"))
                         .test()
                         .assertValue { it is ValidationResult.Failure }
             }
@@ -62,10 +68,19 @@ class PodcastValidatorSpec {
             }
         }
 
-        context("description length is too big") {
+        context("description length is too long") {
 
             it("emits result as failure") {
                 env.validator.validate(testPodcast.copy(description = "Z".repeat(PodcastValidator.MAXIMUM_DESCRIPTION_LENGTH + 1)))
+                        .test()
+                        .assertValue { it is ValidationResult.Failure }
+            }
+        }
+
+        context("language is not ISO code") {
+
+            it("emits result as failure") {
+                env.validator.validate(testPodcast.copy(language = "not ISO"))
                         .test()
                         .assertValue { it is ValidationResult.Failure }
             }
@@ -79,14 +94,8 @@ class PodcastValidatorSpec {
             val PERSON_WITHOUT_EMAIL = testPerson.copy(id = "person without email", email = null)
         }
 
-        val urlValidator = TestUrlValidator()
+        private val urlValidator = UrlValidator(Schedulers.trampoline())
 
         val validator = PodcastValidator(urlValidator, listOf(PERSON, PERSON_WITHOUT_EMAIL))
-    }
-
-    private class TestUrlValidator : Validator<String> {
-        var result: ValidationResult = ValidationResult.Success
-
-        override fun validate(value: String) = Single.just(result)
     }
 }

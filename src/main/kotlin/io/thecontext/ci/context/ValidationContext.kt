@@ -13,10 +13,11 @@ interface ValidationContext : Context {
 
     class Impl(context: Context, people: List<Person>) : ValidationContext, Context by context {
 
+        private val markdownValidator: Validator<String> by lazy { MarkdownValidator(ioScheduler) }
         private val urlValidator: Validator<String> by lazy { UrlValidator(ioScheduler) }
 
         override val podcastValidator by lazy { PodcastValidator(urlValidator, people) }
-        override val episodeValidator by lazy { EpisodeValidator(urlValidator, people, time) }
-        override val episodesValidator by lazy { EpisodeListValidator(ioScheduler) }
+        override val episodeValidator by lazy { EpisodeValidator(markdownValidator, urlValidator, people, time) }
+        override val episodesValidator by lazy { EpisodesValidator(ioScheduler) }
     }
 }
