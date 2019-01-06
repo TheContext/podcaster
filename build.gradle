@@ -20,7 +20,7 @@ repositories {
 }
 
 apply plugin: "application"
-mainClassName = "io.thecontext.ci.MainKt"
+mainClassName = "io.thecontext.podcaster.MainKt"
 
 apply plugin: "kotlin"
 apply plugin: "com.github.ben-manes.versions"
