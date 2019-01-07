@@ -15,7 +15,7 @@ interface OutputContext : Context {
         private val templateRenderer: TemplateRenderer by lazy { TemplateRenderer.Impl() }
         private val textWriter: TextWriter by lazy { TextWriter.Impl() }
 
-        private val markdownEpisodeRenderer: MarkdownEpisodeRenderer by lazy { MarkdownEpisodeRenderer.Impl(templateRenderer, ioScheduler) }
+        private val markdownEpisodeRenderer: MarkdownEpisodeRenderer by lazy { MarkdownEpisodeRenderer.Impl(templateRenderer, time, ioScheduler) }
 
         private val feedEpisodeRenderer: FeedEpisodeRenderer by lazy { FeedEpisodeRenderer.Impl(markdownEpisodeRenderer, htmlRenderer, ioScheduler) }
         private val feedRenderer: FeedRenderer by lazy { FeedRenderer.Impl(feedEpisodeRenderer, templateRenderer, time, ioScheduler) }

@@ -2,6 +2,7 @@ package io.thecontext.podcaster.output
 
 import io.reactivex.Scheduler
 import io.reactivex.Single
+import io.thecontext.podcaster.Time
 import io.thecontext.podcaster.value.Episode
 import io.thecontext.podcaster.value.Person
 import io.thecontext.podcaster.value.find
@@ -12,6 +13,7 @@ interface MarkdownEpisodeRenderer {
 
     class Impl(
             private val templateRenderer: TemplateRenderer,
+            private val time: Time,
             private val ioScheduler: Scheduler
     ) : MarkdownEpisodeRenderer {
 
@@ -37,7 +39,7 @@ interface MarkdownEpisodeRenderer {
                             "hosts" to hosts.map { mapOf("host" to formatPerson(it)) },
                             "discussion_url" to episode.discussionUrl,
                             "file_url" to episode.file.url,
-                            "time" to episode.time,
+                            "time" to time.formatIso(time.parseIso(episode.time)),
                             "slug" to episode.slug
                     )
 
