@@ -8,6 +8,8 @@ slug: "11-rxjava-2"
   <source src="https://thecontext.io/episodes/11.mp3" type="audio/mpeg">
 </audio>
 
+We’ve talked with Artur about Juno’s way to migrate their Android Rider app from RxJava 1 to RxJava 2.
+
 Links:
 
 * [RxKotlin](https://github.com/ReactiveX/RxKotlin)
