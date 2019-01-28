@@ -34,6 +34,11 @@ compileTestKotlin {
     kotlinOptions.jvmTarget = versions.java
 }
 
+shadowJar {
+    baseName = "podcaster"
+    version = null
+}
+
 dependencies {
     compile deps.kotlin.stdlib
     compile deps.kotlin.reflect
