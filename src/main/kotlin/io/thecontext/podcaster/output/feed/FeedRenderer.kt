@@ -32,6 +32,7 @@ interface FeedRenderer {
                             "url" to podcast.url,
                             "description" to podcast.description,
                             "artwork_url" to podcast.artworkUrl,
+                            "migration_feed_url" to (podcast.migrationFeedUrl ?: ""),
                             "explicit" to if (podcast.explicit) "yes" else "no",
                             "category" to podcast.category,
                             "subcategory" to podcast.subcategory,

@@ -28,7 +28,8 @@ val testPodcast = Podcast(
         category = "Podcast category",
         subcategory = "Podcast subcategory",
         url = "https://localhost/podcast",
-        artworkUrl = "https://localhost/podcast/artwork"
+        artworkUrl = "https://localhost/podcast/artwork",
+        migrationFeedUrl = null
 )
 
 val testEpisode = Episode(

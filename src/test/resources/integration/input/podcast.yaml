@@ -2,6 +2,7 @@ title: "The Context #androiddev"
 description: "The podcast about Android development and related topics."
 url: "https://thecontext.io"
 artworkUrl: "https://thecontext.io/img/cover.png"
+migrationFeedUrl: "https://thecontext.io/new-feed.rss"
 language: "en"
 explicit: false
 category: "Technology"

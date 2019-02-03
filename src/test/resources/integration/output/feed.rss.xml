@@ -6,6 +6,7 @@
     <language>en</language>
     <link>https://thecontext.io</link>
     <lastBuildDate>Mon, 31 Dec 2018 10:30:50 +0000</lastBuildDate>
+    <itunes:new-feed-url>https://thecontext.io/new-feed.rss</itunes:new-feed-url>
     <itunes:image href="https://thecontext.io/img/cover.png"/>
     <itunes:explicit>no</itunes:explicit>
     <itunes:category text="Technology">

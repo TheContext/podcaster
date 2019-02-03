@@ -41,6 +41,15 @@ class PodcastValidatorSpec {
             }
         }
 
+        context("migration feed URL is not valid") {
+
+            it("emits result as failure") {
+                env.validator.validate(testPodcast.copy(migrationFeedUrl = "not URL"))
+                        .test()
+                        .assertValue { it is ValidationResult.Failure }
+            }
+        }
+
         context("owner is not available") {
 
             it("emits result as failure") {

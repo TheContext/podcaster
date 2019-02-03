@@ -53,18 +53,19 @@ Name         | Required | Description
 
 #### `podcast.yaml`
 
-Name             | Required | Description
------------------|----------|------------
-`title`          | Yes      |
-`description`    | Yes      |
-`url`            | Yes      | URL for the web presense.
-`artworkUrl`     | Yes      |
-`language`       | Yes      | ISO 639 code.
-`explicit`       | Yes      | `true` or `false`.
-`category`       | Yes      | iTunes one.
-`subcategory`    | Yes      | iTunes one.
-`people.owner`   | Yes      | ID from `people.yaml`.
-`people.authors` | Yes      | IDs from `people.yaml`.
+Name              | Required | Description
+------------------|----------|------------
+`title`           | Yes      |
+`description`     | Yes      |
+`url`             | Yes      | URL for the web presense.
+`artworkUrl`      | Yes      |
+`migrationFeedUrl`| No       | URL pointing to a new feed location.
+`language`        | Yes      | ISO 639 code.
+`explicit`        | Yes      | `true` or `false`.
+`category`        | Yes      | iTunes one.
+`subcategory`     | Yes      | iTunes one.
+`people.owner`    | Yes      | ID from `people.yaml`.
+`people.authors`  | Yes      | IDs from `people.yaml`.
 
 #### `{episode}/episode.yaml`
 
