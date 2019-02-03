@@ -6,6 +6,9 @@
     <language>{{language}}</language>
     <link>{{url}}</link>
     <lastBuildDate>{{build_date}}</lastBuildDate>
+    {{#migration_feed_url}}
+    <itunes:new-feed-url>{{migration_feed_url}}</itunes:new-feed-url>
+    {{/migration_feed_url}}
     <itunes:image href="{{artwork_url}}"/>
     <itunes:explicit>{{explicit}}</itunes:explicit>
     <itunes:category text="{{category}}">
